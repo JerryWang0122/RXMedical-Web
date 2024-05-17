@@ -1,0 +1,27 @@
+:root {
+
+  --c-main-1-10: #007b87;
+  --c-main-1-05: rgba(0, 124, 135, 0.5);
+
+  --c-main-2-10: #B0e298;
+  --c-main-2-02: rgba(175, 226, 152, 0.2);
+
+  --c-main-3-10: #005e75;
+  --c-main-3-05: rgba(0, 94, 117, 0.5);
+
+  --c-main-4-10: #f9f9f9;
+
+  --c-main-5-10: #e072a4;
+  --c-main-5-07: rgba(224, 114, 163, 0.7);
+  --c-main-5-03: rgba(224, 114, 163, 0.3);
+
+  --c-background: #f5f5f5;
+
+  --f-family-1: 'Righteous', 'Noto Sans TC', sans-serif;
+
+}
+
+/* ----- 購物車消失 ------ */
+.shop-cart {
+  display: none;
+}

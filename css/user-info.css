@@ -1,0 +1,61 @@
+/* :root {
+
+  --c-main-1-10: #007b87;
+  --c-main-1-05: rgba(0, 124, 135, 0.5);
+
+  --c-main-2-10: #B0e298;
+  --c-main-2-02: rgba(175, 226, 152, 0.2);
+
+  --c-main-3-10: #005e75;
+  --c-main-3-05: rgba(0, 94, 117, 0.5);
+
+  --c-main-4-10: #f9f9f9;
+
+  --c-main-5-10: #e072a4;
+  --c-main-5-07: rgba(224, 114, 163, 0.7);
+
+  --c-background: #f5f5f5;
+
+  --f-family-1: 'Righteous', 'Noto Sans TC', sans-serif;
+
+} */
+
+#userInfoForm {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+#userInfoForm label {
+  margin-bottom: 10px;
+}
+
+#userInfoForm .bi {
+  margin-right: 5px;
+}
+
+#userInfoForm .btn {
+  color: var(--c-main-1-10);
+  border: 1px solid var(--c-main-1-10);
+}
+
+#userInfoForm .btn:hover {
+  background-color: var(--c-main-1-10);
+  color: var(--c-main-4-10);
+}
+
+#userInfoForm small {
+  color: var(--c-main-5-10);
+}
+
+#userInfoForm .form-control:focus {
+  border-color: forestgreen;
+  box-shadow: none;
+  box-shadow: 0 0 0 0.25rem var(--c-main-2-02);
+}
+
+/* .shop-cart {
+  display: none;
+} */

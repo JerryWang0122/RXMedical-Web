@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+    <head>
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
+        <meta charset="UTF-8">
+        <title class="medical-product"></title>
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <!-- custom css -->
+        <link rel="stylesheet" href="../css/common.css">
+        <link rel="stylesheet" href="../css/products.css">
+    </head>
+
+    <body>
+
+        <header>
+
+            <div class="navbar navbar-expand-md navbar-light">
+                <div class="container-xl">
+
+                    <div class="d-flex pt-2">
+                        <a class="navbar-brand d-flex align-items-center" href="products.html">
+                            <img src="../img/hospital.png" alt="" height="60" class="d-inline-block me-2">
+                            <h1 class="medical-product"></h1>
+                        </a>
+                        <div class="show-user text-center ms-auto fs-5">
+                            <span>王俊傑</span><br>
+                            <span>歡迎登入</span>
+                        </div>
+                    </div>
+
+
+                    <!-- 漢堡圖 -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <nav class="collapse navbar-collapse" id="navbarMenu">
+
+                        <ul class="navbar-nav ms-auto me-lg-5 mb-2 mb-lg-0 text-center">
+                            <li class="nav-item">
+                                <!-- TODO -->
+                                <a class="nav-link" href="user_info.html">我的帳戶</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- TODO -->
+                                <a class="nav-link" href="#">衛材清單</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- TODO -->
+                                <a class="nav-link" href="#">後台管理</a>
+                            </li>
+                            <li>
+                                <form action="/user/logout" method="get">
+                                    <input class="btn" id="logout" type="submit" value="登出">
+                                </form>
+                            </li>
+                        </ul>
+
+                    </nav>
+                    <!-- 購物車 -->
+                    <div class="shop-cart">
+                        <a class="d-flex justify-content-center align-items-center" href="./user/cart">
+
+                            <i class="bi bi-cart">
+                                <span>14</span>
+                            </i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+
+        <main>
+
+            <h2>
+                衛材申請
+            </h2>
+
+            <!-- 搜索欄 -->
+            <section class="mt-3 mt-md-4 px-2">
+
+                <div class="search-area container-xl ">
+
+                    <!-- 搜索功能 -->
+                    <div class="search-box row">
+                        <p class="mb-2 col-12">搜尋商品</p>
+
+                        <form class="col-12">
+                            <div class="row">
+                                <label class="position-relative col-12 col-md-4 pe-0">
+                                    <input class="form-control" type="search" placeholder="請輸入商品關鍵字"
+                                        aria-label="Search">
+
+                                    <i class="bi bi-search "></i>
+                                </label>
+                            </div>
+                        </form>
+
+                    </div>
+
+
+                    <!-- 搜尋分類 -->
+                    <div class="search-category row pt-3">
+
+                        <p class="mb-0 d-none d-md-block">商品類別</p>
+
+                        <div class="navbar navbar-light navbar-expand-md pe-0">
+                            <a class="navbar-brand" style="margin-right: 0;" href="#"></a>
+
+                            <!-- 進階篩選按鈕 -->
+                            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasSearchCategory" aria-controls="offcanvasSearchCategory">
+
+                                <span>
+                                    <i class="bi bi-funnel me-2"></i>進階篩選
+                                </span>
+
+                            </button>
+
+                            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasSearchCategory"
+                                aria-labelledby="offcanvasSearchCategoryLabel">
+                                <div class="offcanvas-header">
+                                    <h5 class="offcanvas-title fs-2" id="offcanvasSearchCategoryLabel">進階篩選</h5>
+                                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <div class="categories d-flex flex-wrap">
+
+                                        <p class="mb-2 d-md-none">商品類別</p>
+                                        <hr>
+                                        <label class="cate-item">
+                                            <input type="checkbox" id="cate-all" class="form-check-input me-2"
+                                                name="cate-all" value="all" checked>全部
+                                        </label>
+
+                                        <label class="cate-item">
+                                            <input type="checkbox" id="cate-1" class="form-check-input me-2"
+                                                name="cate-1" value="文具">文具
+                                        </label>
+
+                                        <label class="cate-item">
+                                            <input type="checkbox" id="cate-2" class="form-check-input me-2"
+                                                name="cate-2" value="紗布">紗布
+                                        </label>
+
+                                        <label class="cate-item">
+                                            <input type="checkbox" id="cate-3" class="form-check-input me-2"
+                                                name="cate-3" value="中醫-針灸">中醫-針灸
+                                        </label>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </section>
+
+
+            <!-- 商品區 -->
+            <section class="mt-3 mt-md-4">
+
+                
+
+                <div class="product-area container-xl">
+
+                    <!-- 分頁 -->
+                    <div class="row" aria-label="Page navigation">
+                        <div class="offset-1 col-10 offset-md-3 col-md-6">
+                            <ul class="pagination pagination-lg justify-content-center noto-sans">
+                                <li class="page-item disabled">
+                                    <a class="page-link" id="previousPagination" href="#" aria-label="Previous"><i class="bi bi-caret-left"></i></a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" id="nextPagination" href="#" aria-label="Next"><i class="bi bi-caret-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row mt-2">
+
+                        <!-- 個別商品 -->
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./product-item.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-1.png" class="card-img-top" alt="">
+                                        <div class="product-quantity noto-sans">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./product-item.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-3.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./index.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-5.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./index.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-7.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./index.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-9.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./index.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-11.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./index.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-13.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./index.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-15.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="col-6 col-md-4 col-lg-3 mb-3">
+                            <div class="card text-center product-item px-4">
+                                <a href="./index.html">
+                                    <div class="product-img position-relative">
+                                        <img src="../img/products/product-17.png" class="card-img-top" alt="">
+                                        <div class="product-quantity">
+                                            存貨量 999
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-text">石膏鞋</h5>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+
+        </main>
+
+        <footer>
+            Design / Maintain By Jerry Wang
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- jquery -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <!-- custom js -->
+        <script src="../js/title.js"></script>
+        <script src="../js/products.js"></script>
+    </body>
+
+</html>

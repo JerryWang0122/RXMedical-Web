@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&family=Righteous&display=swap');
+
+/* 設定變數：設計時需要統一的資訊（色彩、數據、色彩） */
+:root {
+
+  --c-main-1-10: #007b87;
+  --c-main-1-05: rgba(0, 124, 135, 0.5);
+
+  --c-main-2-10: #B0e298;
+  --c-main-2-02: rgba(175, 226, 152, 0.2);
+
+  --c-main-3-10: #005e75;
+  --c-main-3-05: rgba(0, 94, 117, 0.5);
+
+  --c-main-4-10: #f9f9f9;
+
+  --c-main-5-10: #e072a4;
+  --c-main-5-07: rgba(224, 114, 163, 0.7);
+  --c-main-5-03: rgba(224, 114, 163, 0.3);
+
+  --c-background: #f5f5f5;
+
+  --f-family-1: 'Righteous', 'Noto Sans TC', sans-serif;
+
+}
+
+/* 配合字體的class */
+.righteous {
+  font-family: "Righteous", sans-serif;
+}
+
+.noto-sans {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+.right-noto {
+  font-family: "Righteous", "Noto Sans TC", sans-serif;
+}
+
+/* 整體預設 & 跨區共用 */
+html {
+  font-size: 16px;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: var(--c-background);
+}
+
+/* -------------------------------------- header -------------------------------- */
+header .navbar {
+  background-color: var(--c-main-1-10);
+  color: var(--c-main-4-10);
+}
+
+header h1 {
+
+  color: var(--c-main-4-10);
+}
+
+/* ------ nav選項 ------- */
+header #navbarMenu .nav-link,
+#logout {
+  color: #fff;
+  font-size: 20px;
+
+  position: relative;
+}
+
+nav .nav-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 100px;
+  background-color: rgba(255, 255, 255, .66);
+  transform: scaleX(0);
+  transform-origin: 50% 100%;
+  transition: 0.5s ease-out;
+}
+
+.navbar-light .navbar-nav .nav-link:focus,
+.navbar-light .navbar-nav .nav-link:hover::after {
+  transform: scaleX(1);
+  transition-timing-function: cubic-bezier(0.5, 1.6, 0.4, 0.7);
+}
+
+.navbar-light .navbar-nav .nav-link.active::after,
+.navbar-light .navbar-nav .show>.nav-link {
+  transform: scaleX(1);
+  background-color: #fff;
+}
+
+/* 作用 */
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .show>.nav-link {
+  background-color: var(--c-main-3-10);
+  border-radius: 10px;
+  color: var(--c-main-4-10);
+}
+
+/* 購物車 -------------------- */
+.shop-cart {
+  position: fixed;
+  background-color: darkcyan;
+  bottom: 70px;
+  right: 5vw;
+  border-radius: 500px;
+  width: 60px;
+  z-index: 9;
+}
+
+.bi-cart {
+  font-size: 2.5rem;
+  color: white;
+  position: relative;
+}
+
+.bi-cart span {
+  display: inline-block;
+  font-weight: bold;
+  position: absolute;
+  top: .25rem;
+  right: -15px;
+  font-size: 1rem;
+  padding: .25rem .5rem;
+  line-height: 1;
+  background-color: wheat;
+  color: var(--c-main-1-10);
+  text-align: center;
+  border-radius: 100px;
+  min-width: 30px;
+}
+
+@media (min-width: 768px) {
+  .shop-cart {
+    position: static;
+  }
+}
+
+/* ---------------------------------------- main --------------------------------- */
+main {
+  font-family: var(--f-family-1);
+  margin-bottom: 70px;
+}
+
+.content-title {
+  text-align: center;
+  color: var(--c-main-3-10);
+  margin-top: 1.5rem;
+  font-size: min(calc(20px + 2vw), 40px);
+}
+
+/* ---------------------------------------- footer ------------------------------- */
+footer {
+  width: 100%;
+  height: 55px;
+  padding-top: 15px;
+  text-align: center;
+  color: #fff;
+  background-color: var(--c-main-3-10);
+
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}

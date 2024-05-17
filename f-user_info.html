@@ -1,0 +1,79 @@
+<h2 class="pt-2 content-title">
+  個人資訊
+</h2>
+
+<!-- 個人資訊欄 -->
+<section class="mt-3 mt-md-4 px-2 container-xl">
+
+
+  <form action="" method="get" id="userInfoForm" class="px-4 px-md-0 py-5 w-100 d-flex flex-column noto-sans">
+
+    <!-- 第 1 列   員工編號-->
+    <div class="row mb-3">
+      <div class="col-12 offset-md-1 col-md-3">
+        <label for="jEmpId"><i class="bi bi-person-vcard"></i>員工編號</label>
+      </div>
+      <div class="col-12 col-md-7">
+        <input type="text" id="jEmpId" name="jEmpId" class="form-control" value="73174" pattern=".{5}" readonly
+          required>
+      </div>
+    </div>
+
+
+    <!-- 第 2 列   姓名-->
+    <div class="row mb-3">
+      <div class="col-12 offset-md-1 col-md-3">
+        <label for="jName"><i class="bi bi-person"></i>姓名</label>
+      </div>
+
+      <div class="col-12 col-md-7">
+        <input type="text" id="jName" name="jName" class="form-control" placeholder="請輸入姓名" value="王俊傑" required>
+      </div>
+
+
+    </div>
+
+    <!-- 第 3 列   處室-->
+    <div class="row mb-3">
+      <div class="col-12 offset-md-1 col-md-3">
+        <label for="jDept"><i class="bi bi-house-gear"></i>處室</label>
+      </div>
+      <div class="col-12 col-md-7">
+        <input type="text" id="jDept" name="jDept" class="form-control" placeholder="請輸入單位處室" value="秘書室" required>
+      </div>
+    </div>
+
+    <!-- 第 4 列   職稱-->
+    <div class="row mb-3">
+      <div class="col-12 offset-md-1 col-md-3">
+        <label for="jTitle"><i class="bi bi-tag"></i>職稱</label>
+      </div>
+      <div class="col-12 col-md-7">
+        <input type="text" id="jTitle" name="jTitle" class="form-control" placeholder="請輸入工作職稱" value="替代役" required>
+      </div>
+    </div>
+
+    <!-- 第 5 列   信箱-->
+    <div class="row mb-3">
+      <div class="col-12 offset-md-1 col-md-3">
+        <label for="jEmail"><i class="bi bi-envelope-at"></i>信箱</label>
+      </div>
+      <div class="col-12 col-md-7">
+        <input type="email" id="jEmail" name="jEmail" class="form-control" placeholder="請輸入信箱"
+          value="school832@gmail.com" required>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 offset-md-1 col-md-10">
+        <button type="submit" class="btn w-100 mt-3 fs-5">修改資料</button>
+      </div>
+    </div>
+
+
+    <small class="text-center pt-2">請按下修改資料按鈕以儲存資料</small>
+
+  </form>
+
+
+</section>

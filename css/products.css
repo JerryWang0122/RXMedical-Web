@@ -1,0 +1,240 @@
+/* :root {
+
+  --c-main-1-10: #007b87;
+  --c-main-1-05: rgba(0, 124, 135, 0.5);
+
+  --c-main-2-10: #B0e298;
+  --c-main-2-02: rgba(175, 226, 152, 0.2);
+
+  --c-main-3-10: #005e75;
+  --c-main-3-05: rgba(0, 94, 117, 0.5);
+
+  --c-main-4-10: #f9f9f9;
+
+  --c-main-5-10: #e072a4;
+  --c-main-5-07: rgba(224, 114, 163, 0.7);
+
+  --c-background: #f5f5f5;
+
+  --f-family-1: 'Righteous', 'Noto Sans TC', sans-serif;
+
+} */
+/* -------------------------------------- section 1 -------------------------------- */
+
+/* ----- search-area ---- */
+.search-area {
+  background-color: var(--c-main-2-02);
+  border-radius: 15px;
+
+  font-size: 18px;
+  padding: 2rem 1.5rem 1rem;
+  position: relative;
+}
+
+.search-box .bi-search {
+  color: darkgreen;
+  font-size: 1.3rem;
+  position: absolute;
+  right: 7px;
+  top: 3px;
+}
+
+/* ----- search-category ---- */
+.search-category .navbar-toggler {
+  color: #fff;
+  background-color: var(--c-main-3-10);
+  padding: 8px 6px;
+}
+
+.categories .cate-item {
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #bebebe;
+  border-radius: 5px;
+  min-width: 130px;
+  min-height: 42px;
+  margin: 5px;
+  color: #333333;
+  flex: 0 1 auto;
+  padding: 8px 10px;
+  transition: .25s;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .search-area {
+    padding-bottom: 1rem;
+  }
+
+
+  .categories .cate-item {
+    display: inline-block;
+    background-color: #fff;
+    border: 1px solid #bebebe;
+    border-radius: 5px;
+    min-width: 130px;
+    min-height: 42px;
+    margin: 5px;
+    color: #333333;
+    flex: 0 1 auto;
+    padding: 8px 10px;
+    transition: .25s;
+    width: initial;
+  }
+}
+
+.categories .cate-item:hover {
+  border: 1px solid green;
+}
+
+.form-check-input:checked {
+  background-color: forestgreen;
+  border-color: forestgreen;
+}
+
+.form-control:focus {
+  border-color: green;
+  box-shadow: none;
+}
+
+.form-check-input:focus {
+  border-color: lightgreen;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem var(--c-main-2-10);
+}
+
+/* -------------------------------------- section 2 -------------------------------- */
+/* -----  pagination  ----- */
+
+.pagination .page-item .page-link {
+  border-radius: 100px;
+  color: var(--c-main-3-10);
+  font-size: 16px;
+  background-color: transparent;
+  border: none;
+
+  display: flex;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination .active .page-link {
+  color: var(--c-main-4-10);
+  background-color: var(--c-main-3-10);
+}
+
+.pagination .page-item {
+  position: relative;
+  margin-right: 10px;
+}
+
+.pagination .disabled .bi {
+  color: var(--c-main-4-10);
+}
+
+.pagination .page-item .page-link:focus {
+  box-shadow: none;
+}
+
+.pagination .page-item .page-link::before {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  left: 0;
+  top: 0;
+  border-radius: 100%;
+  background-color: var(--c-main-3-05);
+  transform: scale(0);
+  transition: all .5s cubic-bezier(0.65, 0, 0.35, 1);
+
+}
+
+.pagination .page-item .page-link:hover::before {
+  transform: scale(1);
+}
+
+.pagination .page-item .page-link:hover {
+  color: var(--c-main-4-10);
+}
+
+@media (min-width: 768px) {
+  .pagination .page-item .page-link {
+    font-size: 20px;
+    width: 60px;
+    height: 60px;
+  }
+
+  .pagination .page-item .page-link::before {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* ----- product-area ----- */
+.product-area .product-item .product-img {
+  width: 100%;
+  height: 20vh;
+
+  img {
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.product-area .product-item {
+  transition: .5s;
+}
+
+.product-area .product-item:hover,
+.product-area .product-item:focus {
+  box-shadow: 0 0 10px var(--c-main-3-05);
+}
+
+.product-area .product-item a {
+  text-decoration: none;
+  color: black;
+}
+
+.product-area .product-item .card-body {
+  border-top: 1px solid var(--c-main-3-10);
+}
+
+.product-area .product-item h5 {
+  font-weight: normal;
+  font-size: 16px;
+}
+
+.product-area .product-quantity {
+  position: absolute;
+  bottom: 5px;
+  right: 0;
+  background-color: var(--c-main-5-07);
+  color: #333333;
+  padding: 0px 3px;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  .product-area .product-item .product-img {
+    width: 100%;
+    height: 30vh;
+  }
+
+  .product-area .product-quantity {
+    bottom: 13px;
+    right: 0;
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+
+  .product-area .product-item h5 {
+    font-size: 20px;
+  }
+}
