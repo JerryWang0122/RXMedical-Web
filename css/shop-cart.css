@@ -21,7 +21,16 @@
 
 }
 
-/* ----- 購物車消失 ------ */
-.shop-cart {
-  display: none;
+.cart-area .cart-title {
+  text-align: center;
+  color: gray;
+  margin-top: 1.5rem;
+  font-size: min(calc(15px + 1vw), 25px);
+}
+
+.cart-area .cart-product-img {
+  display: block;
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
 }
