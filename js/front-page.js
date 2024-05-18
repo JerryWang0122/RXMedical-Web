@@ -11,6 +11,21 @@ const loadHTML = async(url, target) => {
     console.error(err);
   }
 
+};
+
+const handleProductCardClick = (event, className, callback) => {
+  // 查找最近的包含指定类的祖先元素
+  const targetElement = $(event.target).closest(`.${className}`);
+  if (!targetElement.length) {
+    return;
+  }
+  const productId = $(targetElement).attr('data-productId');
+  callback(productId);
+};
+
+const handleShowProduct = async(productId) => {
+  console.log(productId);
+  await loadHTML('./f-prouct-item.html', '#contentArea');
 }
 
 const handleChangeNavBar = async (event, idName, url) => {
@@ -29,6 +44,7 @@ const handleChangeNavBar = async (event, idName, url) => {
 
 };
 
+
 // 待 DOM 加載完成之後再執行
 $(document).ready(async() => {
   await loadHTML('/f-products.html', '#contentArea');
@@ -41,5 +57,10 @@ $(document).ready(async() => {
     await handleChangeNavBar(event, '#myAccountBtn', '/f-user_info.html');
     await handleChangeNavBar(event, '#applyListBtn', '/f-user_info.html');
     await handleChangeNavBar(event, '#backManageBtn', '/f-user_info.html');
+  })
+
+  // -------------------- 商品展覽區有商品被按下時 -----------------
+  $('.product-area').on('click', async(event) => {
+    await handleProductCardClick(event, 'product-item', handleShowProduct);
   })
 });
