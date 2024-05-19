@@ -9,57 +9,49 @@ $(document).ready(function () {
       "productId": 1,
       "productImg": "product-1.png",
       "productName": "石膏鞋",
-      "applyQty": 25,
-      "action": "刪除"
+      "applyQty": 25
     },
     {
       "productId": 2,
       "productImg": "product-3.png",
       "productName": "垃圾袋特大",
-      "applyQty": 10,
-      "action": "刪除"
+      "applyQty": 10
     },
     {
       "productId": 3,
       "productImg": "product-5.png",
       "productName": "垃圾袋特大",
-      "applyQty": 10,
-      "action": "刪除"
+      "applyQty": 10
     },
     {
       "productId": 4,
       "productImg": "product-7.png",
       "productName": "垃圾袋特大",
-      "applyQty": 10,
-      "action": "刪除"
+      "applyQty": 10
     },
     {
       "productId": 5,
       "productImg": "product-9.png",
       "productName": "垃圾袋特大",
-      "applyQty": 10,
-      "action": "刪除"
+      "applyQty": 10
     },
     {
       "productId": 6,
       "productImg": "product-11.png",
       "productName": "垃圾袋特大",
-      "applyQty": 10,
-      "action": "刪除"
+      "applyQty": 10
     },
     {
       "productId": 7,
       "productImg": "product-13.png",
       "productName": "垃圾袋特大",
-      "applyQty": 10,
-      "action": "刪除"
+      "applyQty": 10
     },
     {
       "productId": 8,
       "productImg": "product-15.png",
       "productName": "垃圾袋特大",
-      "applyQty": 10,
-      "action": "刪除"
+      "applyQty": 10
     },
   ]
 
@@ -100,20 +92,15 @@ $(document).ready(function () {
       },
       { data: 'productName', title: "名稱" },
       { data: 'applyQty', title: "申請量" },
-      { data: 'action', 
+      { data: 'productId', 
         title: "動作",
         render: function (data, type, row) {
-          return `<button type="button" class="delete-btn btn btn-danger">刪除</button>`
+          return `<button type="button" class="delete-btn btn btn-danger" data-product-id="${data}">刪除</button>`
         },
         className: "min-tablet-p text-center align-middle fs-5"
       },
-      { data: 'productId', title: "序號" }
     ],
     "columnDefs":[
-      {
-        targets: -1,   // id 列
-        className: 'd-none'
-      },
       {
         targets: '_all',
         className: 'text-center align-middle fs-5'
@@ -121,9 +108,35 @@ $(document).ready(function () {
     ]
   });
 
-  $('#cartItemsTable tbody').on('click', '.delete-btn', async() => {
+  $('#cartItemsTable tbody').on('click', '.delete-btn', async function () {
 
-    
+
+    const response = await Swal.fire({
+      title: "是否將項目移除？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "確認刪除",
+      cancelButtonText: "取消"
+    });
+
+    if (response.isConfirmed) {
+
+      const productId = $(this).data('product-id');
+      let tr = table.row($(this).closest('tr'));
+      // 从表格中删除该行
+      table.row(tr).remove().draw();
+
+      // 更新data数组
+      data = data.filter(item => item.productId !== productId);
+
+      Swal.fire({
+        title: "刪除成功!",
+        icon: "success"
+      });
+    }
+
   });
 
   // 跟DataTable一起完成，生成"去申請"按鈕
