@@ -57,7 +57,7 @@ $(document).ready(function () {
 
   // DataTables
   let table = $('#cartItemsTable').DataTable({
-    "responsive": {
+    responsive: {
       breakpoints: [
         { name: 'desktop', width: Infinity },
         { name: 'tablet-l', width: 1024 },//原本是768~1024不含768
@@ -66,23 +66,23 @@ $(document).ready(function () {
         { name: 'mobile-p', width: 320 }
       ]
     },
-    "searching": false, // 預設為true 搜尋功能，若要開啟不用特別設定
-    "lengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]], //顯示筆數設定
-    "stateSave": true, // 預設為false 在頁面刷新時，是否要保存當前表格資料與狀態
-    "data": data,
-    "autoWidth": false,
-    "responsive": true,
-    "layout": {
+    searching: false, // 預設為true 搜尋功能，若要開啟不用特別設定
+    lengthMenu: [[5, 10, 15, -1], [5, 10, 15, "All"]], //顯示筆數設定
+    stateSave: true, // 預設為false 在頁面刷新時，是否要保存當前表格資料與狀態
+    data: data,
+    autoWidth: false,
+    responsive: true,
+    layout: {
       topStart: 'info',
       topEnd: 'pageLength',
       bottom: 'paging',
       bottomStart: null,
       bottomEnd: null,
     },
-    "language": {
+    language: {
       url: "../zh-Hant.json"  // 引用自定義漢化方式
     },
-    "columns": [ //列的標題一般是從DOM中讀取（也可以使用這個屬性為表格創建列標題)
+    columns: [ //列的標題一般是從DOM中讀取（也可以使用這個屬性為表格創建列標題)
       { data: 'productImg',
         title: "圖片",
         render: function (data, type, row) {
@@ -100,7 +100,7 @@ $(document).ready(function () {
         className: "min-tablet-p text-center align-middle fs-5"
       },
     ],
-    "columnDefs":[
+    columnDefs:[
       {
         targets: '_all',
         className: 'text-center align-middle fs-5'

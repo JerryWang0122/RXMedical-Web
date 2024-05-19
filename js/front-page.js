@@ -64,6 +64,7 @@ $(document).ready(async() => {
     await handleProductCardClick(event, 'product-item', handleShowProduct);
   })
 
+  // -------------------- 購物車按鈕被按下時 -----------------
   $('#shopCartBtn').on('click', async(event) => {
     await loadHTML('./f-shop_cart.html', '#contentArea');
   })
