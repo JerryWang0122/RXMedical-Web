@@ -57,18 +57,17 @@ $(document).ready(function () {
 
   // DataTables
   let table = $('#cartItemsTable').DataTable({
-    responsive: {
-      breakpoints: [
-        { name: 'desktop', width: Infinity },
-        { name: 'tablet-l', width: 1024 },//原本是768~1024不含768
-        { name: 'tablet-p', width: 767 },//
-        { name: 'mobile-l', width: 480 },
-        { name: 'mobile-p', width: 320 }
-      ]
-    },
+    // responsive: {
+    //   breakpoints: [
+    //     { name: 'desktop', width: Infinity },
+    //     { name: 'tablet-l', width: 1024 },//原本是768~1024不含768
+    //     { name: 'tablet-p', width: 767 },//
+    //     { name: 'mobile-l', width: 480 },
+    //     { name: 'mobile-p', width: 320 }
+    //   ]
+    // },
     searching: false, // 預設為true 搜尋功能，若要開啟不用特別設定
     lengthMenu: [[5, 10, 15, -1], [5, 10, 15, "All"]], //顯示筆數設定
-    stateSave: true, // 預設為false 在頁面刷新時，是否要保存當前表格資料與狀態
     data: data,
     autoWidth: false,
     responsive: true,
@@ -97,7 +96,7 @@ $(document).ready(function () {
         render: function (data, type, row) {
           return `<button type="button" class="delete-btn btn btn-danger" data-product-id="${data}">刪除</button>`
         },
-        className: "min-tablet-p text-center align-middle fs-5"
+        className: "text-center align-middle fs-5"
       },
     ],
     columnDefs:[
