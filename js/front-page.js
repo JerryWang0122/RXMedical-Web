@@ -63,4 +63,8 @@ $(document).ready(async() => {
   $('.product-area').on('click', async(event) => {
     await handleProductCardClick(event, 'product-item', handleShowProduct);
   })
+
+  $('#shopCartBtn').on('click', async(event) => {
+    await loadHTML('./f-shop_cart.html', '#contentArea');
+  })
 });
