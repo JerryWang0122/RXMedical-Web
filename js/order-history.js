@@ -75,6 +75,9 @@ $(document).ready(function () {
    * mobile-p: x <= 320
    */
   let table = $('#orderHistoryTable').DataTable({
+    language: {
+      url: "../zh-Hant.json"  // 引用自定義漢化方式
+    },
     lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]], //顯示筆數設定
     data: data,
     autoWidth: false,
@@ -90,15 +93,14 @@ $(document).ready(function () {
       bottomStart: null,
       bottomEnd: null,
     },
-    "language": {
-      url: "../zh-Hant.json"  // 引用自定義漢化方式
-    },
-    "columns": [ //列的標題一般是從DOM中讀取（也可以使用這個屬性為表格創建列標題)
+    // dom: "<'row'<'col-sm-12'f>><'row'<'col-sm-12'tr>><'row'<'col-sm-12 col-md-2'i><'col-sm-12 col-md-5'p>>",
+    columns: [ //列的標題一般是從DOM中讀取（也可以使用這個屬性為表格創建列標題)
       { data: 'id', title: "編號", responsivePriority: 1 },
       {
         data: 'id', title: "明細", responsivePriority: 4,
         render: function (data, type, row) {
-          return `<button class="btn btn-outline-info fs-5" data-bs-toggle="modal" data-bs-target="#orderListModal" data-id="${data}"> 
+          return `<button class="btn btn-outline-info fs-5" data-id="${data}" 
+                  data-bs-toggle="modal" data-bs-target="#orderListModal"> 
                     <i class="bi bi-journal-text"></i>
                   </button>`;
         }
@@ -122,7 +124,7 @@ $(document).ready(function () {
         
       }
     ],
-    "columnDefs": [
+    columnDefs: [
       {
         targets: '_all',
         className: 'text-start text-md-center align-middle fs-5'
