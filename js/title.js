@@ -5,6 +5,7 @@ $(document).ready(function () {
 
 	// 設定User
 	$('.user-name').text('王俊傑');
+	$('.user-dept').text('秘書室');
 
 	// 設定購物車內容量
 	// TODO: LocalStorage內的資料
