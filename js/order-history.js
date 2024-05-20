@@ -58,20 +58,22 @@ $(document).ready(function () {
 		columns: [ //列的標題一般是從DOM中讀取（也可以使用這個屬性為表格創建列標題)
 			{ data: 'recordId', title: "編號", responsivePriority: 1 },
 			{
-				data: 'id', title: "明細", responsivePriority: 4,
+				data: 'id', title: "明細", responsivePriority: 2,
 				render: function (data, type, row) {
 					return `<button class="btn btn-outline-info fs-5 btn-order-detail" data-id="${data}" 
                     		data-bs-toggle="modal" data-bs-target="#orderListModal"> 
                     			<i class="bi bi-journal-text"></i>
                   			</button>`;
-				},
-				className: "min-tablet-p text-start text-md-center align-middle fs-5"
+				}
 			},
 			{
 				data: 'orderQty', title: "品項數量", responsivePriority: 5,
 				className: "min-tablet-l text-start text-md-center fs-5"
 			},
-			{ data: 'status', title: "訂單狀態", responsivePriority: 2 },
+			{ 
+				data: 'status', title: "訂單狀態", responsivePriority: 4,
+				className: "min-tablet-p text-start text-md-center align-middle fs-5"
+			},
 			{
 				data: 'status', title: "動作", responsivePriority: 3,
 				className: "min-tablet-l text-start text-md-center fs-5",
@@ -79,7 +81,7 @@ $(document).ready(function () {
 					if (data !== "運送中") {
 						return "無";
 					}
-					return `<button class="btn-finish-order btn btn-success fs-5"> 
+					return `<button class="btn-finish-order btn btn-success fs-5" data-id="${row.id}" > 
                     			完成訂單
                 			</button>`;
 				},
@@ -131,6 +133,44 @@ $(document).ready(function () {
 
 	});
 
+	// 按下完成訂單按鈕
+	$('#orderHistoryTable tbody').on('click', '.btn-finish-order', async function () {
+		const response = await Swal.fire({
+			title: "是否完成訂單？",
+			text: "訂單完成後，品項恕不補發",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "確認完成",
+			cancelButtonText: "取消"
+		});
 
+		if (response.isConfirmed) {
+
+			const id = $(this).data('id');
+			// TODO: 發api到後台完成訂單，感覺這邊應該非同步就行？
+			// fetch('http://localhost:8080/user/purchase/finish', {
+			// 	method: 'POST',
+			// 	headers: {  // 一定要加
+			// 		'Content-Type': 'application/json'
+			// 	},
+			// 	body: JSON.stringify({ id })  // 資料轉 json 字串
+			// });
+
+			// 取得按鈕欄位並將按鈕改成無
+			const td = $(this).closest('td');
+			td.text('無');
+
+			Swal.fire({
+				position: "top",
+				icon: "success",
+				title: "訂單完成！",
+				showConfirmButton: false,
+				timer: 1500
+			})
+		};
+		
+	});
 
 });
