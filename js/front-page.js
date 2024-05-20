@@ -1,14 +1,14 @@
 
 /* 頁面路由 (待 DOM 加載完成之後再執行)
  *
- *   
+ *
 */
 $(document).ready(async() => {
   await loadHTML('/f-products.html', '#contentArea');
 
   // 按下navbar的標題時，回到首頁
   $('#frontIndexBtn').on('click', () => location.reload());
-  
+
   // -------------------- navbar 按鈕被按下時 -----------------
   $('#navbarMenu').on('click', async(event) => {
     await handleChangeNavBar(event, '#myAccountBtn', '/f-user_info.html');
