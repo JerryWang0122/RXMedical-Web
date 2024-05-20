@@ -12,7 +12,7 @@ $(document).ready(async() => {
   // -------------------- navbar 按鈕被按下時 -----------------
   $('#navbarMenu').on('click', async(event) => {
     await handleChangeNavBar(event, '#myAccountBtn', '/f-user_info.html');
-    await handleChangeNavBar(event, '#applyListBtn', '/f-user_info.html');
+    await handleChangeNavBar(event, '#applyListBtn', '/f-order_history.html');
     await handleChangeNavBar(event, '#backManageBtn', '/f-user_info.html');
   })
 

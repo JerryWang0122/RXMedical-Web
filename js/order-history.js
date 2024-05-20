@@ -8,6 +8,9 @@ const renderOrderDetailsArea = (orderDetail, index) => {
 }
 
 $(document).ready(function () {
+	// BUG:設定User
+	$('.user-name').text('王俊傑');
+	$('.user-dept').text('秘書室');
 
 	// TODO: 發 API 到後台拉歷史紀錄
 	let data = [
