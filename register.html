@@ -2,8 +2,7 @@
 <html lang="zh-Hant-TW">
 
     <head>
-        <meta name="viewport"
-            content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
         <meta charset="UTF-8">
         <title class="hospital-title"></title>
         <!-- bootstrap -->
@@ -11,6 +10,11 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
         <!-- custom css -->
         <link rel="stylesheet" href="./css/layout.css">
+        <!--JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <script src="./js/title.js"></script>
+        <script src="./js/register.js"></script>
     </head>
 
     <body>
@@ -23,7 +27,6 @@
                     </a>
                 </div>
             </nav>
-
         </header>
 
         <main>
@@ -31,53 +34,46 @@
                 <h2 class="mb-4">系統帳號申請</h2>
                 <!-- 帳號申請表單 -->
                 <form action="" method="get" id="registerForm" class="p-5 w-100 d-flex flex-column">
-
-                    <label><p>員工編號</p><input type="text" id="jEmpId" name="jEmpId" class="form-control" placeholder="請輸入員工編號 ( 5 碼 )" pattern=".{5}"  required></label>
-
-                    <label><p>姓名</p><input type="text" id="jName" name="jName" class="form-control" placeholder="請輸入姓名" required></label>
-
-                    <label><p>處室</p><input type="text" id="jDept" name="jDept" class="form-control" placeholder="請輸入單位處室" required></label>
-
-                    <label><p>職稱</p><input type="text" id="jTitle" name="jTitle" class="form-control" placeholder="請輸入工作職稱" required></label>
-
-                    <label><p>信箱</p><input type="email" id="jEmail" name="jEmail" class="form-control" placeholder="請輸入信箱" required></label>
-
+                    <label>
+                        <p>員工編號</p><input type="text" id="jEmpId" name="jEmpId" class="form-control" placeholder="請輸入員工編號 ( 5 碼 )" pattern=".{5}"  required>
+                    </label>
+                    <label>
+                        <p>姓名</p><input type="text" id="jName" name="jName" class="form-control" placeholder="請輸入姓名" required>
+                    </label>
+                    <label>
+                        <p>處室</p><input type="text" id="jDept" name="jDept" class="form-control" placeholder="請輸入單位處室" required>
+                    </label>
+                    <label>
+                        <p>職稱</p><input type="text" id="jTitle" name="jTitle" class="form-control" placeholder="請輸入工作職稱" required>
+                    </label>
+                    <label>
+                        <p>信箱</p><input type="email" id="jEmail" name="jEmail" class="form-control" placeholder="請輸入信箱" required>
+                    </label>
                     <label>
                         <p class="d-inline-block">密碼</p>
-                        <span id="passwordHelpInline" class="form-text ms-auto">
-                            長度至少6位
-                        </span>
+                        <span id="passwordHelpInline" class="form-text ms-auto">長度至少6位</span>
                         <input type="password" id="jPassword" name="jPassword" class="form-control" placeholder="請輸入密碼" minlength="6" required>
                         <small id="warningMessagePassword" class="d-none ms-1 mt-1 text-danger">密碼格式不符</small>
                     </label>
-
                     <label>
                         <p>密碼確認</p>
                         <input type="password" id="jPasswordConfirm" name="jPasswordConfirm" class="form-control" placeholder="請再次輸入密碼" required>
                         <small id="warningMessageConfirmPassword" class="d-none ms-1 mt-1 text-danger">密碼不一致</small>
                     </label>
-
                     <div class="d-flex mt-3 justify-content-end">
-                        <input type="checkbox" id="noticeCheckBox" class="form-check ms-1 me-2" required>
-                        我已閱讀
+                        <input type="checkbox" id="noticeCheckBox" class="form-check ms-1 me-2" required>我已閱讀
                         <!-- Trigger Modal -->
                         <a  class="text-primary register-notice" data-bs-toggle="modal" data-bs-target="#noticeModal">注意事項</a>
                     </div>
-
-
                     <button type="submit" id="registerSubmit" class="btn btn-success w-100 mt-4 fs-5" disabled>註冊</button>
                 </form>
             </div>
-
             <div class="d-flex flex-column mt-4 align-items-center">
                 <a href="./index.html"><i class="bi bi-arrow-left"></i> 登入系統</a>
             </div>
-                
         </main>
 
-        <footer class="bg-success">
-            Design / Maintain By Jerry Wang
-        </footer>
+        <footer class="bg-success">Design / Maintain By Jerry Wang</footer>
         
         <!-- Modal -->
         <div class="modal fade" id="noticeModal" tabindex="-1" aria-labelledby="noticeModalLabel" aria-hidden="true">
@@ -97,11 +93,5 @@
                 </div>
             </div>
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-        <script src="./js/title.js"></script>
-        <script src="./js/register.js"></script>
     </body>
-
 </html>

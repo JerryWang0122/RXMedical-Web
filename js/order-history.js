@@ -1,67 +1,19 @@
 $(document).ready(function () {
+  
   // TODO: 發 API 到後台拉歷史紀錄
   let data = [
-    {
-      "id": "20240519001",
-      "orderQty": 1,
-      "status": "待確認"
-    },
-    {
-      "id": "20240519002",
-      "orderQty": 2,
-      "status": "待撿貨"
-    },
-    {
-      "id": "20240519003",
-      "orderQty": 3,
-      "status": "待出貨"
-    },
-    {
-      "id": "20240519004",
-      "orderQty": 4,
-      "status": "運送中"
-    },
-    {
-      "id": "20240519005",
-      "orderQty": 5,
-      "status": "已完成"
-    },
-    {
-      "id": "20240519006",
-      "orderQty": 6,
-      "status": "待確認"
-    },
-    {
-      "id": "20240519007",
-      "orderQty": 7,
-      "status": "待撿貨"
-    },
-    {
-      "id": "20240519008",
-      "orderQty": 8,
-      "status": "待出貨"
-    },
-    {
-      "id": "20240519009",
-      "orderQty": 9,
-      "status": "運送中"
-    },
-    {
-      "id": "20240519010",
-      "orderQty": 10,
-      "status": "已完成"
-    },
-    {
-      "id": "20240519011",
-      "orderQty": 11,
-      "status": "待確認"
-    },
-    {
-      "id": "20240519012",
-      "orderQty": 12,
-      "status": "待撿貨"
-    },
-
+    { "id": "20240519001", "orderQty": 1, "status": "待確認" },
+    { "id": "20240519002", "orderQty": 2, "status": "待撿貨" },
+    { "id": "20240519003", "orderQty": 3, "status": "待出貨" },
+    { "id": "20240519004", "orderQty": 4, "status": "運送中" },
+    { "id": "20240519005", "orderQty": 5, "status": "已完成" },
+    { "id": "20240519006", "orderQty": 6, "status": "待確認" },
+    { "id": "20240519007", "orderQty": 7, "status": "待撿貨" },
+    { "id": "20240519008", "orderQty": 8, "status": "待出貨" },
+    { "id": "20240519009", "orderQty": 9, "status": "運送中" },
+    { "id": "20240519010", "orderQty": 10, "status": "已完成" },
+    { "id": "20240519011", "orderQty": 11, "status": "待確認" },
+    { "id": "20240519012", "orderQty": 12, "status": "待撿貨" },
   ];
 
   // DataTables
@@ -76,7 +28,7 @@ $(document).ready(function () {
    */
   let table = $('#orderHistoryTable').DataTable({
     language: {
-      url: "../zh-Hant.json"  // 引用自定義漢化方式
+      url: "../js/zh-Hant.json"  // 引用自定義漢化方式
     },
     lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]], //顯示筆數設定
     data: data,
@@ -121,7 +73,6 @@ $(document).ready(function () {
                     完成訂單
                   </button>`;
         },
-        
       }
     ],
     columnDefs: [
@@ -133,8 +84,6 @@ $(document).ready(function () {
   });
 
   $('#cartItemsTable tbody').on('click', '.delete-btn', async function () {
-
-
     const response = await Swal.fire({
       title: "是否將項目移除？",
       icon: "warning",

@@ -5,54 +5,14 @@ $(document).ready(function () {
 
   // 設定DataTables顯示資料
   let data = [
-    {
-      "productId": 1,
-      "productImg": "product-1.png",
-      "productName": "石膏鞋",
-      "applyQty": 25
-    },
-    {
-      "productId": 2,
-      "productImg": "product-3.png",
-      "productName": "垃圾袋特大",
-      "applyQty": 10
-    },
-    {
-      "productId": 3,
-      "productImg": "product-5.png",
-      "productName": "垃圾袋特大",
-      "applyQty": 10
-    },
-    {
-      "productId": 4,
-      "productImg": "product-7.png",
-      "productName": "垃圾袋特大",
-      "applyQty": 10
-    },
-    {
-      "productId": 5,
-      "productImg": "product-9.png",
-      "productName": "垃圾袋特大",
-      "applyQty": 10
-    },
-    {
-      "productId": 6,
-      "productImg": "product-11.png",
-      "productName": "垃圾袋特大",
-      "applyQty": 10
-    },
-    {
-      "productId": 7,
-      "productImg": "product-13.png",
-      "productName": "垃圾袋特大",
-      "applyQty": 10
-    },
-    {
-      "productId": 8,
-      "productImg": "product-15.png",
-      "productName": "垃圾袋特大",
-      "applyQty": 10
-    },
+    { "productId": 1, "productImg": "product-1.png", "productName": "石膏鞋", "applyQty": 25 },
+    { "productId": 2, "productImg": "product-3.png", "productName": "垃圾袋特大", "applyQty": 10 },
+    { "productId": 3, "productImg": "product-5.png", "productName": "垃圾袋特大", "applyQty": 10 },
+    { "productId": 4, "productImg": "product-7.png", "productName": "垃圾袋特大", "applyQty": 10 },
+    { "productId": 5, "productImg": "product-9.png", "productName": "垃圾袋特大", "applyQty": 10 },
+    { "productId": 6, "productImg": "product-11.png", "productName": "垃圾袋特大", "applyQty": 10 },
+    { "productId": 7, "productImg": "product-13.png", "productName": "垃圾袋特大", "applyQty": 10 },
+    { "productId": 8, "productImg": "product-15.png", "productName": "垃圾袋特大", "applyQty": 10 },
   ]
 
   // DataTables
@@ -79,7 +39,7 @@ $(document).ready(function () {
       bottomEnd: null,
     },
     language: {
-      url: "../zh-Hant.json"  // 引用自定義漢化方式
+      url: "../js/zh-Hant.json"  // 引用自定義漢化方式
     },
     columns: [ //列的標題一般是從DOM中讀取（也可以使用這個屬性為表格創建列標題)
       { data: 'productImg',

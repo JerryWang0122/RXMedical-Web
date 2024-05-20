@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant-TW">
 
-  <head>
-    <meta name="viewport"
-      content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
     <meta charset="UTF-8">
     <title class="medical-product"></title>
 
@@ -24,7 +23,7 @@
     <link rel="stylesheet" href="./css/user-info.css">
     <link rel="stylesheet" href="./css/product-item.css">
     <link rel="stylesheet" href="./css/shop-cart.css">
-    
+
     <!-- ----------------------------- Script ------------------------------- -->
     <!-- bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -41,78 +40,55 @@
     <!-- custom js -->
     <script src="./js/title.js"></script>
     <script src="./js/front-page.js"></script>
+</head>
 
-  </head>
-
-  <body>
-
+<body>
     <header>
+        <div class="navbar navbar-expand-md navbar-light">
+            <div class="container-xl">
+                <div class="d-flex pt-2">
+                    <a id="frontIndexBtn" class="navbar-brand d-flex align-items-center" href="javascript:;">
+                        <img src="../img/hospital.png" alt="" height="60" class="d-inline-block me-2">
+                        <h1 class="medical-product"></h1>
+                    </a>
+                    <div class="show-user text-center ms-auto fs-5">
+                        <span class="user-name"></span><br>
+                        <span>歡迎登入</span>
+                    </div>
+                </div>
+                <!-- 漢堡圖 -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-      <div class="navbar navbar-expand-md navbar-light">
-        <div class="container-xl">
+                <nav class="collapse navbar-collapse" id="navbarMenu">
+                    <ul class="navbar-nav ms-auto me-lg-5 mb-2 mb-lg-0 text-center">
+                        <li class="nav-item">
+                            <a id="myAccountBtn" class="nav-link" href="javascript:;">我的帳戶</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="applyListBtn" class="nav-link" href="javascript:;">衛材清單</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="backManageBtn" class="nav-link" href="javascript:;">後台管理</a></li>
+                        <li>
+                            <form action="/user/logout" method="get">
+                                <input class="btn" id="logout" type="submit" value="登出">
+                            </form>
+                        </li>
+                    </ul>
+                </nav>
 
-          <div class="d-flex pt-2">
-            <a id="frontIndexBtn" class="navbar-brand d-flex align-items-center" href="javascript:;">
-              <img src="../img/hospital.png" alt="" height="60" class="d-inline-block me-2">
-              <h1 class="medical-product"></h1>
-            </a>
-            <div class="show-user text-center ms-auto fs-5">
-              <span class="user-name"></span><br>
-              <span>歡迎登入</span>
+                <!-- 購物車 -->
+                <div class="shop-cart">
+                    <a id="shopCartBtn" class="d-flex justify-content-center align-items-center" href="javascript:;"><i class="bi bi-cart"> <span id="cartCount"></span></i></a>
+                </div>
             </div>
-          </div>
-
-
-          <!-- 漢堡圖 -->
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
-            aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <nav class="collapse navbar-collapse" id="navbarMenu">
-
-            <ul class="navbar-nav ms-auto me-lg-5 mb-2 mb-lg-0 text-center">
-              <li class="nav-item">
-                <a id="myAccountBtn" class="nav-link" href="javascript:;">我的帳戶</a>
-              </li>
-              <li class="nav-item">
-                <a id="applyListBtn" class="nav-link" href="javascript:;">衛材清單</a>
-              </li>
-              <li class="nav-item">
-                <a id="backManageBtn" class="nav-link" href="javascript:;">後台管理</a>
-              </li>
-              <li>
-                <form action="/user/logout" method="get">
-                  <input class="btn" id="logout" type="submit" value="登出">
-                </form>
-              </li>
-            </ul>
-
-          </nav>
-          <!-- 購物車 -->
-          <div class="shop-cart">
-            <a id="shopCartBtn" class="d-flex justify-content-center align-items-center" href="javascript:;">
-
-              <i class="bi bi-cart">
-                <span id="cartCount"></span>
-              </i>
-            </a>
-          </div>
-
         </div>
-      </div>
-
     </header>
 
-    <main id="contentArea">
-
-
-    </main>
-
-    <footer >
-      Design / Maintain By Jerry Wang
-    </footer>
-
-  </body>
-
+    <main id="contentArea"></main>
+    
+    <footer> Design / Maintain By Jerry Wang</footer>
+</body>
 </html>

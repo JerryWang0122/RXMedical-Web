@@ -1,51 +1,8 @@
-const BASE_URL = '';
 
-const loadHTML = async(url, target) => {
-  const fullURL = BASE_URL + url;
-
-  try {
-    const response = await fetch(fullURL);
-    const data = await response.text();
-    $('#contentArea').html(data);
-  } catch (err) {
-    console.error(err);
-  }
-
-};
-
-const handleProductCardClick = (event, className, callback) => {
-  // 查找最近的包含指定类的祖先元素
-  const targetElement = $(event.target).closest(`.${className}`);
-  if (!targetElement.length) {
-    return;
-  }
-  const productId = $(targetElement).attr('data-productId');
-  callback(productId);
-};
-
-const handleShowProduct = async(productId) => {
-  console.log(productId);
-  await loadHTML('./f-prouct-item.html', '#contentArea');
-}
-
-const handleChangeNavBar = async (event, idName, url) => {
-  const eventId = '#' + event.target.id;
-  
-  // if eventId not equals to idName => return
-  if (eventId !== idName) {
-    return;
-  }
-
-  $('#navbarMenu .navbar-nav .nav-link').removeClass('active');
-
-  // 将点击的按钮添加 'active' 类
-  $(event.target).addClass('active');
-  await loadHTML(url, '#contentArea');
-
-};
-
-
-// 待 DOM 加載完成之後再執行
+/* 頁面路由 (待 DOM 加載完成之後再執行)
+ *
+ *   
+*/
 $(document).ready(async() => {
   await loadHTML('/f-products.html', '#contentArea');
 
@@ -69,3 +26,58 @@ $(document).ready(async() => {
     await loadHTML('./f-shop_cart.html', '#contentArea');
   })
 });
+
+
+
+
+
+
+
+
+const BASE_URL = '';
+
+// 每一個 fun 都要寫註解
+const loadHTML = async(url, target) => {
+  const fullURL = BASE_URL + url;
+
+  try {
+    const response = await fetch(fullURL);
+    const data = await response.text();
+    $('#contentArea').html(data);
+  } catch (err) {
+    console.error(err);
+  }
+
+};
+
+// 每一個 fun 都要寫註解
+const handleProductCardClick = (event, className, callback) => {
+  // 查找最近的包含指定类的祖先元素
+  const targetElement = $(event.target).closest(`.${className}`);
+  if (!targetElement.length) {
+    return;
+  }
+  const productId = $(targetElement).attr('data-productId');
+  callback(productId);
+};
+
+// 每一個 fun 都要寫註解
+const handleShowProduct = async(productId) => {
+  console.log(productId);
+  await loadHTML('./f-prouct-item.html', '#contentArea');
+}
+
+// 每一個 fun 都要寫註解
+const handleChangeNavBar = async (event, idName, url) => {
+  const eventId = '#' + event.target.id;
+  // if eventId not equals to idName => return
+  if (eventId !== idName) {
+    return;
+  }
+  $('#navbarMenu .navbar-nav .nav-link').removeClass('active');
+  // 将点击的按钮添加 'active' 类
+  $(event.target).addClass('active');
+  await loadHTML(url, '#contentArea');
+};
+
+
