@@ -8,11 +8,20 @@
         <!-- bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <!-- sweetalert2 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.min.css">
         <!-- custom css -->
         <link rel="stylesheet" href="./css/layout.css">
+
+        <!-- bs5 -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- jquery -->
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <!-- sweetalert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.all.min.js"></script>
+        <!-- custom js -->
         <script src="./js/title.js"></script>
+        <script src="./js/login.js"></script>
     </head>
 
     <body>
@@ -30,14 +39,14 @@
         <main class="row">
             <div class="user-login d-flex flex-column align-items-center">
                 <h2 class="mb-4">衛材管理系統</h2>
-                <form action="" method="get" class="p-5 w-100 d-flex flex-column">
+                <form class="p-5 w-100 d-flex flex-column noto-sans">
                     <label class="mb-3">
                         <p>信箱</p><input type="text" id="jEmail" name="jEmail" class="form-control" placeholder="請輸入信箱" required>
                     </label>
                     <label class="mt-4">
                         <p>密碼</p><input type="password" id="jPassword" name="jPassword" class="form-control" placeholder="請輸入密碼" required>
                     </label>
-                    <button type="submit" class="btn btn-success w-100 mt-4 fs-5">登入</button>
+                    <button type="submit" id="loginBtn" class="btn btn-success w-100 mt-4 fs-5">登入</button>
                 </form>
             </div>
             <div class="d-flex flex-column mt-4 align-items-center">
