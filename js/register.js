@@ -1,10 +1,11 @@
 $(document).ready(function () {
 
-	// 注意事項 啟動註冊按鈕--------------------------------------------------------
-	// 先確認注意事項是否勾選
+	// ------------------------ 註冊前檢查 --------------------------
+	// 閱讀注意事項 -> 啟動註冊按鈕 -----------------------------------
 	const noticeCheckBox = $('#noticeCheckBox');
-
-	// 若以勾選則啟用註冊按鈕
+	
+	// 先確認注意事項是否勾選
+	// 若已勾選則啟用註冊按鈕
 	noticeCheckBox.on('change', () => {
 		$('#registerSubmit').prop('disabled', !noticeCheckBox.prop('checked'))
 	})
@@ -48,9 +49,11 @@ $(document).ready(function () {
 		checkPasswordMatch();
 	});
 
+	// ---------------------------- 表單送出 ---------------------------------
 	// 表單送出時，檢查員工編號格式、密碼格式、確認密碼是否一致
 	// 否則返回並顯示提示視窗
-	$('#registerForm').on('submit', () => {
+	$('#registerForm').on('submit',  async (event) => {
+		event.preventDefault();
 		let correctData = true;
 		let feedbackMessage = '';
 
@@ -70,11 +73,54 @@ $(document).ready(function () {
 		}
 
 		// 顯示提示視窗
-		if (!correctData) {
-			alert(feedbackMessage);
-		}
+		if (!correctData) {  // 使用者資料有誤
+			Swal.fire({
+				position: "top",
+				icon: "error",
+				title: feedbackMessage,
+				showConfirmButton: true
+			})
+		} else {
+			// get user register info
+			const formData = {
+				empId: $('#jEmpId').val(),
+				name: $('#jName').val(),
+				dept: $('#jDept').val(),
+				title: $('#jTitle').val(),
+				email: $('#jEmail').val(),
+				password: jPassword.val()
+			};
 
-		return correctData;
+			const response = await fetch('http://localhost:8080/api/user/register', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData)  // 資料轉 json 字串
+			});
+			const { state, message, data } = await response.json();
+			if (state) {	// 註冊成功
+				Swal.fire({
+					position: "top",
+					icon: "success",
+					title: message,
+					showConfirmButton: false,
+					timer: 1000
+				});
+				setTimeout(() => {
+					location.href = './index.html';
+				}, 1000);
+			} else {
+				Swal.fire({
+					position: "top",
+					icon: "error",
+					title: "註冊失敗",
+					// TODO:註冊時，回饋的訊息
+					text: message,	
+					showConfirmButton: true
+				})
+			}
+		}
 	})
 
 });  

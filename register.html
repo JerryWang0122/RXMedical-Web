@@ -8,11 +8,18 @@
         <!-- bootstrap -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <!-- sweetalert2 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.min.css">
         <!-- custom css -->
         <link rel="stylesheet" href="./css/layout.css">
+
         <!--JS -->
+        <!-- bs5 -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- jquery -->
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <!-- sweetalert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.all.min.js"></script>
         <script src="./js/title.js"></script>
         <script src="./js/register.js"></script>
     </head>
@@ -33,9 +40,9 @@
             <div class="user-register d-flex flex-column align-items-center">
                 <h2 class="mb-4">系統帳號申請</h2>
                 <!-- 帳號申請表單 -->
-                <form action="" method="get" id="registerForm" class="p-5 w-100 d-flex flex-column">
+                <form id="registerForm" class="p-5 w-100 d-flex flex-column noto-sans">
                     <label>
-                        <p>員工編號</p><input type="text" id="jEmpId" name="jEmpId" class="form-control" placeholder="請輸入員工編號 ( 5 碼 )" pattern=".{5}"  required>
+                        <p>員工編號</p><input type="text" id="jEmpId" name="jEmpId" class="form-control" placeholder="請輸入員工編號 ( 5 碼 )"  required>
                     </label>
                     <label>
                         <p>姓名</p><input type="text" id="jName" name="jName" class="form-control" placeholder="請輸入姓名" required>
