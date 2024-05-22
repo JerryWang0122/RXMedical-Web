@@ -17,9 +17,11 @@ $(document).ready(async () => {
 	})
 
 	// -------------------- 商品展覽區有商品被按下時 -----------------
-	$('.product-area').on('click', async (event) => {
-		await handleProductCardClick(event, 'product-item', handleShowProduct);
-	})
+	$('.product-area').on('click', '.product-item', async function() {
+		// 取得商品ID
+		console.log($(this).data('product-id'));
+		await loadHTML('./f-product_detail.html', '#contentArea');
+	});
 
 	// -------------------- 購物車按鈕被按下時 -----------------
 	$('#shopCartBtn').on('click', async (event) => {
@@ -48,23 +50,6 @@ const loadHTML = async (url, target) => {
 	}
 
 };
-
-// 每一個 fun 都要寫註解
-const handleProductCardClick = (event, className, callback) => {
-	// 查找最近的包含指定类的祖先元素
-	const targetElement = $(event.target).closest(`.${className}`);
-	if (!targetElement.length) {
-		return;
-	}
-	const productId = $(targetElement).attr('data-productId');
-	callback(productId);
-};
-
-// 每一個 fun 都要寫註解
-const handleShowProduct = async (productId) => {
-	console.log(productId);
-	await loadHTML('./f-product_detail.html', '#contentArea');
-}
 
 // 處理navBar點擊，切換頁面效果
 const handleChangeNavBar = async (event, idName, url) => {
