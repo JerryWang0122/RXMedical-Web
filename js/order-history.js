@@ -1,16 +1,18 @@
-// 渲染 #orderDetailsArea 的資料顯示
-const renderOrderDetailsArea = (orderDetail, index) => {
-	return `<tr>
-				<td>${ index + 1 }</td>
-				<td>${ orderDetail.productName }</td>
-				<td>${ orderDetail.qty }</td>
-			</tr>`;
-}
+
 
 $(document).ready(function () {
-	// BUG:設定User
+	// 設定User
 	$('.user-name').text('王俊傑');
 	$('.user-dept').text('秘書室');
+
+	// 渲染 #orderDetailsArea 的資料顯示
+	const renderOrderDetailsArea = (orderDetail, index) => {
+		return `<tr>
+				<td>${index + 1}</td>
+				<td>${orderDetail.productName}</td>
+				<td>${orderDetail.qty}</td>
+			</tr>`;
+	}
 
 	// TODO: 發 API 到後台拉歷史紀錄
 	let data = [

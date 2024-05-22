@@ -1,11 +1,4 @@
-// 會員權限選項
-const options = [
-    { value: 'root', text: 'root', disabled: true },
-    { value: 'admin', text: '管理人員' },
-    { value: 'staff', text: '一般員工' },
-    { value: 'register', text: '完成註冊', disabled: true },
-    { value: 'off', text: '關閉權限' }
-];
+
 /*
 let selectOptions = options.map(option => {
                         const selected = data === option.value ? 'selected' : '';
@@ -19,6 +12,14 @@ let selectOptions = options.map(option => {
 */
 
 $(document).ready(async function () {
+    // 會員權限選項
+    const options = [
+        { value: 'root', text: 'root', disabled: true },
+        { value: 'admin', text: '管理人員' },
+        { value: 'staff', text: '一般員工' },
+        { value: 'register', text: '完成註冊', disabled: true },
+        { value: 'off', text: '關閉權限' }
+    ];
 
     // TODO: 發 API 到後台拉人員權限資料
     let data = await [
