@@ -1,0 +1,53 @@
+<!-- js -->
+<script src="./js/back-member-auth.js"></script>
+
+<!-- html -->
+<h2 class="content-title">會員權限</h2>
+
+<div class="container-xl mt-3">
+    <!-- 會員權限表格 -->
+    <table id="memberAuthLevelTable" class="table table-hover dt-responsive display noto-sans">
+        <!-- 由 js 產生 -->
+    </table>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="authChangeModal" tabindex="-1" aria-labelledby="authChangeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="authChangeModalLabel">權限調整</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>更動人員</h5>
+                <p>
+                    <span id="authChangeMemberDept"></span> /
+                    <span id="authChangeMemberTitle"></span> /
+                    <span id="authChangeMemberName"></span>
+                </p>
+
+                <h5 class="mt-2">請選擇權限</h5>
+                <div class="d-flex justify-content-start">
+                    <label class="me-3">
+                        <input type="radio" name="authLevel" data-authLevel="admin" class="form-check-input me-2"
+                            value="admin" required>管理人員
+                    </label>
+                    <label class="me-3">
+                        <input type="radio" name="authLevel" data-authLevel="staff" class="form-check-input me-2"
+                            value="staff" required>一般員工
+                    </label>
+                    <label class="me-3">
+                        <input type="radio" name="authLevel" data-authLevel="off" class="form-check-input me-2"
+                            value="off" required>關閉權限
+                    </label>
+                </div>
+                <input type="hidden" id="jMemberId" name="jMemberId" value="">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button id="authChangeBtn" type="submit" class="btn">儲存異動</button>
+            </div>
+        </form>
+    </div>
+</div>
