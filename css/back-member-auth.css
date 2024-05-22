@@ -1,0 +1,41 @@
+:root {
+
+    --c-main-1-10: #e4cb99;
+    --c-main-1-05: rgba(228, 203, 153, 0.5);
+
+    --c-main-2-10: #37371f;
+    --c-main-2-02: rgba(55, 55, 31, 0.2);
+
+    --c-main-3-10: #c8971e;
+    --c-main-3-05: rgba(200, 152, 30, 0.5);
+
+    --c-main-4-10: #FFFBFA;
+
+    --c-main-5-10: #823329;
+    --c-main-5-07: rgba(130, 51, 41, 0.7);
+    --c-main-5-03: rgba(130, 51, 41, 0.3);
+
+    --c-background: #f5f5f5;
+
+    --f-family-1: 'Righteous', 'Noto Sans TC', sans-serif;
+
+}
+
+/* Modal */
+#authChangeBtn {
+    background-color: var(--c-main-5-07);
+    color: white;
+}
+
+#authChangeBtn:focus {
+    box-shadow: 0 0 0 .25rem var(--c-main-5-03);
+}
+
+#authChangeModal .form-check-input:checked {
+    background-color: var(--c-main-3-10);
+    border-color: var(--c-main-3-10);
+}
+
+#authChangeModal .form-check-input:focus {
+    box-shadow: 0 0 0 .25rem var(--c-main-5-03);
+}
