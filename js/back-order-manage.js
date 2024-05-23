@@ -31,6 +31,7 @@ $(document).ready(async function () {
             case '待出貨':
                 break;
             case '運送中':
+                loadOrderTransportingTable();
                 break;
             case '已完成':
                 break;
@@ -53,6 +54,16 @@ $(document).ready(async function () {
         $('#orderListTable tbody').empty();
     }
 
+    // 渲染 #orderDetailsArea 的資料顯示
+    const renderDetailListArea = (orderDetail, index) => {
+        return `<tr>
+				<td>${index + 1}</td>
+				<td>${orderDetail.productName}</td>
+				<td>${orderDetail.quantity}</td>
+			</tr>`;
+    }
+
+    // ----------------------------- 待確認 unchecked (to be confirmed) -----------------------------
     // 載入"待確認"訂單資料
     const loadToBeConfirmedTable = async () => {
         cleanTable();
@@ -89,11 +100,11 @@ $(document).ready(async function () {
             columns: [ // responsivePriority
                 { 
                     data: 'recordId', title: "編號", responsivePriority: 4,
-                    className: "min-tablet-p text-start text-md-center fs-5" 
+                    className: "min-tablet-l text-start text-md-center fs-5" 
                 },
                 { 
                     data: 'dept', title: "處室", responsivePriority: 5,
-                    className: "min-tablet-l text-start text-md-center fs-5"
+                    className: "min-tablet-p text-start text-sm-center fs-5"
                 },
                 { 
                     data: 'title', title: "職稱", responsivePriority: 6,
@@ -140,18 +151,9 @@ $(document).ready(async function () {
 
     };
 
-    // 渲染 #orderDetailsArea 的資料顯示
-    const renderDetailListArea = (orderDetail, index) => {
-        return `<tr>
-				<td>${index + 1}</td>
-				<td>${orderDetail.productName}</td>
-				<td>${orderDetail.quantity}</td>
-			</tr>`;
-    }
-
     // 顯示訂單詳細內容
     $('#orderListTable').on('click', '.btn-order-detail', async function () {
-        
+
         const id = $(this).data('id');
         const recordId = $(this).data('record-id');
         const status = $(this).data('status');
@@ -287,7 +289,94 @@ $(document).ready(async function () {
 
     });
 
-    // ----------------------- 取消 ----------------------------------
+    // ----------------------- 運送中 transporting --------------------------------
+    // 載入運送中Table資料
+    const loadOrderTransportingTable = async () => {
+        cleanTable();
+        // TODO: 發 API 到後台拉"運送中"訂單資料(感覺這一個 Table 需要定期自動刷新？)
+        data = await [
+            { 
+                "id": 1, "recordId": "20240523051", "dept": "嘉監", "title": "書記", "name": "盧秀憲",
+                "transporter": "王俊傑", "updateDate": "2024-05-23 09:13:25" 
+            },
+            { 
+                "id": 2, "recordId": "20240523052", "dept": "嘉所", "title": "管理員", "name": "測試用",
+                "transporter": "王俊傑", "updateDate": "2024-05-23 10:53:25"
+            },
+            { 
+                "id": 3, "recordId": "20240523053", "dept": "精神科", "title": "專員", "name": "想不到",
+                "transporter": "張芸瑄", "updateDate": "2024-05-24 09:13:25" 
+            }
+        ];
+
+        table = $('#orderListTable').DataTable({
+            language: {
+                url: "../js/zh-Hant.json"  // 引用自定義漢化方式
+            },
+            paging: false,
+            data: data,
+            autoWidth: false,
+            responsive: true,
+            layout: {
+                topStart: 'search',
+                topEnd: 'info',
+                bottomStart: null
+            },
+            columns: [ // responsivePriority
+                {
+                    data: 'recordId', title: "編號", responsivePriority: 7,
+                    className: "min-desktop fs-5 text-start text-md-center"
+                },
+                {
+                    data: 'dept', title: "處室",
+                    className: "text-center fs-5"
+                },
+                {
+                    data: 'title', title: "職稱", responsivePriority: 6,
+                    className: "min-tablet-l fs-5 text-md-center"
+                },
+                {
+                    data: 'name', title: "申請人", responsivePriority: 5,
+                    className: "min-tablet-l fs-5 text-start text-md-center" 
+                    
+                },
+                {
+                    data: 'transporter', title: "配送人", 
+                    className: "text-center fs-5"
+                },
+                {
+                    data: 'id', title: "明細", responsivePriority: 4,
+                    render: function (data, type, row) {
+                        return `<button class="btn btn-outline-info fs-5 btn-order-detail" data-id="${data}" 
+                            data-record-id="${row.recordId}" data-status="運送中" data-apply-dept="${row.dept}"
+                            data-apply-user-name="${row.name}"
+                    		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
+                    			<i class="bi bi-journal-text"></i>
+                  			</button>`;
+                    },
+                    className: "min-tablet-p fs-5 text-sm-center text-start"
+                },
+                {
+                    data: 'updateDate', title: "開始配送",
+                    render: function (data, type, row) {
+                        return `
+                        <p class="mb-1">${ data.split(' ')[0] }</p>
+                        <p class="mb-1">${ data.split(' ')[1] }</p>
+                        `;
+                    },
+                    className: 'text-center fs-5'
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: '_all',
+                    className: 'align-middle fs-5'
+                }
+            ]
+        });
+    };
+
+    // ----------------------- 取消 rejected (canceled) --------------------------------
     // 載入取消訂單Table資料
     const loadOrderCanceledTable = async () => {
         cleanTable();
@@ -358,6 +447,7 @@ $(document).ready(async function () {
     };
 
 
+    //--------------------- 載入網頁 ---------------------
     // 初始狀態時，載入"待確認"訂單
     await loadToBeConfirmedTable();
 
