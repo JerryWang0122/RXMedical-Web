@@ -83,8 +83,8 @@ $(document).ready(function () {
     if (response.isConfirmed) {
 
       const productId = $(this).data('product-id');
-      let tr = table.row($(this).closest('tr'));
       // 从表格中删除该行
+      let tr = table.row($(this).closest('tr'));
       table.row(tr).remove().draw();
 
       // 更新data数组

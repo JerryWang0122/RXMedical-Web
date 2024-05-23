@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+
+    <head>
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
+        <meta charset="UTF-8">
+        <title class="medical-product"></title>
+
+        <!-- ----------------------------- CSS ------------------------------- -->
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <!-- sweetalert2 -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.min.css">
+        <!-- dataTables -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/2.0.7/css/dataTables.dataTables.min.css">
+        <!-- dataTables RWD -->
+        <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.css">
+
+        <!-- custom css -->
+        <link rel="stylesheet" href="../css/back-common.css">
+        <link rel="stylesheet" href="../css/back-order-manage.css">
+
+        <!-- ----------------------------- Script ------------------------------- -->
+        <!-- bootstrap -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- jquery -->
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+        <!-- sweetalert2 -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.11.0/dist/sweetalert2.all.min.js"></script>
+        <!-- dataTables -->
+        <script src="https://cdn.datatables.net/2.0.7/js/dataTables.min.js"></script>
+        <!-- dataTables RWD -->
+        <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.js"></script>
+        <script src="https://cdn.datatables.net/responsive/3.0.2/js/responsive.dataTables.js"></script>
+
+        <!-- custom js -->
+        <script src="../js/title.js"></script>
+        <script src="../js/back-order-manage.js"></script>
+
+    </head>
+
+    <body>
+        <header>
+            <div class="navbar navbar-expand-md navbar-light">
+                <div class="container-xl">
+                    <div class="d-flex pt-2">
+                        <a id="frontIndexBtn" class="navbar-brand d-flex align-items-center pt-0" href="javascript:;">
+                            <img src="../img/hospital.png" alt="" height="60" class="d-inline-block me-2">
+                            <div class="d-flex flex-column align-items-center">
+                                <h1 class="medical-product mb-0 fs-2"></h1>
+                                <small class="text-white fs-6">後台管理</small>
+                            </div>
+                        </a>
+                        <div class="show-user text-center pt-1 ms-auto fs-6">
+                            <span>管理員 <span class="user-name"></span></span><br>
+                            <button class="btn text-white">&lt;&lt; 回前台</button>
+                        </div>
+                    </div>
+                    <!-- 漢堡圖 -->
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu"
+                        aria-controls="navbarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <nav class="collapse navbar-collapse" id="navbarMenu">
+                        <ul class="navbar-nav ms-auto me-lg-5 mb-2 mb-lg-0 text-center">
+                            <li class="nav-item">
+                                <a id="orderListManageBtn" class="nav-link active" href="javascript:;">清單管理</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="materialSalesBtn" class="nav-link" href="javascript:;">衛材進銷</a>
+                            </li>
+                            <li class="nav-item">
+                                <a id="memberAuthLevelBtn" class="nav-link" href="javascript:;">會員權限</a>
+                            </li>
+                            <li>
+                                <form action="/user/logout" method="get">
+                                    <input class="btn" id="logout" type="submit" value="登出">
+                                </form>
+                            </li>
+                        </ul>
+                    </nav>
+
+                </div>
+            </div>
+        </header>
+
+        <main id="contentArea">
+            <h2 class="content-title">清單管理</h2>
+
+            <div class="container-xl mt-3 noto-sans nav-pills">
+                
+                <div class="mx-auto d-flex justify-content-center">
+                    <!-- 申請單狀態導覽列 -->
+                    <ul id="orderStateNav" class="nav justify-content-center px-3 py-2 rounded-3">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-status="待確認" href="javascript:;">待確認</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="待撿貨" href="javascript:;">待撿貨</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="待出貨" href="javascript:;">待出貨</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="運送中" href="javascript:;">運送中</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="已完成" href="javascript:;">已完成</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-status="取消" href="javascript:;">取消</a>
+                        </li>
+                    </ul>
+                </div>
+                
+
+                <!-- 會員權限表格 -->
+                <table id="orderListTable" class="table table-hover dt-responsive display noto-sans">
+                    <!-- 由 js 產生 -->
+                </table>
+            </div>
+
+            <!-- Modal -->
+            <!-- orderDetailModal -->
+            <div class="modal fade noto-sans" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">訂單明細</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+            
+                        <div class="modal-body noto-sans text-center">
+                            <!-- 訂單概覽資訊 -->
+                            <div class="text-start ps-3 ps-md-4 mb-3">
+                                <h5 class="text-primary">編號：<span id="detailRecordId">20240519001</span></h5>
+                                <h5 class="text-primary mt-3">狀態：<span id="detailOrderStatus">待確認</span></h5>
+                            </div>
+            
+                            <table class="table table-hover">
+                                <thead class="fs-5 fs-md-4">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>商品名稱</th>
+                                        <th>數量</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detailListArea" class="fs-5">
+                                    <!-- js 產生 -->
+                                </tbody>
+                            </table>
+                        </div>
+            
+                        <div class="modal-footer justify-content-around">
+                            <span>申請處室：<span id="detailApplyDept"></span></span>
+                            <span class="ms-5">申請人：<span id="detailApplyUserName"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+        <footer> Design / Maintain By Jerry Wang</footer>
+    </body>
+
+</html>
