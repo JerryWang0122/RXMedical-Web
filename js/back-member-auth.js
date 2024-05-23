@@ -1,16 +1,3 @@
-
-/*
-let selectOptions = options.map(option => {
-                        const selected = data === option.value ? 'selected' : '';
-                        const disabled = option.disabled ? 'disabled' : '';
-                        return `<option value="${option.value}" ${selected} ${disabled}>${option.text}</option>`;
-                    }).join('');
-
-                    return `<select class="text-black form-select text-center" data-id="${row.id}">
-                                ${selectOptions}
-                            </select>`;
-*/
-
 $(document).ready(async function () {
     // 會員權限選項
     const options = [
@@ -28,7 +15,7 @@ $(document).ready(async function () {
         { "id": 3, "empId": "12345", "name": "金一蓉", "dept": "文書中心", "title": "一般專員", "authLevel": "staff" ,"createDate": "2024-05-21" },
         { "id": 4, "empId": "22345", "name": "陳二令", "dept": "衛材庫房", "title": "契約專員", "authLevel": "admin" ,"createDate": "2024-05-21" },
         { "id": 5, "empId": "32345", "name": "張三疼", "dept": "秘書室", "title": "替代役", "authLevel": "off" ,"createDate": "2024-05-11" },
-        { "id": 6, "empId": "42345", "name": "王寺鄉", "dept": "衛材庫房", "title": "契約專員", "authLevel": "register" ,"createDate": "2024-05-21" },
+        { "id": 6, "empId": "42345", "name": "王寺鄉", "dept": "衛材庫房", "title": "契約專員", "authLevel": "register", "createDate": "2024-05-21" },
     ];
 
     // DataTables
