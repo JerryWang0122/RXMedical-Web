@@ -136,8 +136,8 @@
                         <div class="modal-body noto-sans text-center">
                             <!-- 訂單概覽資訊 -->
                             <div class="text-start ps-3 ps-md-4 mb-3">
-                                <h5 class="text-primary">編號：<span id="detailRecordId">20240519001</span></h5>
-                                <h5 class="text-primary mt-3">狀態：<span id="detailOrderStatus">待確認</span></h5>
+                                <h5 class="text-primary">編號：<span id="detailRecordId"></span></h5>
+                                <h5 class="text-primary mt-3">狀態：<span id="detailOrderStatus"></span></h5>
                             </div>
             
                             <table class="table table-hover">
@@ -157,6 +157,44 @@
                         <div class="modal-footer justify-content-around">
                             <span>申請處室：<span id="detailApplyDept"></span></span>
                             <span class="ms-5">申請人：<span id="detailApplyUserName"></span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- orderFinishModal -->
+            <div class="modal fade noto-sans" id="orderFinishModal" tabindex="-1" aria-labelledby="orderFinishModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">訂單明細</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+            
+                        <div class="modal-body noto-sans text-center">
+                            <!-- 訂單概覽資訊 -->
+                            <div class="text-start ps-3 ps-md-4 mb-3">
+                                <h5 class="text-primary">編號：<span id="finishRecordId">20240519001</span></h5>
+                                <h5 class="text-primary mt-3">狀態：已完成</h5>
+                                <h6 class="text-success mt-4">申請處室：<span id="finishApplyDept">精神科</span></h6>
+                                <h6 class="text-success mt-3">申請人：<span id="finishApplyUserName">小測試</span></h6>
+                                <h6 class="text-success mt-3">配送人：<span id="finishTransporterName">我自己</span></h6>
+                            </div>
+            
+                            <table class="table table-hover">
+                                <thead class="fs-5 fs-md-4">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>商品名稱</th>
+                                        <th>數量</th>
+                                        <th>撿貨人</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="finishListArea" class="fs-5">
+                                    <!-- js 產生 -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>

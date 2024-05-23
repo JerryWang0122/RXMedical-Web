@@ -34,6 +34,7 @@ $(document).ready(async function () {
                 loadOrderTransportingTable();
                 break;
             case '已完成':
+                loadOrderFinishTable();
                 break;
             case '取消':
                 loadOrderCanceledTable();
@@ -328,7 +329,7 @@ $(document).ready(async function () {
                     className: "min-desktop fs-5 text-start text-md-center"
                 },
                 {
-                    data: 'dept', title: "處室",
+                    data: 'dept', title: "處室", responsivePriority: 2,
                     className: "text-center fs-5"
                 },
                 {
@@ -341,7 +342,7 @@ $(document).ready(async function () {
                     
                 },
                 {
-                    data: 'transporter', title: "配送人", 
+                    data: 'transporter', title: "配送人", responsivePriority: 3,
                     className: "text-center fs-5"
                 },
                 {
@@ -357,11 +358,11 @@ $(document).ready(async function () {
                     className: "min-tablet-p fs-5 text-sm-center text-start"
                 },
                 {
-                    data: 'updateDate', title: "開始配送",
+                    data: 'updateDate', title: "開始配送", responsivePriority: 1,
                     render: function (data, type, row) {
                         return `
-                        <p class="mb-1">${ data.split(' ')[0] }</p>
-                        <p class="mb-1">${ data.split(' ')[1] }</p>
+                        <p class="fs-6 mb-1">${ data.split(' ')[0] }</p>
+                        <p class="fs-6 mb-1">${ data.split(' ')[1] }</p>
                         `;
                     },
                     className: 'text-center fs-5'
@@ -375,6 +376,93 @@ $(document).ready(async function () {
             ]
         });
     };
+
+    // ----------------------- 已完成 finish --------------------------------
+    const loadOrderFinishTable = async () => {
+        cleanTable();
+        // TODO: 發 API 到後台拉"運送中"訂單資料(感覺這一個 Table 需要定期自動刷新？)
+        data = await [
+            {
+                "id": 1, "recordId": "20240523071", "dept": "文書中心", "title": "一般專員", "name": "洪申翰",
+                "transporter": "王俊傑", "updateDate": "2024-05-23 09:13:25"
+            },
+            {
+                "id": 2, "recordId": "20240523072", "dept": "營養科", "title": "管理員", "name": "習大大",
+                "transporter": "羅議程", "updateDate": "2024-05-23 10:53:25"
+            },
+            {
+                "id": 3, "recordId": "20240523073", "dept": "急診", "title": "書記", "name": "林老師",
+                "transporter": "張芸瑄", "updateDate": "2024-05-24 09:13:25"
+            }
+        ];
+
+        table = $('#orderListTable').DataTable({
+            language: {
+                url: "../js/zh-Hant.json"  // 引用自定義漢化方式
+            },
+            paging: false,
+            data: data,
+            autoWidth: false,
+            responsive: true,
+            layout: {
+                topStart: 'search',
+                topEnd: 'info',
+                bottomStart: null
+            },
+            columns: [ // responsivePriority
+                {
+                    data: 'recordId', title: "編號", responsivePriority: 1,
+                    className: "text-center fs-5"
+                },
+                {
+                    data: 'dept', title: "處室", responsivePriority: 2,
+                    className: "min-tablet-p fs-5 text-sm-center text-start"
+                },
+                {
+                    data: 'title', title: "職稱", responsivePriority: 5,
+                    className: "min-tablet-l fs-5 text-md-center"
+                },
+                {
+                    data: 'name', title: "申請人", responsivePriority: 4,
+                    className: "min-tablet-l fs-5 text-start text-md-center"
+
+                },
+                {
+                    data: 'transporter', title: "配送人", responsivePriority: 6,
+                    className: 'min-tablet-l fs-5 text-start text-md-center'
+                },
+                {
+                    data: 'id', title: "明細", responsivePriority: 7,
+                    className: "min-desktop fs-5 text-start text-md-center", 
+                    render: function (data, type, row) {
+                        return `<button class="btn btn-outline-info fs-5 btn-order-finish" data-id="${data}" 
+                            data-record-id="${row.recordId}" data-status="已完成" data-apply-dept="${row.dept}"
+                            data-apply-user-name="${row.name}"
+                    		data-bs-toggle="modal" data-bs-target="#orderFinishModal"> 
+                    			<i class="bi bi-journal-text"></i>
+                  			</button>`;
+                    }
+                },
+                {
+                    data: 'updateDate', title: "完成時間", responsivePriority: 3,
+                    className: "text-center fs-5", 
+                    render: function (data, type, row) {
+                        return `
+                        <p class="fs-6 mb-1">${data.split(' ')[0]}</p>
+                        <p class="fs-6 mb-1">${data.split(' ')[1]}</p>
+                        `;
+                    }
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: '_all',
+                    className: 'align-middle fs-5'
+                }
+            ]
+        });
+    };
+
 
     // ----------------------- 取消 rejected (canceled) --------------------------------
     // 載入取消訂單Table資料
