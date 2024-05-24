@@ -6,7 +6,7 @@ $(document).ready(function () {
         const email = $('#jEmail').val();
         const password = $('#jPassword').val();
         
-        const response = await fetch('http://localhost:8080/api/user/login', {
+        const response = await fetch('http://localhost:8080/api/users/user/login', {
             method: 'POST',
             headers: { 
                 'Content-Type': 'application/json',

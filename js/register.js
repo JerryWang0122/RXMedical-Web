@@ -91,7 +91,7 @@ $(document).ready(function () {
 				password: jPassword.val()
 			};
 
-			const response = await fetch('http://localhost:8080/api/user/register', {
+			const response = await fetch('http://localhost:8080/api/users/user/register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
