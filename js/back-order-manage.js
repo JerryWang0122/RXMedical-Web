@@ -64,6 +64,16 @@ $(document).ready(async function () {
 			</tr>`;
     }
 
+    // 渲染 #orderDetailsArea 的資料顯示
+    const renderFinishListArea = (orderDetail, index) => {
+        return `<tr>
+				<td>${index + 1}</td>
+				<td style="white-space:nowrap;">${orderDetail.productName}</td>
+				<td style="white-space:nowrap;">${orderDetail.quantity}</td>
+				<td style="white-space:nowrap;">${orderDetail.grabber}</td>
+			</tr>`;
+    }
+
     // ----------------------------- 待確認 unchecked (to be confirmed) -----------------------------
     // 載入"待確認"訂單資料
     const loadToBeConfirmedTable = async () => {
@@ -378,6 +388,47 @@ $(document).ready(async function () {
     };
 
     // ----------------------- 已完成 finish --------------------------------
+
+    // 顯示訂單詳細內容
+    $('#orderListTable').on('click', '.btn-order-finish', async function () {
+
+        const id = $(this).data('id');
+        const recordId = $(this).data('record-id');
+        const applyDept = $(this).data('apply-dept');
+        const applyUserName = $(this).data('apply-user-name');
+        const transporter = $(this).data('transporter');
+
+
+        // 更新 modal title 顯示資料
+        $('#finishRecordId').text(recordId);
+        $('#finishApplyDept').text(applyDept);
+        $('#finishApplyUserName').text(applyUserName);
+        $('#finishTransporterName').text(transporter);
+
+        // 先清空 finishListArea
+        $('#finishListArea').empty();
+
+        // // TODO: 用id到後台拿資料
+        const detailLists = await [
+            { "productName": "石膏鞋", "quantity": 5, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 10, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 15, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 20, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋", "quantity": 25, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 30, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 35, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 40, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 45, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋", "quantity": 50, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 55, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 60, "grabber": '測試一' },
+        ];
+
+        // 顯示資料
+        $('#finishListArea').html(detailLists.map(renderFinishListArea).join(''));
+
+    });
+
     const loadOrderFinishTable = async () => {
         cleanTable();
         // TODO: 發 API 到後台拉"運送中"訂單資料(感覺這一個 Table 需要定期自動刷新？)
@@ -436,8 +487,8 @@ $(document).ready(async function () {
                     className: "min-desktop fs-5 text-start text-md-center", 
                     render: function (data, type, row) {
                         return `<button class="btn btn-outline-info fs-5 btn-order-finish" data-id="${data}" 
-                            data-record-id="${row.recordId}" data-status="已完成" data-apply-dept="${row.dept}"
-                            data-apply-user-name="${row.name}"
+                            data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
+                            data-apply-user-name="${row.name}" data-transporter="${row.transporter}"
                     		data-bs-toggle="modal" data-bs-target="#orderFinishModal"> 
                     			<i class="bi bi-journal-text"></i>
                   			</button>`;
