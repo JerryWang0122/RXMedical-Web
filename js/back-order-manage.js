@@ -13,37 +13,7 @@ $(document).ready(async function () {
 
     let table = null;
     let data = null;
-    // -------------------- orderStateNav 按鈕被按下時 -----------------
-    $('#orderStateNav').on('click', '.nav-link', async function(event) {
-        // console.log(this);
-        const status = $(this).data('status');
-        $('#orderStateNav .nav-link').removeClass('active');
-        // 将点击的按钮添加 'active' 类
-        $(this).addClass('active');
-
-        // TODO: 利用status發API，並決定要顯示的方式
-        switch (status) {
-            case '待確認':
-                loadToBeConfirmedTable();
-                break;
-            case '待撿貨':
-                break;
-            case '待出貨':
-                break;
-            case '運送中':
-                loadOrderTransportingTable();
-                break;
-            case '已完成':
-                loadOrderFinishTable();
-                break;
-            case '取消':
-                loadOrderCanceledTable();
-                break;
-            default:
-                console.log(status);
-        };
-        
-    });
+    
 
     // 清空過去 DataTables 設定
     const cleanTable = () => {
@@ -73,6 +43,56 @@ $(document).ready(async function () {
 				<td style="white-space:nowrap;">${orderDetail.grabber}</td>
 			</tr>`;
     }
+
+    // 填充admin人員選項到選單中
+    const loadAdminListToOption = async function () {
+        // TODO: 發API 到後台拉admin人員的資料
+        const adminList = await [
+            { "id": 1, "empCode": "12345", "name": "陳一令" },
+            { "id": 2, "empCode": "22345", "name": "陳二令" },
+            { "id": 3, "empCode": "32345", "name": "陳三令" },
+            { "id": 4, "empCode": "42345", "name": "陳四令" },
+        ]
+
+        // 載入admin人員選項
+        adminList.forEach(adminMember => {
+            $('#jAdminList').append(`<option value="${adminMember.id}">${adminMember.empCode} / ${adminMember.name}</option>`);
+        })
+
+    }
+
+    // -------------------- orderStateNav 按鈕被按下時 -----------------
+    $('#orderStateNav').on('click', '.nav-link', async function (event) {
+        // console.log(this);
+        const status = $(this).data('status');
+        $('#orderStateNav .nav-link').removeClass('active');
+        // 将点击的按钮添加 'active' 类
+        $(this).addClass('active');
+
+        // TODO: 利用status發API，並決定要顯示的方式
+        switch (status) {
+            case '待確認':
+                loadToBeConfirmedTable();
+                break;
+            case '待撿貨':
+                break;
+            case '待出貨':
+                loadWaitingTable();
+                break;
+            case '運送中':
+                loadOrderTransportingTable();
+                break;
+            case '已完成':
+                loadOrderFinishTable();
+                break;
+            case '取消':
+                loadOrderCanceledTable();
+                break;
+            default:
+                console.log(status);
+        };
+
+    });
 
     // ----------------------------- 待確認 unchecked (to be confirmed) -----------------------------
     // 載入"待確認"訂單資料
@@ -114,16 +134,16 @@ $(document).ready(async function () {
                     className: "min-tablet-l text-start text-md-center fs-5" 
                 },
                 { 
-                    data: 'dept', title: "處室", responsivePriority: 5,
-                    className: "min-tablet-p text-start text-sm-center fs-5"
+                    data: 'dept', title: "處室", responsivePriority: 2,
+                    className: "text-center fs-5" 
                 },
                 { 
                     data: 'title', title: "職稱", responsivePriority: 6,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
-                    data: 'name', title: "申請人", responsivePriority: 2,
-                    className: "text-center fs-5" 
+                    data: 'name', title: "申請人", responsivePriority: 5,
+                    className: "min-tablet-p text-start text-sm-center fs-5"
                 },
                 {
                     data: 'id', title: "明細", responsivePriority: 3,
@@ -300,6 +320,170 @@ $(document).ready(async function () {
 
     });
 
+
+    // ----------------------------- 待撿貨 picking -----------------------------
+
+
+    // ----------------------------- 待出貨 waiting -----------------------------
+    // 指派人員運送，並將訂單推到"運送中"狀態
+    $('#assignTransporterBtn').on('click', async function (event) {
+        event.preventDefault();
+        
+        
+        // 取得配送訂單和配送人員編號
+        const waitingId = $('#jWaitingId').val();
+        const transporterId = $('#jAdminList').val();
+        
+        // 利用waitingId找到欄位
+        const waiting = $('#orderListTable tbody tr [data-id="' + waitingId + '"]')[1];
+        
+        if (!transporterId) {
+            Swal.fire({
+                title: "請指定配送人員",
+                icon: "warning",
+                position: "top"
+            });
+            return;
+        }
+        console.log(waitingId, transporterId);
+
+        // TODO: 發API到後台確認配送訂單
+        // const response = await fetch('http://localhost:8080/api/sales/admin/order_list/waiting', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({
+        //         id: waitingId,
+        //         transporterId
+        //     })
+        // });
+
+        // const { state, message } = await response.json();
+        let state = true;
+        let message = 'something wrong';
+        if (state) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: "開始配送",
+                showConfirmButton: false,
+                timer: 1000
+            });
+
+            
+            // 關閉 modal 視窗
+            setTimeout(() => {
+                $('#orderWaitingModal').modal('hide');
+                // 移除該行資料
+                table.row($(waiting).closest('tr')).remove().draw();
+                // Reset jAdminList 選項
+                $('#jAdminList').val(null).trigger('change');
+            }, 1000)
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "設定失敗",
+                text: message,
+                showConfirmButton: true
+            });
+        }
+    });
+
+    // 修改指派人員的訂單顯示資料
+    $('#orderListTable').on('click', '.btn-assign-transporter', async function () {
+        const id = $(this).data('id');
+        const recordId = $(this).data('record-id');
+        const applyDept = $(this).data('apply-dept');
+        const applyUserName = $(this).data('apply-user-name');
+
+        // 替換資訊
+        $('#orderWaitingRecordId').text(recordId);
+        $('#orderWaitingDept').text(applyDept);
+        $('#orderWaitingMemberName').text(applyUserName);
+        $('#jWaitingId').val(id);
+        
+    });
+
+    // 載入"待確認"訂單資料
+    const loadWaitingTable = async () => {
+        cleanTable();
+
+        // TODO: 發 API 到後台拉"待確認"訂單資料
+        data = await [
+            { "id": 1, "recordId": "20240525001", "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 2, "recordId": "20240525002", "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
+            { "id": 3, "recordId": "20240525003", "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 4, "recordId": "20240525004", "dept": "502病房", "title": "契約專員", "name": "陳曉民" }
+        ];
+
+        table = $('#orderListTable').DataTable({
+            language: {
+                url: "../js/zh-Hant.json"  // 引用自定義漢化方式
+            },
+            paging: false,
+            data: data,
+            autoWidth: false,
+            responsive: true,
+            layout: {
+                topStart: 'search',
+                topEnd: 'info',
+                bottomStart: null
+            },
+            columns: [ // responsivePriority
+                {
+                    data: 'recordId', title: "編號", responsivePriority: 4,
+                    className: "min-tablet-l text-start text-md-center fs-5"
+                },
+                {
+                    data: 'dept', title: "處室", responsivePriority: 2,
+                    className: "text-center fs-5"
+                },
+                {
+                    data: 'title', title: "職稱", responsivePriority: 6,
+                    className: "min-tablet-l text-start text-md-center fs-5"
+                },
+                {
+                    data: 'name', title: "申請人", responsivePriority: 5,
+                    className: "min-tablet-p text-start text-sm-center fs-5"
+                },
+                {
+                    data: 'id', title: "明細", responsivePriority: 3,
+                    render: function (data, type, row) {
+                        return `<button class="btn btn-outline-secondary fs-5 btn-order-detail" data-id="${data}" 
+                            data-record-id="${row.recordId}" data-status="待出貨" data-apply-dept="${row.dept}"
+                            data-apply-user-name="${row.name}"
+                    		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
+                    			<i class="bi bi-journal-text"></i>
+                  			</button>`;
+                    },
+                    className: "fs-5 text-center"
+                },
+                {
+                    data: 'id', title: "開始配送", responsivePriority: 1,
+                    render: function (data, type, row) {
+                        return `
+                        <button class="btn-assign-transporter btn btn-success" 
+                        data-id="${data}" data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
+                        data-apply-user-name="${row.name}"
+                        data-bs-toggle="modal" data-bs-target="#orderWaitingModal"> 
+                            指定人員
+                        </button>`;
+                    },
+                    className: "fs-5 text-center"
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: '_all',
+                    className: 'text-start text-md-center align-middle fs-5'
+                }
+            ]
+        });
+    };
+
+
     // ----------------------- 運送中 transporting --------------------------------
     // 載入運送中Table資料
     const loadOrderTransportingTable = async () => {
@@ -358,7 +542,7 @@ $(document).ready(async function () {
                 {
                     data: 'id', title: "明細", responsivePriority: 4,
                     render: function (data, type, row) {
-                        return `<button class="btn btn-outline-info fs-5 btn-order-detail" data-id="${data}" 
+                        return `<button class="btn btn-outline-secondary fs-5 btn-order-detail" data-id="${data}" 
                             data-record-id="${row.recordId}" data-status="運送中" data-apply-dept="${row.dept}"
                             data-apply-user-name="${row.name}"
                     		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
@@ -486,7 +670,7 @@ $(document).ready(async function () {
                     data: 'id', title: "明細", responsivePriority: 7,
                     className: "min-desktop fs-5 text-start text-md-center", 
                     render: function (data, type, row) {
-                        return `<button class="btn btn-outline-info fs-5 btn-order-finish" data-id="${data}" 
+                        return `<button class="btn btn-outline-secondary fs-5 btn-order-finish" data-id="${data}" 
                             data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
                             data-apply-user-name="${row.name}" data-transporter="${row.transporter}"
                     		data-bs-toggle="modal" data-bs-target="#orderFinishModal"> 
@@ -546,21 +730,21 @@ $(document).ready(async function () {
                     className: "min-tablet-p text-start text-md-center fs-5"
                 },
                 {
-                    data: 'dept', title: "處室", responsivePriority: 5,
-                    className: "min-tablet-l text-start text-md-center fs-5"
+                    data: 'dept', title: "處室", responsivePriority: 2,
+                    className: "text-center fs-5"
                 },
                 {
                     data: 'title', title: "職稱", responsivePriority: 6,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
-                    data: 'name', title: "申請人", responsivePriority: 2,
-                    className: "text-center fs-5"
+                    data: 'name', title: "申請人", responsivePriority: 5,
+                    className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
                     data: 'id', title: "明細", responsivePriority: 3,
                     render: function (data, type, row) {
-                        return `<button class="btn btn-outline-info fs-5 btn-order-detail" data-id="${data}" 
+                        return `<button class="btn btn-outline-secondary fs-5 btn-order-detail" data-id="${data}" 
                             data-record-id="${row.recordId}" data-status="取消" data-apply-dept="${row.dept}"
                             data-apply-user-name="${row.name}"
                     		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
@@ -589,5 +773,8 @@ $(document).ready(async function () {
     //--------------------- 載入網頁 ---------------------
     // 初始狀態時，載入"待確認"訂單
     await loadToBeConfirmedTable();
+
+    // 載入admin人員選項到指派人員的modal
+    await loadAdminListToOption();
 
 });

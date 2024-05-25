@@ -117,7 +117,7 @@
                 </div>
                 
 
-                <!-- 會員權限表格 -->
+                <!-- 衛材訂單表格 -->
                 <table id="orderListTable" class="table table-hover dt-responsive display noto-sans">
                     <!-- 由 js 產生 -->
                 </table>
@@ -161,6 +161,40 @@
                     </div>
                 </div>
             </div>
+
+            <!-- orderWaitingModal -->
+            <div class="modal fade noto-sans" id="orderWaitingModal" tabindex="-1" aria-labelledby="orderWaitingModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderWaitingModalLabel">指定配送</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h5>配送資訊</h5>
+                            <p class="text-primary">
+                                訂單編號：<span id="orderWaitingRecordId">123</span> <br>
+                                配送單位：<span id="orderWaitingDept">精神科</span> <br>
+                                申請人：<span id="orderWaitingMemberName">測試用</span>
+                            </p>
+
+                            <label for="jAdminList" class=" fs-5 mt-2 mb-1 ">請指派配送人員</label>
+
+                            <select name="jAdminList" id="jAdminList" class="form-select" required>
+                                <option value="" selected disabled>請選擇...</option>
+                                <!-- js 填充 admin 人員選項 -->
+                            </select>
+                            <input type="hidden" id="jWaitingId" value="">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                            <button id="assignTransporterBtn" type="submit" class="btn">開始配送</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
 
             <!-- orderFinishModal -->
             <div class="modal fade noto-sans" id="orderFinishModal" tabindex="-1" aria-labelledby="orderFinishModalLabel"
