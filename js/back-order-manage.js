@@ -325,6 +325,83 @@ $(document).ready(async function () {
 
 
     // ----------------------------- 待出貨 waiting -----------------------------
+    // 載入"待確認"訂單資料
+    const loadWaitingTable = async () => {
+        cleanTable();
+
+        // TODO: 發 API 到後台拉"待確認"訂單資料
+        data = await [
+            { "id": 1, "recordId": "20240525001", "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 2, "recordId": "20240525002", "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
+            { "id": 3, "recordId": "20240525003", "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 4, "recordId": "20240525004", "dept": "502病房", "title": "契約專員", "name": "陳曉民" }
+        ];
+
+        table = $('#orderListTable').DataTable({
+            language: {
+                url: "../js/zh-Hant.json"  // 引用自定義漢化方式
+            },
+            paging: false,
+            data: data,
+            autoWidth: false,
+            responsive: true,
+            layout: {
+                topStart: 'search',
+                topEnd: 'info',
+                bottomStart: null
+            },
+            columns: [ // responsivePriority
+                {
+                    data: 'recordId', title: "編號", responsivePriority: 4,
+                    className: "min-tablet-l text-start text-md-center fs-5"
+                },
+                {
+                    data: 'dept', title: "處室", responsivePriority: 2,
+                    className: "text-center fs-5"
+                },
+                {
+                    data: 'title', title: "職稱", responsivePriority: 6,
+                    className: "min-tablet-l text-start text-md-center fs-5"
+                },
+                {
+                    data: 'name', title: "申請人", responsivePriority: 5,
+                    className: "min-tablet-p text-start text-sm-center fs-5"
+                },
+                {
+                    data: 'id', title: "明細", responsivePriority: 3,
+                    render: function (data, type, row) {
+                        return `<button class="btn btn-outline-secondary fs-5 btn-order-detail" data-id="${data}" 
+                            data-record-id="${row.recordId}" data-status="待出貨" data-apply-dept="${row.dept}"
+                            data-apply-user-name="${row.name}"
+                    		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
+                    			<i class="bi bi-journal-text"></i>
+                  			</button>`;
+                    },
+                    className: "fs-5 text-center"
+                },
+                {
+                    data: 'id', title: "開始配送", responsivePriority: 1,
+                    render: function (data, type, row) {
+                        return `
+                        <button class="btn-assign-transporter btn btn-success" 
+                        data-id="${data}" data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
+                        data-apply-user-name="${row.name}"
+                        data-bs-toggle="modal" data-bs-target="#orderWaitingModal"> 
+                            指定人員
+                        </button>`;
+                    },
+                    className: "fs-5 text-center"
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: '_all',
+                    className: 'text-start text-md-center align-middle fs-5'
+                }
+            ]
+        });
+    };
+
     // 指派人員運送，並將訂單推到"運送中"狀態
     $('#assignTransporterBtn').on('click', async function (event) {
         event.preventDefault();
@@ -405,83 +482,6 @@ $(document).ready(async function () {
         $('#jWaitingId').val(id);
         
     });
-
-    // 載入"待確認"訂單資料
-    const loadWaitingTable = async () => {
-        cleanTable();
-
-        // TODO: 發 API 到後台拉"待確認"訂單資料
-        data = await [
-            { "id": 1, "recordId": "20240525001", "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 2, "recordId": "20240525002", "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 3, "recordId": "20240525003", "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 4, "recordId": "20240525004", "dept": "502病房", "title": "契約專員", "name": "陳曉民" }
-        ];
-
-        table = $('#orderListTable').DataTable({
-            language: {
-                url: "../js/zh-Hant.json"  // 引用自定義漢化方式
-            },
-            paging: false,
-            data: data,
-            autoWidth: false,
-            responsive: true,
-            layout: {
-                topStart: 'search',
-                topEnd: 'info',
-                bottomStart: null
-            },
-            columns: [ // responsivePriority
-                {
-                    data: 'recordId', title: "編號", responsivePriority: 4,
-                    className: "min-tablet-l text-start text-md-center fs-5"
-                },
-                {
-                    data: 'dept', title: "處室", responsivePriority: 2,
-                    className: "text-center fs-5"
-                },
-                {
-                    data: 'title', title: "職稱", responsivePriority: 6,
-                    className: "min-tablet-l text-start text-md-center fs-5"
-                },
-                {
-                    data: 'name', title: "申請人", responsivePriority: 5,
-                    className: "min-tablet-p text-start text-sm-center fs-5"
-                },
-                {
-                    data: 'id', title: "明細", responsivePriority: 3,
-                    render: function (data, type, row) {
-                        return `<button class="btn btn-outline-secondary fs-5 btn-order-detail" data-id="${data}" 
-                            data-record-id="${row.recordId}" data-status="待出貨" data-apply-dept="${row.dept}"
-                            data-apply-user-name="${row.name}"
-                    		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
-                    			<i class="bi bi-journal-text"></i>
-                  			</button>`;
-                    },
-                    className: "fs-5 text-center"
-                },
-                {
-                    data: 'id', title: "開始配送", responsivePriority: 1,
-                    render: function (data, type, row) {
-                        return `
-                        <button class="btn-assign-transporter btn btn-success" 
-                        data-id="${data}" data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
-                        data-apply-user-name="${row.name}"
-                        data-bs-toggle="modal" data-bs-target="#orderWaitingModal"> 
-                            指定人員
-                        </button>`;
-                    },
-                    className: "fs-5 text-center"
-                }
-            ],
-            columnDefs: [
-                {
-                    targets: '_all',
-                    className: 'text-start text-md-center align-middle fs-5'
-                }
-            ]
-        });
-    };
 
 
     // ----------------------- 運送中 transporting --------------------------------
@@ -573,46 +573,6 @@ $(document).ready(async function () {
 
     // ----------------------- 已完成 finish --------------------------------
 
-    // 顯示訂單詳細內容
-    $('#orderListTable').on('click', '.btn-order-finish', async function () {
-
-        const id = $(this).data('id');
-        const recordId = $(this).data('record-id');
-        const applyDept = $(this).data('apply-dept');
-        const applyUserName = $(this).data('apply-user-name');
-        const transporter = $(this).data('transporter');
-
-
-        // 更新 modal title 顯示資料
-        $('#finishRecordId').text(recordId);
-        $('#finishApplyDept').text(applyDept);
-        $('#finishApplyUserName').text(applyUserName);
-        $('#finishTransporterName').text(transporter);
-
-        // 先清空 finishListArea
-        $('#finishListArea').empty();
-
-        // // TODO: 用id到後台拿資料
-        const detailLists = await [
-            { "productName": "石膏鞋", "quantity": 5, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 10, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 15, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 20, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋", "quantity": 25, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 30, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 35, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 40, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 45, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋", "quantity": 50, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 55, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 60, "grabber": '測試一' },
-        ];
-
-        // 顯示資料
-        $('#finishListArea').html(detailLists.map(renderFinishListArea).join(''));
-
-    });
-
     const loadOrderFinishTable = async () => {
         cleanTable();
         // TODO: 發 API 到後台拉"運送中"訂單資料(感覺這一個 Table 需要定期自動刷新？)
@@ -668,7 +628,7 @@ $(document).ready(async function () {
                 },
                 {
                     data: 'id', title: "明細", responsivePriority: 7,
-                    className: "min-desktop fs-5 text-start text-md-center", 
+                    className: "min-desktop fs-5 text-start text-md-center",
                     render: function (data, type, row) {
                         return `<button class="btn btn-outline-secondary fs-5 btn-order-finish" data-id="${data}" 
                             data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
@@ -680,7 +640,7 @@ $(document).ready(async function () {
                 },
                 {
                     data: 'updateDate', title: "完成時間", responsivePriority: 3,
-                    className: "text-center fs-5", 
+                    className: "text-center fs-5",
                     render: function (data, type, row) {
                         return `
                         <p class="fs-6 mb-1">${data.split(' ')[0]}</p>
@@ -698,6 +658,45 @@ $(document).ready(async function () {
         });
     };
 
+    // 顯示訂單詳細內容
+    $('#orderListTable').on('click', '.btn-order-finish', async function () {
+
+        const id = $(this).data('id');
+        const recordId = $(this).data('record-id');
+        const applyDept = $(this).data('apply-dept');
+        const applyUserName = $(this).data('apply-user-name');
+        const transporter = $(this).data('transporter');
+
+
+        // 更新 modal title 顯示資料
+        $('#finishRecordId').text(recordId);
+        $('#finishApplyDept').text(applyDept);
+        $('#finishApplyUserName').text(applyUserName);
+        $('#finishTransporterName').text(transporter);
+
+        // 先清空 finishListArea
+        $('#finishListArea').empty();
+
+        // // TODO: 用id到後台拿資料
+        const detailLists = await [
+            { "productName": "石膏鞋", "quantity": 5, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 10, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 15, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 20, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋", "quantity": 25, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 30, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 35, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 40, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 45, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋", "quantity": 50, "grabber": '測試一' },
+            { "productName": "石膏鞋", "quantity": 55, "grabber": '測試一' },
+            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 60, "grabber": '測試一' },
+        ];
+
+        // 顯示資料
+        $('#finishListArea').html(detailLists.map(renderFinishListArea).join(''));
+
+    });
 
     // ----------------------- 取消 rejected (canceled) --------------------------------
     // 載入取消訂單Table資料
