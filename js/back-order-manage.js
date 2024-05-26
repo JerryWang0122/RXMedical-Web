@@ -75,6 +75,7 @@ $(document).ready(async function () {
                 loadToBeConfirmedTable();
                 break;
             case '待撿貨':
+                loadPickingTable();
                 break;
             case '待出貨':
                 loadWaitingTable();
@@ -322,7 +323,244 @@ $(document).ready(async function () {
 
 
     // ----------------------------- 待撿貨 picking -----------------------------
+    const loadPickingTable = async () => {
+        cleanTable();
 
+        // TODO: 發 API 到後台拉"待確認"訂單資料
+        data = await [
+            { "id": 1, "recordId": "20240525031", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 2, "recordId": "20240525032", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
+            { "id": 3, "recordId": "20240525033", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 4, "recordId": "20240525034", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
+            { "id": 5, "recordId": "20240525035", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 6, "recordId": "20240525036", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
+            { "id": 7, "recordId": "20240525037", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 8, "recordId": "20240525038", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
+            { "id": 9, "recordId": "20240525039", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
+            { "id": 10, "recordId": "20240525040", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉" },
+            { "id": 11, "recordId": "20240525041", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" }
+        ];
+
+        table = $('#orderListTable').DataTable({
+            language: {
+                url: "../js/zh-Hant.json"  // 引用自定義漢化方式
+            },
+            paging: false,
+            data: data,
+            autoWidth: false,
+            responsive: true,
+            layout: {
+                topStart: 'search',
+                topEnd: 'info',
+                bottomStart: null
+            },
+            columns: [ // responsivePriority
+                {
+                    data: 'recordId', title: "編號", responsivePriority: 4,
+                    className: "min-tablet-l text-start text-md-center fs-5"
+                },
+                {
+                    data: 'dept', title: "處室", responsivePriority: 2,
+                    className: "text-center fs-5"
+                },
+                {
+                    data: 'title', title: "職稱", responsivePriority: 6,
+                    className: "min-tablet-l text-start text-md-center fs-5"
+                },
+                {
+                    data: 'name', title: "申請人", responsivePriority: 5,
+                    className: "min-tablet-p text-start text-sm-center fs-5"
+                },
+                {
+                    data: 'applyAmount', title: "品項數量", responsivePriority: 7,
+                    className: "min-desktop text-start text-md-center fs-5"
+                },
+                {
+                    data: 'id', title: "執行動作", responsivePriority: 1,
+                    render: function (data, type, row) {
+                        return `
+                        <button class="btn btn-success btn-start-picking" 
+                        data-id="${data}" data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
+                        data-bs-toggle="modal" data-bs-target="#orderPickingModal">開始撿貨</button>`;
+                    },
+                    className: "fs-5 text-center"
+                }
+            ],
+            columnDefs: [
+                {
+                    targets: '_all',
+                    className: 'text-start text-md-center align-middle fs-5'
+                }
+            ]
+        });
+
+    };
+
+    // 渲染每一筆訂單的方式
+    const renderPickingList = (orderItem) => {
+        let resultHTML = `
+        <div class="col-12 col-sm-6 col-lg-4 p-1">
+            <div class="order-item-detail ${orderItem.user ? 'item-picked ' : ''}m-2 p-2">
+                <div class="row">
+                    <div class="col-4 order-img-container">
+                        <img src="../img/products/${ orderItem.product.picture}" alt="">
+                    </div>
+                    <div class="col-6">
+                        <h5>${orderItem.product.name}</h5>
+                        <span>${orderItem.product.code}</span><br>
+                        <span>${orderItem.product.storage}</span>
+                    </div>
+                    <div class="col-2 col-sm-12 col-md-2 text-end align-content-center">
+                        x${orderItem.quantity }
+                    </div>
+                </div>
+
+                <div class="row pt-2 mx-1  border-top">
+                    <div class="col-12 d-flex justify-content-between align-items-center" style="min-height: 38px;">
+        `
+        if (orderItem.user) {
+            resultHTML += `
+                        <span>撿貨人: ${orderItem.user.name}</span>
+                        <input type="checkbox" class="form-check-input" >
+            `;
+        } else {
+            resultHTML += `
+                        <span>尚未撿貨</span>
+                        <button class="btn btn-primary btn-pick-it-up" data-history-id="${orderItem.id}">我拿了</button>
+            `;
+        }
+
+        resultHTML += `</div></div></div></div>`
+        return resultHTML;
+    };
+
+    // 載入recordId對應的訂單內容
+    const loadOrderItemToPickingList = async (id) => {
+        $('#showRecordItemArea').empty();    // Reset
+        // TODO: 發 API 到後台拉"待撿貨"訂單資料(History Table)
+        const recordOrderItems = await [
+            { "id": 1, "quantity": 50, "product": { "code": "CA1234567898", "storage": "01-04-03", "name": "石膏鞋", "picture": "product-1.png" }, "user": null },
+            { "id": 2, "quantity": 150, "product": { "code": "BX2224567898", "storage": "01-03-05", "name": "紗布", "picture": "product-3.png" }, "user": null },
+            { "id": 3, "quantity": 250, "product": { "code": "FD3334567898", "storage": "02-06-03", "name": "石膏鞋石膏鞋石膏鞋", "picture": "product-5.png" }, "user": {"name": "王俊傑"} },    
+        ];
+
+        $('#showRecordItemArea').html(recordOrderItems.map(renderPickingList).join(''));
+        
+    };
+
+    // 開始撿貨時，刷新訂單撿貨資料
+    $('#orderListTable').on('click', '.btn-start-picking', async function (event) {
+        const id = $(this).data('id');
+        const recordId = $(this).data('record-id');
+        const applyDept = $(this).data('apply-dept');
+        $('#orderPickingModalLabel').text(`${recordId} - ${applyDept}`);
+        $('#pushToWaitingBtn').attr('data-id', id);
+        // 載入訂單資料
+        await loadOrderItemToPickingList(id);   // load data
+    });
+
+    // 當按下“我拿了”按鈕
+    $('#orderPickingModal').on('click', '.btn-pick-it-up', async function (event) {
+        const pickUpBtn = $(this);
+        const showPickerSpan = pickUpBtn.prev();
+
+        // 按下時，先將按鈕漸變消失
+        pickUpBtn.addClass('fade-transition hidden');
+
+        // TODO:利用historyId和jwt內部的使用者id，紀錄history的user
+        const historyId = $(this).data('history-id');
+        const userId = '1';
+        const userName = '王俊傑';
+        // const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify({ historyId, userId })
+        // });
+        // const { state, message } = await response.json();
+
+        // console.log(historyId);
+        let state = true;
+        let message = 'something wrong';
+
+        if (state) {    // 成功紀錄
+            showPickerSpan.text('撿貨人: ' + userName);
+
+            // 找到父層的order-item-detail
+            const parent = pickUpBtn.parents('.order-item-detail');
+            // parent 加上 'item-picked' class
+            parent.addClass('item-picked');
+
+            // 將自己改成checkBox
+            pickUpBtn.replaceWith('<input type="checkbox" class="fade-transition hidden form-check-input">');
+            showPickerSpan.next().addClass('visible');
+
+
+        } else {
+            pickUpBtn.removeClass('fade-transition hidden');
+            Swal.fire({
+                title: "發生錯誤",
+                html: message,
+                icon: "error",
+                position: "top"
+            });
+        }
+    });
+
+    // 按下"完成撿貨"按鈕
+    $('#pushToWaitingBtn').on('click', async function (event) {
+        const id = $(this).attr('data-id');
+
+        const result = await Swal.fire({
+            title: "確認以進入[待出貨]",
+            icon: "warning",
+            position: "top",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "確認",
+            cancelButtonText: "等一下",
+        });
+
+        if (result.isConfirmed) {
+            // TODO: 發API到後台確認撿貨完成
+            // const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+            //     method: 'POST',
+            //     headers: {
+            //         'Content-Type': 'application/json',
+            //     },
+            //     body: JSON.stringify( id )
+            // });
+            // const { state, message } = await response.json();
+            let state = true;
+            let message = 'something wrong';
+
+            if (state) {
+                Swal.fire({
+                    title: "撿貨完成",
+                    icon: "success",
+                    position: "top",
+                    showConfirmButton: false,
+                    timer: 1000
+                });
+                const recordData = $('#orderListTable tbody tr [data-id="' + id + '"]')[0];
+                // console.log(recordData);
+                // 移除該行資料
+                table.row($(recordData).closest('tr')).remove().draw();
+                $('#orderPickingModal').modal('hide');
+            } else {
+                Swal.fire({
+                    title: "發生錯誤",
+                    text: message,
+                    icon: "error",
+                    position: "top",
+                    showConfirmButton: true,
+                });
+            }
+        }
+
+    });
 
     // ----------------------------- 待出貨 waiting -----------------------------
     // 載入"待確認"訂單資料

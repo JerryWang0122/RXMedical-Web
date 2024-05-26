@@ -162,6 +162,31 @@
                 </div>
             </div>
 
+            <!-- orderPickingModal -->
+            <div class="modal fade noto-sans" id="orderPickingModal" tabindex="-1" aria-labelledby="orderPickingModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-fullscreen">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderPickingModalLabel"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <small class="d-block text-center text-secondary">* 勾選框僅供輔助清點用，無紀錄功能</small>
+
+                            <!-- 個別商品 -->
+                            <div id="showRecordItemArea" class="row align-content-start">
+                                <!-- js 產生 -->
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                            <button type="button" id="pushToWaitingBtn" class="btn btn-success" data-id="">完成撿貨</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- orderWaitingModal -->
             <div class="modal fade noto-sans" id="orderWaitingModal" tabindex="-1" aria-labelledby="orderWaitingModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
