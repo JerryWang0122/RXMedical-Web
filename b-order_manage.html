@@ -1,0 +1,179 @@
+<!-- js -->
+<script src="./js/back-order-manage.js"></script>
+
+<!-- html -->
+<h2 class="content-title">清單管理</h2>
+
+<div class="container-xl mt-3 noto-sans nav-pills">
+
+    <div class="mx-auto d-flex justify-content-center">
+        <!-- 申請單狀態導覽列 -->
+        <ul id="orderStateNav" class="nav justify-content-center px-3 py-2 rounded-3">
+            <li class="nav-item">
+                <a class="nav-link active" data-status="待確認" href="javascript:;">待確認</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-status="待撿貨" href="javascript:;">待撿貨</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-status="待出貨" href="javascript:;">待出貨</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-status="運送中" href="javascript:;">運送中</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-status="已完成" href="javascript:;">已完成</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-status="取消" href="javascript:;">取消</a>
+            </li>
+        </ul>
+    </div>
+
+
+    <!-- 衛材訂單表格 -->
+    <table id="orderListTable" class="table table-hover dt-responsive display noto-sans">
+        <!-- 由 js 產生 -->
+    </table>
+</div>
+
+<!-- Modal -->
+<!-- orderDetailModal -->
+<div class="modal fade noto-sans" id="orderDetailModal" tabindex="-1" aria-labelledby="orderDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">訂單明細</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body noto-sans text-center">
+                <!-- 訂單概覽資訊 -->
+                <div class="text-start ps-3 ps-md-4 mb-3">
+                    <h5 class="text-primary">編號：<span id="detailRecordId"></span></h5>
+                    <h5 class="text-primary mt-3">狀態：<span id="detailOrderStatus"></span></h5>
+                </div>
+
+                <table class="table table-hover">
+                    <thead class="fs-5 fs-md-4">
+                        <tr>
+                            <th>#</th>
+                            <th>商品名稱</th>
+                            <th>數量</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailListArea" class="fs-5">
+                        <!-- js 產生 -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer justify-content-around">
+                <span>申請處室：<span id="detailApplyDept"></span></span>
+                <span class="ms-5">申請人：<span id="detailApplyUserName"></span></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- orderPickingModal -->
+<div class="modal fade noto-sans" id="orderPickingModal" tabindex="-1" aria-labelledby="orderPickingModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderPickingModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <small class="d-block text-center text-secondary">* 勾選框僅供輔助清點用，無紀錄功能</small>
+
+                <!-- 個別商品 -->
+                <div id="showRecordItemArea" class="row align-content-start">
+                    <!-- js 產生 -->
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                <button type="button" id="pushToWaitingBtn" class="btn btn-success" data-id="">完成撿貨</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- orderWaitingModal -->
+<div class="modal fade noto-sans" id="orderWaitingModal" tabindex="-1" aria-labelledby="orderWaitingModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderWaitingModalLabel">指定配送</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h5>配送資訊</h5>
+                <p class="text-primary">
+                    訂單編號：<span id="orderWaitingRecordId">123</span> <br>
+                    配送單位：<span id="orderWaitingDept">精神科</span> <br>
+                    申請人：<span id="orderWaitingMemberName">測試用</span>
+                </p>
+
+                <label for="jAdminList" class=" fs-5 mt-2 mb-1 ">請指派配送人員</label>
+
+                <select name="jAdminList" id="jAdminList" class="form-select" required>
+                    <option value="" selected disabled>請選擇...</option>
+                    <!-- js 填充 admin 人員選項 -->
+                </select>
+                <input type="hidden" id="jWaitingId" value="">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button id="assignTransporterBtn" type="submit" class="btn">開始配送</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- orderFinishModal -->
+<div class="modal fade noto-sans" id="orderFinishModal" tabindex="-1" aria-labelledby="orderFinishModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">訂單明細</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body noto-sans text-center">
+                <!-- 訂單概覽資訊 -->
+                <div class="text-start ps-3 ps-md-4 mb-3">
+                    <h5 class="text-primary">編號：<span id="finishRecordId">20240519001</span></h5>
+                    <h5 class="text-primary mt-3">狀態：已完成</h5>
+                    <h6 class="text-success mt-4">申請處室：<span id="finishApplyDept">精神科</span></h6>
+                    <h6 class="text-success mt-3">申請人：<span id="finishApplyUserName">小測試</span></h6>
+                    <h6 class="text-success mt-3">配送人：<span id="finishTransporterName">我自己</span></h6>
+                </div>
+
+                <table class="table table-hover">
+                    <thead class="fs-5 fs-md-4">
+                        <tr>
+                            <th>#</th>
+                            <th>商品名稱</th>
+                            <th style="white-space:nowrap;">數量</th>
+                            <th>撿貨人</th>
+                        </tr>
+                    </thead>
+                    <tbody id="finishListArea" class="fs-5">
+                        <!-- js 產生 -->
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
