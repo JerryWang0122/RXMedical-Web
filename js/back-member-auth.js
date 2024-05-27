@@ -144,6 +144,7 @@ $(document).ready(async function () {
                 timer: 1000
             });
             // 利用data-member-id找到table欄位對應的button，並更新span -> 修正更動人員的權限顯示狀態
+            $('[data-member-id=' + memberId + ']').data('auth-level', authLevel);
             $('[data-member-id=' + memberId +']').prev().text(options.find(opt => opt.value === authLevel).text);
 
             // 關閉 modal 視窗
