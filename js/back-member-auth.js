@@ -1,4 +1,14 @@
 $(document).ready(async function () {
+
+    // 進入時，取得使用者資訊
+    let currUser = JSON.parse(localStorage.getItem('currUser'));
+
+    // 當沒有使用者資料時，強行導入回登入頁
+    if (!localStorage.getItem('currUser')) {
+        location.href = './index.html';
+        return;
+    }
+
     // 會員權限選項
     const options = [
         { value: 'root', text: 'root', disabled: true },
@@ -9,14 +19,15 @@ $(document).ready(async function () {
     ];
 
     // TODO: 發 API 到後台拉人員權限資料
-    let data = await [
-        { "id": 1, "empId": "00000", "name": "root", "dept": "衛材庫房", "title": "root", "authLevel": "root" ,"createDate": "2024-05-01" },
-        { "id": 2, "empId": "73174", "name": "王俊傑", "dept": "秘書室", "title": "替代役", "authLevel": "admin" ,"createDate": "2024-05-21" },
-        { "id": 3, "empId": "12345", "name": "金一蓉", "dept": "文書中心", "title": "一般專員", "authLevel": "staff" ,"createDate": "2024-05-21" },
-        { "id": 4, "empId": "22345", "name": "陳二令", "dept": "衛材庫房", "title": "契約專員", "authLevel": "admin" ,"createDate": "2024-05-21" },
-        { "id": 5, "empId": "32345", "name": "張三疼", "dept": "秘書室", "title": "替代役", "authLevel": "off" ,"createDate": "2024-05-11" },
-        { "id": 6, "empId": "42345", "name": "王寺鄉", "dept": "衛材庫房", "title": "契約專員", "authLevel": "register", "createDate": "2024-05-21" },
-    ];
+    const memberRes = await fetch('http://localhost:8080/api/users/admin/member', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: currUser.id
+    });
+
+    const memberJson = await memberRes.json();
 
     // DataTables
     /**
@@ -33,7 +44,7 @@ $(document).ready(async function () {
             url: "../js/zh-Hant.json"  // 引用自定義漢化方式
         },
         lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]], //顯示筆數設定
-        data: data,
+        data: memberJson.data,
         autoWidth: false,
         responsive: true,
         layout: {
@@ -49,7 +60,7 @@ $(document).ready(async function () {
         },
         columns: [ // responsivePriority
             { 
-                data: 'empId', title: "ID", responsivePriority: 1,
+                data: 'empCode', title: "ID", responsivePriority: 1,
                 className: "min-tablet-l fs-5 text-start text-md-center"
             },
             { 
@@ -63,7 +74,7 @@ $(document).ready(async function () {
             { data: 'name', title: "姓名", responsivePriority: 2, className: "text-center fs-5" },
             { 
                 data: 'createDate', title: "註冊日", responsivePriority: 6,
-                className: "min-tablet-l"
+                className: "min-tablet-l text-start text-md-center fs-5"
             },
             {
                 data: 'authLevel', title: "權限", responsivePriority: 3,
@@ -71,16 +82,16 @@ $(document).ready(async function () {
                     if (data === "root") {
                         return "root";
                     }
-
-                    return `
-                    <span>${ options.find(opt => opt.value === data).text}</span>
-                    <button class="btn-change-auth btn fs-5 text-primary" 
-                    data-member-id="${row.id}" data-auth-level="${data}" data-member-name="${row.name}"  
-                    data-member-title="${row.title}" data-member-dept="${row.dept}"
-                    data-bs-toggle="modal" data-bs-target="#authChangeModal">
-                        <i class="bi bi-pencil-square"></i>
-                    </button>
-                    `;
+                    let retHTML = `<span>${options.find(opt => opt.value === data).text}</span>`
+                    if (currUser.authLevel === "root") {
+                        retHTML += `<button class="btn-change-auth btn fs-5 text-primary" 
+                                    data-member-id="${row.id}" data-auth-level="${data}" data-member-name="${row.name}"  
+                                    data-member-title="${row.title}" data-member-dept="${row.dept}"
+                                    data-bs-toggle="modal" data-bs-target="#authChangeModal">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>`
+                    }
+                    return retHTML;
 
                 },
                 className: "text-center align-middle fs-5"

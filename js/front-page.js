@@ -4,6 +4,13 @@
  *
 */
 $(document).ready(async () => {
+
+	// 當沒有使用者資料時，強行導入回登入頁
+	if (!localStorage.getItem('currUser')) {
+		location.href = './index.html';
+		return;
+	}
+
 	await loadHTML('/f-products.html', '#contentArea');
 
 	// 按下navbar的標題時，回到首頁
@@ -31,9 +38,9 @@ $(document).ready(async () => {
 		await loadHTML('./f-shop_cart.html', '#contentArea');
 	})
 
-	$('#logout').on('click', async(event) => {
+	$('#logout').on('click', (event) => {
 		event.preventDefault();
-		
+
 		// TODO: await .... 清除token
 		localStorage.clear();
 		

@@ -4,6 +4,13 @@
  *
 */
 $(document).ready(async () => {
+
+	// 當沒有使用者資料時，強行導入回登入頁
+	if (!localStorage.getItem('currUser')) {
+		location.href = './index.html';
+		return;
+	}
+
 	await loadHTML('/b-order_manage.html', '#contentArea');
 
 	// 按下navbar的標題時，回到首頁
@@ -20,6 +27,15 @@ $(document).ready(async () => {
 		location.href = '/front_page_frame.html';
 	});
 
+	// ----------- 登出 ----------
+	$('#logout').on('click', (event) => {
+		event.preventDefault();
+
+		// TODO: await .... 清除token
+		localStorage.clear();
+
+		location.href = '/index.html';
+	});
 
 });
 
