@@ -129,22 +129,20 @@ $(document).ready(async function () {
 
         const authLevel = $('input[type="radio"]:checked').val();
         const memberId = $('#jMemberId').val();
-        console.log(memberId, authLevel);
-        // TODO: 發API到後台改人員權限
-        // const response = await fetch('http://localhost:8080/api/root/member', {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({
-        //         "userId": memberId,
-        //         authLevel
-        //     })
-        // });
+        
+        // 發API到後台改人員權限
+        const response = await fetch('http://localhost:8080/api/users/root/member', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                memberId,
+                authLevel
+            })
+        });
 
-        // const { state, message } = await response.json();
-        let state = true;
-        let message = 'test';
+        const { state, message } = await response.json();
 
         if (state) {
             Swal.fire({

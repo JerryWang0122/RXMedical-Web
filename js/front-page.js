@@ -10,6 +10,7 @@ $(document).ready(async () => {
 		location.href = './index.html';
 		return;
 	}
+	const currUser = JSON.parse(localStorage.getItem('currUser'));
 
 	await loadHTML('/f-products.html', '#contentArea');
 
@@ -19,11 +20,26 @@ $(document).ready(async () => {
 	// -------------------- navbar 按鈕被按下時 -----------------
 	$('#navbarMenu').on('click', async (event) => {
 		await handleChangeNavBar(event, '#applyListBtn', '/f-order_history.html');
-		await handleChangeNavBar(event, '#backManageBtn', '/back_page_frame.html');
 	})
 
+	// ---------- 我的帳戶按鈕被按下時 ----------
 	$('#navbarMenu').on('click', '#myAccountBtn', async () => {
 		await loadHTML('./f-user_info.html', '#contentArea');
+	})
+
+
+	// ---------- 後台管理按鈕被按下時 ----------
+	$('#navbarMenu').on('click', '#backManageBtn', async () => {
+		if (currUser.authLevel === 'admin' || currUser.authLevel === 'root') {
+			location.href = '/back_page_frame.html';
+			return;
+		}
+
+		Swal.fire({
+			title: "權限不足",
+			position: "top",
+			icon: "error"
+		});
 	})
 
 	// -------------------- 商品展覽區有商品被按下時 -----------------
@@ -38,6 +54,7 @@ $(document).ready(async () => {
 		await loadHTML('./f-shop_cart.html', '#contentArea');
 	})
 
+	// -------------------- 登出按鈕被按下時 -----------------
 	$('#logout').on('click', (event) => {
 		event.preventDefault();
 
