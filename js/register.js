@@ -83,7 +83,7 @@ $(document).ready(function () {
 		} else {
 			// get user register info
 			const formData = {
-				empId: $('#jEmpId').val(),
+				empCode: $('#jEmpId').val(),
 				name: $('#jName').val(),
 				dept: $('#jDept').val(),
 				title: $('#jTitle').val(),

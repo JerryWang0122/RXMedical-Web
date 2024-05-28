@@ -27,6 +27,7 @@ $(document).ready(function () {
                         showConfirmButton: false,
                         timer: 1000
                     });
+                    localStorage.setItem('currUser', JSON.stringify(data));
                     setTimeout(() => {
                         location.href = './front_page_frame.html';
                     }, 1000);

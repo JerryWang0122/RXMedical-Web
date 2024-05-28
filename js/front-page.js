@@ -11,9 +11,12 @@ $(document).ready(async () => {
 
 	// -------------------- navbar 按鈕被按下時 -----------------
 	$('#navbarMenu').on('click', async (event) => {
-		await handleChangeNavBar(event, '#myAccountBtn', '/f-user_info.html');
 		await handleChangeNavBar(event, '#applyListBtn', '/f-order_history.html');
 		await handleChangeNavBar(event, '#backManageBtn', '/back_page_frame.html');
+	})
+
+	$('#navbarMenu').on('click', '#myAccountBtn', async () => {
+		await loadHTML('./f-user_info.html', '#contentArea');
 	})
 
 	// -------------------- 商品展覽區有商品被按下時 -----------------
@@ -26,6 +29,15 @@ $(document).ready(async () => {
 	// -------------------- 購物車按鈕被按下時 -----------------
 	$('#shopCartBtn').on('click', async (event) => {
 		await loadHTML('./f-shop_cart.html', '#contentArea');
+	})
+
+	$('#logout').on('click', async(event) => {
+		event.preventDefault();
+		
+		// TODO: await .... 清除token
+		localStorage.clear();
+		
+		location.href = '/index.html';
 	})
 });
 
