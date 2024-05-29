@@ -19,7 +19,7 @@ $(document).ready(async () => {
 	// -------------------- navbar 按鈕被按下時 -----------------
 	$('#navbarMenu').on('click', async (event) => {
 		await handleChangeNavBar(event, '#orderListManageBtn', '/b-order_manage.html');
-		await handleChangeNavBar(event, '#materialSalesBtn', '/f-order_history.html');
+		await handleChangeNavBar(event, '#materialSalesBtn', '/b-material_sales.html');
 		await handleChangeNavBar(event, '#memberAuthLevelBtn', '/b-member_auth.html');
 	})
 

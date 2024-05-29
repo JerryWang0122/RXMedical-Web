@@ -1,0 +1,115 @@
+<!-- js -->
+<script src="./js/back-add-product.js"></script>
+<!-- html -->
+<h2 class="content-title">新增商品</h2>
+
+<form id="addNewProductForm" class="container-xl mt-3 noto-sans" enctype="multipart/form-data">
+
+    <!-- 新增商品資訊區 -->
+    <div class="row">
+
+        <div class="ps-sm-4 col-12 col-sm-7 border-end">
+
+            <!-- 商品編號 -->
+            <div class="row">
+                <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
+                    <label class="d-block" for="jProductID">商品編號</label>
+                </div>
+                <div class="col-12 col-md-8 mt-2 mt-md-0">
+                    <input type="text" name="jProductID" id="jProductID" class="form-control" placeholder="請輸入商品編號"
+                        required>
+                </div>
+            </div>
+
+            <!-- 商品名稱 -->
+            <div class="row mt-3">
+                <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
+                    <label class="d-block" for="jProductName">商品名稱</label>
+                </div>
+                <div class="col-12 col-md-8 mt-2 mt-md-0">
+                    <input type="text" name="jProductName" id="jProductName" class="form-control" placeholder="請輸入商品名稱"
+                        required>
+                </div>
+            </div>
+
+            <!-- 商品種類 -->
+            <div class="row mt-3">
+                <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
+                    <label class="d-block" for="jProductCategory">商品種類</label>
+                </div>
+                <div class="col-12 col-md-8 mt-2 mt-md-0">
+                    <input type="text" name="jProductCategory" id="jProductCategory" class="form-control"
+                        placeholder="請輸入商品種類" required>
+                </div>
+            </div>
+
+            <!-- 儲存位置 -->
+            <div class="row mt-3">
+                <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
+                    <label class="d-block" for="jProductStorage">儲存位置</label>
+                </div>
+                <div class="col-12 col-md-8 mt-2 mt-md-0">
+                    <input type="text" name="jProductStorage" id="jProductStorage" class="form-control"
+                        placeholder="請輸入儲存位置" required>
+                </div>
+            </div>
+
+            <!-- 商品描述 -->
+            <div class="row mt-3">
+                <div class="offset-lg-1 col-12 col-md-3 col-lg-2">
+                    <label class="d-block" for="jProductDescription">商品描述</label>
+                </div>
+                <div class="col-12 col-md-8 mt-1">
+                    <textarea name="jProductDescription" rows="5" id="jProductDescription"
+                        class="form-control"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-12 col-sm-5 col-lg-4 px-3 ps-lg-5 mt-3 mt-sm-0 pt-3 pt-sm-0 ">
+            <label class="w-100 btn btn-info">
+                <input class="d-none" type="file" name="jProductImage" id="jProductImage" accept=".jpg, .png">上傳圖片
+            </label>
+
+            <span class="d-block mt-3">為達圖片最佳顯示效果，請參考以下注意事項：</span>
+            <ul class="mt-1" style="list-style-type: disc;">
+                <li>每張照片容量最高 500KB</li>
+                <li>照片寬度最大 1000px</li>
+                <li>檔案類型必須是 jpg, png</li>
+                <li>圖片盡可能去背，且方形</li>
+                <li>按下[確定送出]完成上傳</li>
+            </ul>
+
+            <!-- 顯示上傳圖片 -->
+            <div id="imgPrevArea" class="text-center"></div>
+        </div>
+
+    </div>
+
+
+    <!-- 首次進貨資訊 -->
+    <div class="row mt-3 ms-1 mx-sm-2 border-top pt-3 ps-sm-2 ps-md-0">
+        <div class="col-12 col-md-6">
+
+            <label class="row">
+
+                <span class="offset-sm-1 offset-md-0 offset-lg-1 col-4 align-content-center">首次進貨<span
+                        class="d-none d-sm-inline">量</span>：</span>
+                <input type="number" name="jFirstPurchaseQuantity" id="jFirstPurchaseQuantity"
+                    class="form-control col-7 w-50" placeholder="請輸入首次進貨量" required>
+            </label>
+        </div>
+        <div class="col-12 col-md-6 mt-2 mt-md-0">
+            <label class="row">
+                <span class="offset-sm-1 offset-lg-1 col-4 col-md-5 col-lg-4 align-content-center ps-md-4">批貨費用：</span>
+                <input type="number" name="jFirstPurchaseCost" id="jFirstPurchaseCost" class="form-control col-7 w-50"
+                    placeholder="請輸入費用" required>
+            </label>
+        </div>
+    </div>
+    <div class="justify-content-center d-flex">
+        <button type="submit" class="btn btn-success w-75 mt-4">確定送出</button>
+    </div>
+
+</form>

@@ -80,4 +80,9 @@ $(document).ready(async function() {
             }
         ]
     });
+
+    // ------------- 新增商品按鍵被按下時 -------------
+    $('#addProductBtn').on('click', async function () {
+        await loadHTML('./b-add_product.html', '#contentArea');
+    });
 })
