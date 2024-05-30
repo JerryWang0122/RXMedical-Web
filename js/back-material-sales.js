@@ -72,7 +72,7 @@ $(document).ready(async function() {
 
                     return `
                     
-                    <button class="btn-change-auth btn fs-5 text-primary btn-edit-material" 
+                    <button class="btn fs-5 text-primary btn-edit-material" 
                     data-material-id="${row.id}">
                         <i class="bi bi-pencil-square"></i>
                     </button>
@@ -95,10 +95,38 @@ $(document).ready(async function() {
         await loadHTML('./b-add_product.html', '#contentArea');
     });
 
+    // ------------- 編輯/進銷按鈕被按下時 ---------------
     $('#productInfoTable').on('click', '.btn-edit-material', async function () {
 
         const id = $(this).data('material-id');
-        await loadHTML('./b-product_sale_and_edit.html', '#contentArea');
-        console.log(id);
+
+        const infoRes = await fetch('http://localhost:8080/api/products/admin/material/edit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "userId": currUser.id, "materialId": id })
+        })
+
+        const infoJson = await infoRes.json();
+        if (infoJson.state) {
+            await loadHTML('./b-product_sale_and_edit.html', '#contentArea');
+            $('#aProductID').val(infoJson.data.code);
+            $('#aProductName').val(infoJson.data.name);
+            $('#aProductCategory').val(infoJson.data.category);
+            $('#aProductStorage').val(infoJson.data.storage);
+            $('#aProductDescription').val(infoJson.data.description);
+            $('#aProductImage').attr('src', `./img/products/${infoJson.data.picture}`);
+            $('#addSalesRecordBtn').attr('data-id', id);
+            $('#updateMaterialInfoBtn').attr('data-id', id)
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: infoJson.message,
+                showConfirmButton: true
+            });
+        }
+        
     });
 })

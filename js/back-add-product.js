@@ -12,7 +12,7 @@ $(document).ready(function (event) {
     const imgPrevArea = $('#imgPrevArea');
 
     // ---------------- 使用者上傳相片時 ------------------------
-    $('#jProductImage').on('change', (event) => {
+    $('#jProductImage').on('change', function(event) {
         // Reset
         picValid = false;
         imgPrevArea.html('');
@@ -25,12 +25,14 @@ $(document).ready(function (event) {
                 position: "top",
                 icon: "warning"
             })
+            $(this).val('');
             return;
         }
 
         let fileReader = new FileReader();
         fileReader.onload = function (e) {
             let data = e.target.result;
+            
 
             let imgReader = new Image();
             imgReader.onload = function () {
@@ -42,6 +44,7 @@ $(document).ready(function (event) {
                         position: "top",
                         icon: "warning"
                     })
+                    $(this).val('');
                     return;
                 } else {
                     picValid = true;
