@@ -1,4 +1,4 @@
-$(document).ready(async function () {
+$(document).ready(function (event) {
 
     // 當沒有使用者資料時，強行導入回登入頁
     if (!localStorage.getItem('currUser')) {
@@ -62,8 +62,7 @@ $(document).ready(async function () {
 
 
     //-------------------- 確認新增商品 -------------------------- 
-    $('#addNewProductForm').on('submit', async (event) => {
-        event.preventDefault();
+    $('#addNewProductBtn').on('click', async (event) => {
 
         // 確認照片
         if (!picValid) {
@@ -74,7 +73,7 @@ $(document).ready(async function () {
                 showConfirmButton: false,
                 timer: 1000
             });
-            return
+            return;
         }
 
         // 取得資料
@@ -119,38 +118,36 @@ $(document).ready(async function () {
         formData.append('price', price);
         formData.append('userId', currUser.id);
         formData.append('picture', $('#jProductImage')[0].files[0]);
-        
+
         // 發API到後台新增商品
         const response = await fetch('http://localhost:8080/api/products/admin/material/create', {
             method: 'POST',
             body: formData
-        })
-        
-        console.log('nothing happen');
-        // const { state, message } = await response.json();
-        
+        });
 
-        // if (state) {
-        //     Swal.fire({
-        //         position: "top",
-        //         icon: "success",
-        //         title: message,
-        //         showConfirmButton: false,
-        //         timer: 1000
-        //     });
-        //     setTimeout(async () => {
-        //         await loadHTML('./b-material_sales.html', '#contentArea');
-        //     }, 1000);
-        //     console.log("test");
-        //     return;
-        // } else {
-        //     Swal.fire({
-        //         position: "top",
-        //         icon: "error",
-        //         title: message,
-        //         showConfirmButton: true
-        //     })
-        //     return;
-        // }
+        const { state, message } = await response.json();
+
+        if (state) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: message,
+                showConfirmButton: false,
+                timer: 1000
+            });
+            setTimeout(async () => {
+                await loadHTML('./b-material_sales.html', '#contentArea');
+            }, 1000);
+            return;
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: message,
+                showConfirmButton: true
+            })
+            return;
+        }
+
     });
 });

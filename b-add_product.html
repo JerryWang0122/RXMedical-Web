@@ -1,9 +1,10 @@
 <!-- js -->
 <script src="./js/back-add-product.js"></script>
+
 <!-- html -->
 <h2 class="content-title">新增商品</h2>
 
-<form id="addNewProductForm" class="container-xl mt-3 noto-sans" enctype="multipart/form-data">
+<form method="post" action="" id="addNewProductForm" class="container-xl mt-3 noto-sans" enctype="multipart/form-data">
 
     <!-- 新增商品資訊區 -->
     <div class="row">
@@ -109,7 +110,7 @@
         </div>
     </div>
     <div class="justify-content-center d-flex">
-        <button type="submit" class="btn btn-success w-75 mt-4">確定送出</button>
+        <button id="addNewProductBtn" type="button" class="btn btn-success w-75 mt-4">確定送出</button>
     </div>
 
 </form>
