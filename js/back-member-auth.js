@@ -1,14 +1,5 @@
 $(document).ready(async function () {
 
-    // 進入時，取得使用者資訊
-    let currUser = JSON.parse(localStorage.getItem('currUser'));
-
-    // 當沒有使用者資料時，強行導入回登入頁
-    if (!localStorage.getItem('currUser')) {
-        location.href = './index.html';
-        return;
-    }
-
     // 會員權限選項
     const options = [
         { value: 'root', text: 'root', disabled: true },
@@ -18,13 +9,22 @@ $(document).ready(async function () {
         { value: 'off', text: '關閉權限' }
     ];
 
-    // TODO: 發 API 到後台拉人員權限資料
+    // 進入時，當沒有使用者資料時，強行導入回登入頁
+    if (!localStorage.getItem('currUser')) {
+        location.href = './index.html';
+        return;
+    }
+
+    // 取得使用者資訊
+    let currUser = JSON.parse(localStorage.getItem('currUser'));
+
+    // 發 API 到後台拉人員權限資料
     const memberRes = await fetch('http://localhost:8080/api/users/admin/member', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: currUser.id
+        body: JSON.stringify({ "userId": currUser.id })
     });
 
     const memberJson = await memberRes.json();
@@ -137,6 +137,7 @@ $(document).ready(async function () {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                'userId': currUser.id,
                 memberId,
                 authLevel
             })

@@ -1,11 +1,22 @@
 $(document).ready(async function() {
 
-    // TODO: 發API 到後台拉產品資料
-    let data = await [
-        { "id": 1, "code": "CS1234567890", "name": "石膏鞋", "stock": 123, "storage": "01-03-05", "category": "石膏"},
-        { "id": 2, "code": "IP1763967890", "name": "環保清潔袋(超特大)", "stock": 40, "storage": "11-03-05", "category": "垃圾袋"},
-        { "id": 3, "code": "PT8334567381", "name": "PVC無粉手套-XS", "stock": 123, "storage": "02-05-01", "category": "手套"}
-    ]
+    // 當沒有使用者資料時，強行導入回登入頁
+    if (!localStorage.getItem('currUser')) {
+        location.href = './index.html';
+        return;
+    }
+    const currUser = JSON.parse(localStorage.getItem('currUser'));
+
+    // 發API 到後台拉產品資料
+    const matRes = await fetch('http://localhost:8080/api/products/admin/material',{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ "userId": currUser.id })
+    });
+    const matJson = await matRes.json();
+
 
     // DataTables
     /**
@@ -22,7 +33,7 @@ $(document).ready(async function() {
             url: "../js/zh-Hant.json"  // 引用自定義漢化方式
         },
         lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]], //顯示筆數設定
-        data: data,
+        data: matJson.state ? matJson.data : [],
         autoWidth: false,
         responsive: true,
         layout: {
@@ -61,10 +72,8 @@ $(document).ready(async function() {
 
                     return `
                     
-                    <button class="btn-change-auth btn fs-5 text-primary" 
-                    data-member-id="${row.id}" data-auth-level="${data}" data-member-name="${row.name}"  
-                    data-member-title="${row.title}" data-member-dept="${row.dept}"
-                    data-bs-toggle="modal" data-bs-target="#authChangeModal">
+                    <button class="btn-change-auth btn fs-5 text-primary btn-edit-material" 
+                    data-material-id="${row.id}">
                         <i class="bi bi-pencil-square"></i>
                     </button>
                     `;
@@ -84,5 +93,12 @@ $(document).ready(async function() {
     // ------------- 新增商品按鍵被按下時 -------------
     $('#addProductBtn').on('click', async function () {
         await loadHTML('./b-add_product.html', '#contentArea');
+    });
+
+    $('#productInfoTable').on('click', '.btn-edit-material', async function () {
+
+        const id = $(this).data('material-id');
+        await loadHTML('./b-product_sale_and_edit.html', '#contentArea');
+        console.log(id);
     });
 })

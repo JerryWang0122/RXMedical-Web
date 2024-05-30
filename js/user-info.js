@@ -8,8 +8,8 @@ $(document).ready(async function () {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: currUser.id 
-    })
+        body: JSON.stringify({ userId: currUser.id })
+    });
     const { state, message, data } = await response.json();
 
     if (state) {
@@ -45,7 +45,7 @@ $(document).ready(async function () {
         }
         
         const formData = {
-            id: currUser.id,
+            userId: currUser.id,
             name: $('#jName').val(),
             dept: $('#jDept').val(),
             title: $('#jTitle').val(),
