@@ -140,12 +140,27 @@ $(document).ready(async function() {
         }
     });
 
+    // --------------- 進/銷表單狀態切換時 -------------------
+    $('#jFlow').on('change', function () {
+        const selectedValue = $(this).val();
+
+        if (selectedValue === '銷') {
+            $('label[for="jFlowAmount"]').text('銷毀數量');
+            $('label[for="jFlowCost"]').text('報銷費用');
+        } else {
+            $('label[for="jFlowAmount"]').text('批貨數量');
+            $('label[for="jFlowCost"]').text('進貨總價');
+        }
+    });
+
+    // ------------- 送出進銷表單 -------------------
     $('#addSalesRecordBtn').on('click', async function(event) {
         event.preventDefault();
         // 获取表单数据
         const jFlow = $('#jFlow').val();
         const jFlowAmount = $('#jFlowAmount').val();
         const jFlowCost = $('#jFlowCost').val();
+        const materialId = $('#addSalesRecordBtn').data('id');
 
         // 表单验证
         if (!jFlow || !jFlowAmount || !jFlowCost) {
@@ -167,18 +182,37 @@ $(document).ready(async function() {
             });
             return;
         }
+
+        const apiURL = jFlow === '進' ? "http://localhost:8080/api/sales/admin/call" : "http://localhost:8080/api/sales/admin/destroy";
+
+        const saleRes = await fetch(apiURL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                "userId": currUser.id,
+                materialId,
+                "quantity": jFlowAmount,
+                "price": jFlowCost
+            })
+        })
+        const saleJson = await saleRes.json();
+        if (saleJson.state) {
+            Swal.fire({
+                position: "top",
+                icon: "success",
+                title: saleJson.message + ' ' + saleJson.data,
+                showConfirmButton: false,
+                timer: 1000
+            });
+            $('#jFlowAmount').val('');
+            $('#jFlowCost').val('');
+
+            return;
+        }
+
     })
 
-    // --------------- 進/銷表單狀態切換時
-    $('#jFlow').on('change', function () {
-        const selectedValue = $(this).val();
-
-        if (selectedValue === '銷') {
-            $('label[for="jFlowAmount"]').text('銷毀數量');
-            $('label[for="jFlowCost"]').text('報銷費用');
-        } else {
-            $('label[for="jFlowAmount"]').text('批貨數量');
-            $('label[for="jFlowCost"]').text('進貨總價');
-        }
-    });
+    
 })
