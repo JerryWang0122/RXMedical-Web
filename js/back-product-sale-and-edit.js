@@ -210,6 +210,15 @@ $(document).ready(async function() {
             $('#jFlowCost').val('');
 
             return;
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: saleJson.message,
+                text: '目前存量' + saleJson.data,
+                showConfirmButton: true
+            })
+            return;
         }
 
     })
