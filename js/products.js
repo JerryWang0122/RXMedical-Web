@@ -71,8 +71,29 @@ $(document).ready(async function () {
 		}
 	};
 
+	// 用傳入的頁碼決定如何渲染
 	const renderProductsAreaByPage = (page) => {
 		$('#productArea').html(matchProducts.slice((page - 1) * productPerPage, page * productPerPage).map(renderProduct).join(''));
+	};
+
+	// 點擊搜尋或種類時，產品結果調整
+	const searchMatchProducts = () => {
+		const keyword = $('#keyword').val().toLowerCase();
+		let categories = [];
+		// 取出所有已被勾選種類的名字
+		$('.categories input[type="checkbox"]:checked').each(function () {
+			categories.push($(this).val());
+		});
+
+		// 重設 matchProducts為符合條件的商品(先過種類再過關鍵字)
+		// 如果種類為all，只需過關鍵字
+		if (categories.includes('all')) {
+			matchProducts = data.filter(p => p.name.toLowerCase().includes(keyword));
+		} else {
+			matchProducts = data.filter(p => categories.includes(p.category))
+				.filter(p => p.name.toLowerCase().includes(keyword));
+		}
+		initPaginatorAndProductsArea(matchProducts);
 	};
 
 
@@ -165,27 +186,6 @@ $(document).ready(async function () {
 		}
 	});
 
-	
-	// 點擊搜尋或種類時，產品結果調整
-	const searchMatchProducts = () => {
-		const keyword = $('#keyword').val().toLowerCase();
-		let categories = [];
-		// 取出所有已被勾選種類的名字
-		$('.categories input[type="checkbox"]:checked').each(function () {
-			categories.push($(this).val());
-		});
-
-		// 重設 matchProducts為符合條件的商品(先過種類再過關鍵字)
-		// 如果種類為all，只需過關鍵字
-		if (categories.includes('all')) {
-			matchProducts = data.filter(p => p.name.toLowerCase().includes(keyword));
-		} else {
-			matchProducts = data.filter(p => categories.includes(p.category))
-				.filter(p => p.name.toLowerCase().includes(keyword));
-		}
-		initPaginatorAndProductsArea(matchProducts);
-	};
-
 	// ----------- 關鍵字搜索 --------------
 	// #keyword 按下enter時執行
 	$('#keyword').on('keyup', function (event) {
@@ -232,6 +232,38 @@ $(document).ready(async function () {
 			$('#cate-all').prop('checked', true);
 		}
 		searchMatchProducts();
+	});
+
+	// 個別商品被按下時
+	$('#productArea').on('click', '.product-item', async function () {
+		const productId = $(this).data('product-id');
+		
+		const itemRes = await fetch("http://localhost:8080/api/products/product/item", {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ 'userId': currUser.id, 'materialId': productId }),
+		});
+		const itemJson = await itemRes.json();
+		if (itemJson.state) {
+			await loadHTML('f-product_detail.html', '#contentArea');
+			$('#itemName').text(itemJson.data.name);
+			$('#itemImg').attr('src', `./img/products/${itemJson.data.picture}`);
+			$('#itemCategory').text(itemJson.data.category);
+			$('#itemDescription').text(itemJson.data.description);
+			$('#itemStock').text(itemJson.data.stock);
+			$('#jAddToCartBtn').attr('data-product-id', itemJson.data.id);
+			$('#jAddToCartBtn').attr('data-product-name', itemJson.data.name);
+			$('#jAddToCartBtn').attr('data-product-img', itemJson.data.picture);
+		} else {
+			Swal.fire({
+				position: "top",
+				icon: "error",
+				title: itemJson.message,
+				showConfirmButton: true
+			})
+		}
 	});
 
 });

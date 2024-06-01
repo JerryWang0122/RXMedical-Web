@@ -9,7 +9,7 @@ $(document).ready(function () {
 	$('.user-name').text(currUser.name);
 	$('.user-dept').text(currUser.dept);
 
-	// 設定購物車內容量
-	// TODO: LocalStorage內的資料
-	$('#cartCount').text('1');
+	// 設定購物車內容量，從LocalStorage內的資料
+	const cartCount = JSON.parse(localStorage.getItem('shopCartList'))?.length || '0';
+	$('#cartCount').text(cartCount);
 });
