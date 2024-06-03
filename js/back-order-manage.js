@@ -323,19 +323,14 @@ $(document).ready(async function () {
         cleanTable();
 
         // TODO: 發 API 到後台拉"待確認"訂單資料
-        data = await [
-            { "id": 1, "recordId": "20240525031", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 2, "recordId": "20240525032", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 3, "recordId": "20240525033", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 4, "recordId": "20240525034", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 5, "recordId": "20240525035", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 6, "recordId": "20240525036", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 7, "recordId": "20240525037", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 8, "recordId": "20240525038", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 9, "recordId": "20240525039", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 10, "recordId": "20240525040", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉" },
-            { "id": 11, "recordId": "20240525041", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" }
-        ];
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'userId': currUser.id })
+        })
+        data = (await response.json()).data;
 
         table = $('#orderListTable').DataTable({
             language: {
@@ -352,19 +347,19 @@ $(document).ready(async function () {
             },
             columns: [ // responsivePriority
                 {
-                    data: 'recordId', title: "編號", responsivePriority: 4,
+                    data: 'code', title: "編號", responsivePriority: 4,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
-                    data: 'dept', title: "處室", responsivePriority: 2,
+                    data: 'demander.dept', title: "處室", responsivePriority: 2,
                     className: "text-center fs-5"
                 },
                 {
-                    data: 'title', title: "職稱", responsivePriority: 6,
+                    data: 'demander.title', title: "職稱", responsivePriority: 6,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
-                    data: 'name', title: "申請人", responsivePriority: 5,
+                    data: 'demander.name', title: "申請人", responsivePriority: 5,
                     className: "min-tablet-p text-start text-sm-center fs-5"
                 },
                 {
@@ -376,7 +371,7 @@ $(document).ready(async function () {
                     render: function (data, type, row) {
                         return `
                         <button class="btn btn-success btn-start-picking" 
-                        data-id="${data}" data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
+                        data-id="${data}" data-record-id="${row.code}" data-apply-dept="${row.demander.dept}"
                         data-bs-toggle="modal" data-bs-target="#orderPickingModal">開始撿貨</button>`;
                     },
                     className: "fs-5 text-center"
@@ -396,7 +391,7 @@ $(document).ready(async function () {
     const renderPickingList = (orderItem) => {
         let resultHTML = `
         <div class="col-12 col-sm-6 col-lg-4 p-1">
-            <div class="order-item-detail ${orderItem.user ? 'item-picked ' : ''}m-2 p-2">
+            <div class="order-item-detail ${orderItem.takerName ? 'item-picked ' : ''}m-2 p-2">
                 <div class="row">
                     <div class="col-4 order-img-container">
                         <img src="../img/products/${ orderItem.product.picture}" alt="">
@@ -414,9 +409,9 @@ $(document).ready(async function () {
                 <div class="row pt-2 mx-1  border-top">
                     <div class="col-12 d-flex justify-content-between align-items-center" style="min-height: 38px;">
         `
-        if (orderItem.user) {
+        if (orderItem.takerName) {
             resultHTML += `
-                        <span>撿貨人: ${orderItem.user.name}</span>
+                        <span>撿貨人: ${orderItem.takerName}</span>
                         <input type="checkbox" class="form-check-input" >
             `;
         } else {
@@ -433,14 +428,26 @@ $(document).ready(async function () {
     // 載入recordId對應的訂單內容
     const loadOrderItemToPickingList = async (id) => {
         $('#showRecordItemArea').empty();    // Reset
-        // TODO: 發 API 到後台拉"待撿貨"訂單資料(History Table)
-        const recordOrderItems = await [
-            { "id": 1, "quantity": 50, "product": { "code": "CA1234567898", "storage": "01-04-03", "name": "石膏鞋", "picture": "product-1.png" }, "user": null },
-            { "id": 2, "quantity": 150, "product": { "code": "BX2224567898", "storage": "01-03-05", "name": "紗布", "picture": "product-3.png" }, "user": null },
-            { "id": 3, "quantity": 250, "product": { "code": "FD3334567898", "storage": "02-06-03", "name": "石膏鞋石膏鞋石膏鞋", "picture": "product-5.png" }, "user": {"name": "王俊傑"} },    
-        ];
-
-        $('#showRecordItemArea').html(recordOrderItems.map(renderPickingList).join(''));
+        // 發 API 到後台拉"待撿貨"訂單資料(History Table)
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking/detail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+        });
+        const { state, message, data } = await response.json();
+        if (state) {
+            $('#showRecordItemArea').html(data.map(renderPickingList).join(''));
+        } else {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: message,
+                showConfirmButton: false,
+                timer: 1000
+            });
+        };
         
     };
 
@@ -465,20 +472,16 @@ $(document).ready(async function () {
 
         // TODO:利用historyId和jwt內部的使用者id，紀錄history的user
         const historyId = $(this).data('history-id');
-        const userId = '1';
-        const userName = '王俊傑';
-        // const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ historyId, userId })
-        // });
-        // const { state, message } = await response.json();
-
-        // console.log(historyId);
-        let state = true;
-        let message = 'something wrong';
+        const userId = currUser.id;
+        const userName = currUser.name;
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ historyId, userId })
+        });
+        const { state, message } = await response.json();
 
         if (state) {    // 成功紀錄
             showPickerSpan.text('撿貨人: ' + userName);
@@ -520,17 +523,15 @@ $(document).ready(async function () {
         });
 
         if (result.isConfirmed) {
-            // TODO: 發API到後台確認撿貨完成
-            // const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
-            //     method: 'POST',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     },
-            //     body: JSON.stringify( id )
-            // });
-            // const { state, message } = await response.json();
-            let state = true;
-            let message = 'something wrong';
+            // 發API到後台確認撿貨完成
+            const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+            });
+            const { state, message } = await response.json();
 
             if (state) {
                 Swal.fire({
@@ -937,12 +938,15 @@ $(document).ready(async function () {
     const loadOrderCanceledTable = async () => {
         cleanTable();
 
-        // TODO: 發 API 到後台拉"待確認"訂單資料
-        data = await [
-            { "id": 1, "recordId": "20240523091", "applyAmount": 25, "dept": "護家302", "title": "書記", "name": "王美惠" },
-            { "id": 2, "recordId": "20240523092", "applyAmount": 15, "dept": "202病房", "title": "契約專員", "name": "陳國偉" },
-            { "id": 3, "recordId": "20240523093", "applyAmount": 21, "dept": "護家301", "title": "書記", "name": "王小玉" }
-        ];
+        // 發 API 到後台拉"取消"訂單資料
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/rejected', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'userId': currUser.id })
+        })
+        data = (await response.json()).data;
 
         table = $('#orderListTable').DataTable({
             language: {
@@ -959,27 +963,27 @@ $(document).ready(async function () {
             },
             columns: [ // responsivePriority
                 {
-                    data: 'recordId', title: "編號", responsivePriority: 4,
+                    data: 'code', title: "編號", responsivePriority: 4,
                     className: "min-tablet-p text-start text-md-center fs-5"
                 },
                 {
-                    data: 'dept', title: "處室", responsivePriority: 2,
+                    data: 'demander.dept', title: "處室", responsivePriority: 2,
                     className: "text-center fs-5"
                 },
                 {
-                    data: 'title', title: "職稱", responsivePriority: 6,
+                    data: 'demander.title', title: "職稱", responsivePriority: 6,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
-                    data: 'name', title: "申請人", responsivePriority: 5,
+                    data: 'demander.name', title: "申請人", responsivePriority: 5,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
                     data: 'id', title: "明細", responsivePriority: 3,
                     render: function (data, type, row) {
                         return `<button class="btn btn-outline-secondary fs-5 btn-order-detail" data-id="${data}" 
-                            data-record-id="${row.recordId}" data-status="取消" data-apply-dept="${row.dept}"
-                            data-apply-user-name="${row.name}"
+                            data-record-id="${row.code}" data-status="取消" data-apply-dept="${row.demander.dept}"
+                            data-apply-user-name="${row.demander.name}"
                     		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
                     			<i class="bi bi-journal-text"></i>
                   			</button>`;
