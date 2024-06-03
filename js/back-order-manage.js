@@ -1,5 +1,12 @@
 $(document).ready(async function () {
     
+    // 當沒有使用者資料時，強行導入回登入頁
+    if (!localStorage.getItem('currUser')) {
+        location.href = './index.html';
+        return;
+    }
+    const currUser = JSON.parse(localStorage.getItem('currUser'));
+
     // DataTables
     /**
      * Responsive Details -> https://datatables.net/extensions/responsive/classes
@@ -100,21 +107,17 @@ $(document).ready(async function () {
     const loadToBeConfirmedTable = async () => {
         cleanTable();
 
-        // TODO: 發 API 到後台拉"待確認"訂單資料
-        data = await [
-            { "id": 1, "recordId": "20240523001", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 2, "recordId": "20240523002", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 3, "recordId": "20240523003", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 4, "recordId": "20240523004", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 5, "recordId": "20240523005", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 6, "recordId": "20240523006", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 7, "recordId": "20240523007", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 8, "recordId": "20240523008", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 9, "recordId": "20240523009", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 10, "recordId": "20240523010", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-            { "id": 11, "recordId": "20240523011", "applyAmount": 20, "dept": "護家202", "title": "書記", "name": "王建民" },
-            { "id": 12, "recordId": "20240523012", "applyAmount": 10, "dept": "502病房", "title": "契約專員", "name": "陳曉民" },
-        ];
+        // 發 API 到後台拉"待確認"訂單資料
+        const uncheckedRes = await fetch("http://localhost:8080/api/sales/admin/order_list/unchecked", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "userId": currUser.id
+            }),
+        });
+        data = (await uncheckedRes.json()).data;
 
         table = $('#orderListTable').DataTable({
             language: {
@@ -131,27 +134,27 @@ $(document).ready(async function () {
             },
             columns: [ // responsivePriority
                 { 
-                    data: 'recordId', title: "編號", responsivePriority: 4,
+                    data: 'code', title: "編號", responsivePriority: 4,
                     className: "min-tablet-l text-start text-md-center fs-5" 
                 },
                 { 
-                    data: 'dept', title: "處室", responsivePriority: 2,
+                    data: 'demander.dept', title: "處室", responsivePriority: 2,
                     className: "text-center fs-5" 
                 },
                 { 
-                    data: 'title', title: "職稱", responsivePriority: 6,
+                    data: 'demander.title', title: "職稱", responsivePriority: 6,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
                 {
-                    data: 'name', title: "申請人", responsivePriority: 5,
+                    data: 'demander.name', title: "申請人", responsivePriority: 5,
                     className: "min-tablet-p text-start text-sm-center fs-5"
                 },
                 {
                     data: 'id', title: "明細", responsivePriority: 3,
                     render: function (data, type, row) {
                         return `<button class="btn btn-outline-info fs-5 btn-order-detail" data-id="${data}" 
-                            data-record-id="${row.recordId}" data-status="待確認" data-apply-dept="${row.dept}"
-                            data-apply-user-name="${row.name}"
+                            data-record-id="${row.code}" data-status="待確認" data-apply-dept="${row.demander.dept}"
+                            data-apply-user-name="${row.demander.name}"
                     		data-bs-toggle="modal" data-bs-target="#orderDetailModal"> 
                     			<i class="bi bi-journal-text"></i>
                   			</button>`;
@@ -166,8 +169,8 @@ $(document).ready(async function () {
                     data: 'id', title: "確認訂單", responsivePriority: 1,
                     render: function (data, type, row) {
                         return `
-                        <button class="btn-push-to-picking btn btn-success" data-id="${data}" data-record-id="${row.recordId}"><i class="bi bi-check-lg"></i></button>
-                        <button class="btn-push-to-cancel btn btn-danger ms-3" data-id="${data}" data-record-id="${row.recordId}"><i class="bi bi-x-lg"></i></i></button>`;
+                        <button class="btn-push-to-picking btn btn-success" data-id="${data}" data-record-id="${row.code}"><i class="bi bi-check-lg"></i></button>
+                        <button class="btn-push-to-cancel btn btn-danger ms-3" data-id="${data}" data-record-id="${row.code}"><i class="bi bi-x-lg"></i></i></button>`;
                     },
                     className: "fs-5 text-center"
                 }
@@ -202,24 +205,21 @@ $(document).ready(async function () {
         // 先清空 detailListArea
         $('#detailListArea').empty();
 
-        // // TODO: 用id到後台拿資料
-        const detailLists = await[
-            { "productName": "石膏鞋", "quantity": 5 },
-            { "productName": "石膏鞋", "quantity": 10 },
-            { "productName": "石膏鞋", "quantity": 15 },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 20 },
-            { "productName": "石膏鞋石膏鞋", "quantity": 25 },
-            { "productName": "石膏鞋", "quantity": 30 },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 35 },
-            { "productName": "石膏鞋", "quantity": 40 },
-            { "productName": "石膏鞋", "quantity": 45 },
-            { "productName": "石膏鞋石膏鞋", "quantity": 50 },
-            { "productName": "石膏鞋", "quantity": 55 },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 60 },
-        ];
+        //用id到後台拿資料
+        const detailListRes = await fetch("http://localhost:8080/api/sales/admin/order_list/detail", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "userId": currUser.id,
+                "recordId": id
+            }),
+        });
+        const detailList = (await detailListRes.json()).data;
 
         // 顯示資料
-        $('#detailListArea').html(detailLists.map(renderDetailListArea).join(''));
+        $('#detailListArea').html(detailList.map(renderDetailListArea).join(''));
 
     });
 
@@ -228,19 +228,17 @@ $(document).ready(async function () {
         const id = $(this).data('id');
         const recordId = $(this).data('record-id');
 
-        // TODO: 發API到後台將訂單往待撿貨狀態推
+        // 發API到後台將訂單往待撿貨狀態推
         // 利用 id 把訂單推到待撿貨
-        // const response = await fetch('http://localhost:8080/api/sales/admin/order_list/unchecked', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ id })
-        // });
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/unchecked', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+        });
 
-        // const { state, message } = await response.json();
-        let state = true;
-        let message = 'something wrong';
+        const { state, message } = await response.json();
 
         if (state) {    // 狀態推送成功
             Swal.fire({
@@ -284,19 +282,17 @@ $(document).ready(async function () {
             return;
         }
 
-        // TODO: 發API到後台將訂單往取消狀態推
-        // 利用 id 把訂單推到待撿貨
-        // const response = await fetch('http://localhost:8080/api/admin/order_list/unchecked', {
-        //     method: 'PUT',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify({ id })
-        // });
+        // 發API到後台將訂單往取消狀態推
+        // 利用 id 把訂單推到取消
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/unchecked', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+        });
 
-        // const { state, message } = await response.json();
-        let state = true;
-        let message = 'something wrong';
+        const { state, message } = await response.json();
 
         if (state) {    // 狀態推送成功
             Swal.fire({
