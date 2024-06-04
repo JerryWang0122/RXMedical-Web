@@ -1,34 +1,34 @@
+$(document).ready(async function () {
 
+	// 當沒有使用者資料時，強行導入回登入頁
+	if (!localStorage.getItem('currUser')) {
+		location.href = './index.html';
+		return;
+	}
+	const currUser = JSON.parse(localStorage.getItem('currUser'));
 
-$(document).ready(function () {
 	// 設定User
-	$('.user-name').text('王俊傑');
-	$('.user-dept').text('秘書室');
+	$('.user-name').text(currUser.name);
+	$('.user-dept').text(currUser.dept);
 
 	// 渲染 #orderDetailsArea 的資料顯示
 	const renderOrderDetailsArea = (orderDetail, index) => {
 		return `<tr>
 				<td>${index + 1}</td>
 				<td>${orderDetail.productName}</td>
-				<td>${orderDetail.qty}</td>
+				<td>${orderDetail.quantity}</td>
 			</tr>`;
 	}
 
-	// TODO: 發 API 到後台拉歷史紀錄
-	let data = [
-		{ "id": 1, "recordId": "20240519001", "orderQty": 1, "status": "待確認" },
-		{ "id": 2, "recordId": "20240519002", "orderQty": 2, "status": "待撿貨" },
-		{ "id": 3, "recordId": "20240519003", "orderQty": 3, "status": "待出貨" },
-		{ "id": 4, "recordId": "20240519004", "orderQty": 4, "status": "運送中" },
-		{ "id": 5, "recordId": "20240519005", "orderQty": 5, "status": "已完成" },
-		{ "id": 6, "recordId": "20240519006", "orderQty": 6, "status": "待確認" },
-		{ "id": 7, "recordId": "20240519007", "orderQty": 7, "status": "待撿貨" },
-		{ "id": 8, "recordId": "20240519008", "orderQty": 8, "status": "待出貨" },
-		{ "id": 9, "recordId": "20240519009", "orderQty": 9, "status": "運送中" },
-		{ "id": 10, "recordId": "20240519010", "orderQty": 10, "status": "已完成" },
-		{ "id": 11, "recordId": "20240519011", "orderQty": 11, "status": "待確認" },
-		{ "id": 12, "recordId": "20240519012", "orderQty": 12, "status": "待撿貨" },
-	];
+	// 發 API 到後台拉歷史紀錄
+	const purchaseHistoryRes = await fetch('http://localhost:8080/api/users/user/purchase', {
+		method: 'POST',
+		headers: {  // 一定要加
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({ 'userId': currUser.id })  // 資料轉 json 字串
+	})
+	let data = (await purchaseHistoryRes.json()).data;
 
 	// DataTables
 	/**
@@ -60,7 +60,7 @@ $(document).ready(function () {
 			bottomEnd: null,
 		},
 		columns: [ //列的標題一般是從DOM中讀取（也可以使用這個屬性為表格創建列標題)
-			{ data: 'recordId', title: "編號", responsivePriority: 1 },
+			{ data: 'code', title: "編號", responsivePriority: 1 },
 			{
 				data: 'id', title: "明細", responsivePriority: 2,
 				render: function (data, type, row) {
@@ -105,32 +105,26 @@ $(document).ready(function () {
 		const id = $(this).data('id');
 		// 取得該row的recordId和status
 		const tr = table.row($(this).closest('tr'));
-		const recordId = tr.data().recordId;
+		const code = tr.data().code;
 		const status = tr.data().status;
 
 
 		// 更新 modal title 顯示資料
-		$('#recordId').text(recordId);
+		$('#recordCode').text(code);
 		$('#orderStatus').text(status);
 
 		// 先清空 orderDetailsArea
 		$('#orderDetailsArea').empty();
 
-		// TODO: 用id到後台拿資料
-		const orderDetails = [
-			{ "productName": "石膏鞋", "qty": 5 },
-			{ "productName": "石膏鞋", "qty": 10 },
-			{ "productName": "石膏鞋", "qty": 15 },
-			{ "productName": "石膏鞋石膏鞋石膏鞋", "qty": 20 },
-			{ "productName": "石膏鞋石膏鞋", "qty": 25 },
-			{ "productName": "石膏鞋", "qty": 30 },
-			{ "productName": "石膏鞋石膏鞋石膏鞋", "qty": 35 },
-			{ "productName": "石膏鞋", "qty": 40 },
-			{ "productName": "石膏鞋", "qty": 45 },
-			{ "productName": "石膏鞋石膏鞋", "qty": 50 },
-			{ "productName": "石膏鞋", "qty": 55 },
-			{ "productName": "石膏鞋石膏鞋石膏鞋", "qty": 60 },
-		];
+		// 用id到後台拿資料
+		const response = await fetch('http://localhost:8080/api/users/user/purchase/detail', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+		})
+		const orderDetails = (await response.json()).data;
 
 		// 顯示資料
 		$('#orderDetailsArea').html(orderDetails.map(renderOrderDetailsArea).join(''));
@@ -153,26 +147,37 @@ $(document).ready(function () {
 		if (response.isConfirmed) {
 
 			const id = $(this).data('id');
-			// TODO: 發api到後台完成訂單，感覺這邊應該非同步就行？
-			// fetch('http://localhost:8080/user/purchase/finish', {
-			// 	method: 'POST',
-			// 	headers: {  // 一定要加
-			// 		'Content-Type': 'application/json'
-			// 	},
-			// 	body: JSON.stringify({ id })  // 資料轉 json 字串
-			// });
+			// 發api到後台完成訂單
+			const finishRes = await fetch('http://localhost:8080/api/users/user/purchase/finish', {
+				method: 'POST',
+				headers: {  // 一定要加
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })  // 資料轉 json 字串
+			});
+			const finishJson = await finishRes.json();
 
-			// 取得按鈕欄位並將按鈕改成無
-			const td = $(this).closest('td');
-			td.text('無');
-
-			Swal.fire({
-				position: "top",
-				icon: "success",
-				title: "訂單完成！",
-				showConfirmButton: false,
-				timer: 1500
-			})
+			if (finishJson.state) {
+				// 取得按鈕欄位並將按鈕改成無
+				const td = $(this).closest('td');
+				td.text('無');
+	
+				Swal.fire({
+					position: "top",
+					icon: "success",
+					title: "訂單完成！",
+					showConfirmButton: false,
+					timer: 1500
+				})
+			} else {
+				Swal.fire({
+					title: "發生錯誤",
+					text: finishJson.message,
+					icon: "error",
+					position: "top",
+					showConfirmButton: true
+				})
+			}
 		};
 		
 	});

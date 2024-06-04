@@ -78,7 +78,7 @@ $(document).ready(async function () {
         // 将点击的按钮添加 'active' 类
         $(this).addClass('active');
 
-        // TODO: 利用status發API，並決定要顯示的方式
+        // 利用status發API，並決定要顯示的方式
         switch (status) {
             case '待確認':
                 loadToBeConfirmedTable();
@@ -806,22 +806,15 @@ $(document).ready(async function () {
 
     const loadOrderFinishTable = async () => {
         cleanTable();
-        // TODO: 發 API 到後台拉"運送中"訂單資料(感覺這一個 Table 需要定期自動刷新？)
-        data = await [
-            {
-                "id": 1, "recordId": "20240523071", "dept": "文書中心", "title": "一般專員", "name": "洪申翰",
-                "transporter": "王俊傑", "updateDate": "2024-05-23 09:13:25"
+        // TODO: 發 API 到後台拉"已完成"訂單資料(感覺這一個 Table 需要定期自動刷新？)
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/finish', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
             },
-            {
-                "id": 2, "recordId": "20240523072", "dept": "營養科", "title": "管理員", "name": "習大大",
-                "transporter": "羅議程", "updateDate": "2024-05-23 10:53:25"
-            },
-            {
-                "id": 3, "recordId": "20240523073", "dept": "急診", "title": "書記", "name": "林老師",
-                "transporter": "張芸瑄", "updateDate": "2024-05-24 09:13:25"
-            }
-        ];
-
+            body: JSON.stringify({ 'userId': currUser.id })
+        })
+        data = (await response.json()).data;
         table = $('#orderListTable').DataTable({
             language: {
                 url: "../js/zh-Hant.json"  // 引用自定義漢化方式
@@ -837,24 +830,24 @@ $(document).ready(async function () {
             },
             columns: [ // responsivePriority
                 {
-                    data: 'recordId', title: "編號", responsivePriority: 1,
+                    data: 'code', title: "編號", responsivePriority: 1,
                     className: "text-center fs-5"
                 },
                 {
-                    data: 'dept', title: "處室", responsivePriority: 2,
+                    data: 'demander.dept', title: "處室", responsivePriority: 2,
                     className: "min-tablet-p fs-5 text-sm-center text-start"
                 },
                 {
-                    data: 'title', title: "職稱", responsivePriority: 5,
+                    data: 'demander.title', title: "職稱", responsivePriority: 5,
                     className: "min-tablet-l fs-5 text-md-center"
                 },
                 {
-                    data: 'name', title: "申請人", responsivePriority: 4,
+                    data: 'demander.name', title: "申請人", responsivePriority: 4,
                     className: "min-tablet-l fs-5 text-start text-md-center"
 
                 },
                 {
-                    data: 'transporter', title: "配送人", responsivePriority: 6,
+                    data: 'transporterName', title: "配送人", responsivePriority: 6,
                     className: 'min-tablet-l fs-5 text-start text-md-center'
                 },
                 {
@@ -862,8 +855,8 @@ $(document).ready(async function () {
                     className: "min-desktop fs-5 text-start text-md-center",
                     render: function (data, type, row) {
                         return `<button class="btn btn-outline-secondary fs-5 btn-order-finish" data-id="${data}" 
-                            data-record-id="${row.recordId}" data-apply-dept="${row.dept}"
-                            data-apply-user-name="${row.name}" data-transporter="${row.transporter}"
+                            data-record-id="${row.code}" data-apply-dept="${row.demander.dept}"
+                            data-apply-user-name="${row.demander.name}" data-transporter="${row.transporterName}"
                     		data-bs-toggle="modal" data-bs-target="#orderFinishModal"> 
                     			<i class="bi bi-journal-text"></i>
                   			</button>`;
