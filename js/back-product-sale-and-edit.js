@@ -194,7 +194,8 @@ $(document).ready(async function() {
                 "userId": currUser.id,
                 materialId,
                 "quantity": jFlowAmount,
-                "price": jFlowCost
+                "price": jFlowCost,
+                "verifyToken": currUser.verifyToken
             })
         })
         const saleJson = await saleRes.json();

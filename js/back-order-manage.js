@@ -47,7 +47,7 @@ $(document).ready(async function () {
 				<td>${index + 1}</td>
 				<td style="white-space:nowrap;">${orderDetail.productName}</td>
 				<td style="white-space:nowrap;">${orderDetail.quantity}</td>
-				<td style="white-space:nowrap;">${orderDetail.grabber}</td>
+				<td style="white-space:nowrap;">${orderDetail.takerName}</td>
 			</tr>`;
     }
 
@@ -216,7 +216,8 @@ $(document).ready(async function () {
             },
             body: JSON.stringify({
                 "userId": currUser.id,
-                "recordId": id
+                "recordId": id,
+                "verifyToken": currUser.verifyToken
             }),
         });
         const detailList = (await detailListRes.json()).data;
@@ -238,7 +239,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
         });
 
         const { state, message } = await response.json();
@@ -292,7 +293,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
         });
 
         const { state, message } = await response.json();
@@ -331,7 +332,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id })
+            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
         })
         data = (await response.json()).data;
 
@@ -437,7 +438,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
         });
         const { state, message, data } = await response.json();
         if (state) {
@@ -482,7 +483,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ historyId, userId })
+            body: JSON.stringify({ historyId, userId, 'verifyToken': currUser.verifyToken })
         });
         const { state, message } = await response.json();
 
@@ -532,7 +533,7 @@ $(document).ready(async function () {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+                body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
             });
             const { state, message } = await response.json();
 
@@ -573,7 +574,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id })
+            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
         })
         data = (await response.json()).data;
 
@@ -672,7 +673,8 @@ $(document).ready(async function () {
             body: JSON.stringify({
                 'userId': currUser.id,
                 'recordId': waitingId,
-                transporterId
+                transporterId,
+                'verifyToken': currUser.verifyToken
             })
         });
 
@@ -732,7 +734,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id })
+            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
         })
         data = (await response.json()).data; 
 
@@ -813,7 +815,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id })
+            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
         })
         data = (await response.json()).data;
         table = $('#orderListTable').DataTable({
@@ -903,20 +905,14 @@ $(document).ready(async function () {
         $('#finishListArea').empty();
 
         // // TODO: 用id到後台拿資料
-        const detailLists = await [
-            { "productName": "石膏鞋", "quantity": 5, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 10, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 15, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 20, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋", "quantity": 25, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 30, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 35, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 40, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 45, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋", "quantity": 50, "grabber": '測試一' },
-            { "productName": "石膏鞋", "quantity": 55, "grabber": '測試一' },
-            { "productName": "石膏鞋石膏鞋石膏鞋", "quantity": 60, "grabber": '測試一' },
-        ];
+        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/detail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
+        })
+        const detailLists = (await response.json()).data; ;
 
         // 顯示資料
         $('#finishListArea').html(detailLists.map(renderFinishListArea).join(''));
@@ -934,7 +930,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ 'userId': currUser.id })
+            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
         })
         data = (await response.json()).data;
 

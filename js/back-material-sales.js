@@ -13,7 +13,7 @@ $(document).ready(async function() {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "userId": currUser.id })
+        body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
     });
     const matJson = await matRes.json();
 
@@ -105,7 +105,7 @@ $(document).ready(async function() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ "userId": currUser.id, "materialId": id })
+            body: JSON.stringify({ "userId": currUser.id, "materialId": id, 'verifyToken': currUser.verifyToken })
         })
 
         const infoJson = await infoRes.json();

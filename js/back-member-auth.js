@@ -24,7 +24,7 @@ $(document).ready(async function () {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ "userId": currUser.id })
+        body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
     });
 
     const memberJson = await memberRes.json();
@@ -139,7 +139,8 @@ $(document).ready(async function () {
             body: JSON.stringify({
                 'userId': currUser.id,
                 memberId,
-                authLevel
+                authLevel,
+                'verifyToken': currUser.verifyToken
             })
         });
 
