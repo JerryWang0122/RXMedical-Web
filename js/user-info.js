@@ -8,7 +8,7 @@ $(document).ready(async function () {
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId: currUser.id })
+        body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
     });
     const { state, message, data } = await response.json();
 
@@ -49,7 +49,8 @@ $(document).ready(async function () {
             name: $('#jName').val(),
             dept: $('#jDept').val(),
             title: $('#jTitle').val(),
-            email: $('#jEmail').val()
+            email: $('#jEmail').val(),
+            verifyToken: currUser.verifyToken
         };
 
         const editResponse = await fetch('http://localhost:8080/api/users/user/profile', {

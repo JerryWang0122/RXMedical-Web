@@ -120,7 +120,8 @@ $(document).ready(function () {
 		
 		const formData = {
 			'userId': currUser.id,
-			'applyItems': processedData
+			'applyItems': processedData,
+			'verifyToken': currUser.verifyToken
 		};
 
 		const checkRes = await fetch('http://localhost:8080/api/sales/order_generate', {

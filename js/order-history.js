@@ -26,7 +26,7 @@ $(document).ready(async function () {
 		headers: {  // 一定要加
 			'Content-Type': 'application/json'
 		},
-		body: JSON.stringify({ 'userId': currUser.id })  // 資料轉 json 字串
+		body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })  // 資料轉 json 字串
 	})
 	let data = (await purchaseHistoryRes.json()).data;
 
@@ -122,7 +122,7 @@ $(document).ready(async function () {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })
+			body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
 		})
 		const orderDetails = (await response.json()).data;
 
@@ -153,7 +153,7 @@ $(document).ready(async function () {
 				headers: {  // 一定要加
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({ 'userId': currUser.id, 'recordId': id })  // 資料轉 json 字串
+				body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })  // 資料轉 json 字串
 			});
 			const finishJson = await finishRes.json();
 

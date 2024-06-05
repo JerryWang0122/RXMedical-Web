@@ -104,7 +104,7 @@ $(document).ready(async function () {
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ 'userId': currUser.id })
+		body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
 	});
 	const { state, message, data } = await response.json();
 
@@ -243,7 +243,9 @@ $(document).ready(async function () {
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			body: JSON.stringify({ 'userId': currUser.id, 'materialId': productId }),
+			
+			body: JSON.stringify({ 'userId': currUser.id, 'materialId': productId,
+						'verifyToken': currUser.verifyToken }),
 		});
 		const itemJson = await itemRes.json();
 		if (itemJson.state) {

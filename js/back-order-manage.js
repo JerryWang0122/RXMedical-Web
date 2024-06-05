@@ -59,7 +59,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ "userId": currUser.id })
+            body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
         })
         const adminList = (await response.json()).data;
 
@@ -116,7 +116,8 @@ $(document).ready(async function () {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                "userId": currUser.id
+                "userId": currUser.id,
+                "verifyToken": currUser.verifyToken
             }),
         });
         data = (await uncheckedRes.json()).data;
