@@ -1,17 +1,35 @@
-$(document).ready(function () {
+$(document).ready(async function () {
+    const tokenRes = await fetch('http://localhost:8080/api/users/user/CSRFToken', {
+        method: 'POST'
+    });
+    const tokenJson = await tokenRes.json();
+    if (tokenJson.state){
+        $('#jToken').val(tokenJson.data);
+    } else {
+        Swal.fire({
+            position: "top",
+            icon: "error",
+            title: "伺服器發生錯誤",
+            showConfirmButton: true
+        })
+        return;
+    }
+
     // 處理登入行為
     $('#loginBtn').on('click', async function (event) {
         event.preventDefault();
         // get user login input
         const email = $('#jEmail').val();
         const password = $('#jPassword').val();
+        const token = $('#jToken').val();
         
         const response = await fetch('http://localhost:8080/api/users/user/login', {
             method: 'POST',
+            // credentials: 'include',
             headers: { 
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email, password })  // 資料轉 json 字串
+            body: JSON.stringify({ email, password, token })  // 資料轉 json 字串
         });
         const { state, message, data } = await response.json();
 

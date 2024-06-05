@@ -1,5 +1,20 @@
-$(document).ready(function () {
+$(document).ready(async function () {
 
+	const tokenRes = await fetch('http://localhost:8080/api/users/user/CSRFToken', {
+		method: 'POST'
+	});
+	const tokenJson = await tokenRes.json();
+	if (tokenJson.state) {
+		$('#jToken').val(tokenJson.data);
+	} else {
+		Swal.fire({
+			position: "top",
+			icon: "error",
+			title: "伺服器發生錯誤",
+			showConfirmButton: true
+		})
+		return;
+	}
 	// ------------------------ 註冊前檢查 --------------------------
 	// 閱讀注意事項 -> 啟動註冊按鈕 -----------------------------------
 	const noticeCheckBox = $('#noticeCheckBox');
@@ -88,7 +103,8 @@ $(document).ready(function () {
 				dept: $('#jDept').val(),
 				title: $('#jTitle').val(),
 				email: $('#jEmail').val(),
-				password: jPassword.val()
+				password: jPassword.val(),
+				token: $('#jToken').val()
 			};
 
 			const response = await fetch('http://localhost:8080/api/users/user/register', {
