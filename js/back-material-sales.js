@@ -116,7 +116,7 @@ $(document).ready(async function() {
             $('#aProductCategory').val(infoJson.data.category);
             $('#aProductStorage').val(infoJson.data.storage);
             $('#aProductDescription').val(infoJson.data.description);
-            $('#aProductImage').attr('src', `./img/products/${infoJson.data.picture}`);
+            $('#aProductImage').attr('src', infoJson.data.picture);
             $('#addSalesRecordBtn').attr('data-id', id);
             $('#updateMaterialInfoBtn').attr('data-id', id)
         } else {

@@ -161,6 +161,8 @@ $(document).ready(async function () {
 				// 取得按鈕欄位並將按鈕改成無
 				const td = $(this).closest('td');
 				td.text('無');
+				// 狀態顯示調整
+				td.prev().text('已完成');
 	
 				Swal.fire({
 					position: "top",

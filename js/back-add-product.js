@@ -9,12 +9,14 @@ $(document).ready(function (event) {
 
     // 相片是否符合規格
     let picValid = false;
+    let picture = null;
     const imgPrevArea = $('#imgPrevArea');
 
     // ---------------- 使用者上傳相片時 ------------------------
     $('#jProductImage').on('change', function(event) {
         // Reset
         picValid = false;
+        picture = null;
         imgPrevArea.html('');
 
         let filePic = event.target.files[0];
@@ -55,6 +57,7 @@ $(document).ready(function (event) {
                         showConfirmButton: false,
                         timer: 1000
                     });
+                    picture = data;
                     imgPrevArea.append('<img src="' + data + '" width="150">');
                 }
             }
@@ -110,22 +113,36 @@ $(document).ready(function (event) {
             return;
         }
 
-        const formData = new FormData();
+        // const formData = new FormData();
 
-        formData.append('code', code);
-        formData.append('name', name);
-        formData.append('category', category);
-        formData.append('storage', storage);
-        formData.append('description', description);
-        formData.append('quantity', quantity);
-        formData.append('price', price);
-        formData.append('userId', currUser.id);
-        formData.append('picture', $('#jProductImage')[0].files[0]);
+        // formData.append('code', code);
+        // formData.append('name', name);
+        // formData.append('category', category);
+        // formData.append('storage', storage);
+        // formData.append('description', description);
+        // formData.append('quantity', quantity);
+        // formData.append('price', price);
+        // formData.append('userId', currUser.id);
+        // formData.append('picture', $('#jProductImage')[0].files[0]);
 
         // 發API到後台新增商品
         const response = await fetch('http://localhost:8080/api/products/admin/material/create', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'code': code,
+                'name': name,
+                'category': category,
+                'storage': storage,
+                'description': description,
+                'quantity': quantity,
+                'price': price,
+                'userId': currUser.id,
+                'picture': picture,
+                'verifyToken': currUser.verifyToken
+            })
         });
 
         const { state, message } = await response.json();

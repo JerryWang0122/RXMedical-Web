@@ -9,12 +9,14 @@ $(document).ready(async function() {
 
     // 相片是否符合規格
     let picValid = false;
+    let updatePicture;
     const imgPrevArea = $('#imgPrevArea');
 
     // ---------------- 使用者上傳相片時 ------------------------
     $('#aProductUpdateImage').on('change', function(event){
         // Reset
         picValid = false;
+        updatePicture = null;
         imgPrevArea.html('');
 
         let filePic = event.target.files[0];
@@ -56,6 +58,7 @@ $(document).ready(async function() {
                         timer: 1000
                     });
                     imgPrevArea.append('<img src="' + data + '" width="150">');
+                    updatePicture = data;
                 }
             }
             imgReader.src = data;
@@ -67,10 +70,9 @@ $(document).ready(async function() {
     $('#updateMaterialInfoBtn').on('click', async(event) => {
         event.preventDefault();
         const materialId = $('#updateMaterialInfoBtn').data('id');
-        const updatePic = $('#aProductUpdateImage')[0].files[0];
         // 檢查圖片
         // 如果有上傳圖片但picValid為false，則拒絕提交
-        if (updatePic && !picValid) {
+        if (updatePicture && !picValid) {
             Swal.fire({
                 position: "top",
                 icon: "warning",
@@ -98,20 +100,32 @@ $(document).ready(async function() {
             return;
         }
 
-        const formData = new FormData();
+        // const formData = new FormData();
 
-        formData.append('userId', currUser.id);
-        formData.append('productId', materialId)
-        formData.append('name', name);
-        formData.append('category', category);
-        formData.append('storage', storage);
-        formData.append('description', description);
-        formData.append('picture', updatePic || null);
+        // formData.append('userId', currUser.id);
+        // formData.append('productId', materialId)
+        // formData.append('name', name);
+        // formData.append('category', category);
+        // formData.append('storage', storage);
+        // formData.append('description', description);
+        // formData.append('picture', updatePic || null);
 
         // 發API到後台更新商品資料
         const response = await fetch('http://localhost:8080/api/products/admin/material/edit', {
             method: 'PUT',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                'productId': materialId,
+                'name': name,
+                'category': category,
+                'storage': storage,
+                'description': description,
+                'updatePicture': updatePicture || null,
+                'userId': currUser.id,
+                'verifyToken': currUser.verifyToken
+            })
         });
 
         const { state, message } = await response.json();
@@ -124,8 +138,8 @@ $(document).ready(async function() {
                 showConfirmButton: false,
                 timer: 1000
             });
-            if (updatePic) {
-                $('#aProductImage').attr('src', `./img/products/${ updatePic.name }`);
+            if (updatePicture) {
+                $('#aProductImage').attr('src', updatePicture);
             }
             imgPrevArea.html('');
             return;

@@ -30,7 +30,7 @@ $(document).ready(async function () {
 			<div class="card text-center product-item px-4" data-product-id="${p.id}">
 				<a href="javascript:;">
 					<div class="product-img position-relative">
-						<img src="./img/products/${p.picture}" class="card-img-top" alt="">
+						<img src="${p.picture}" class="card-img-top" alt="">
 						<div class="product-quantity noto-sans">存貨量 ${p.stock}</div>
 					</div>
 					<div class="card-body px-0">
@@ -251,7 +251,7 @@ $(document).ready(async function () {
 		if (itemJson.state) {
 			await loadHTML('f-product_detail.html', '#contentArea');
 			$('#itemName').text(itemJson.data.name);
-			$('#itemImg').attr('src', `./img/products/${itemJson.data.picture}`);
+			$('#itemImg').attr('src', `${itemJson.data.picture}`);
 			$('#itemCategory').text(itemJson.data.category);
 			$('#itemDescription').text(itemJson.data.description);
 			$('#itemStock').text(itemJson.data.stock);

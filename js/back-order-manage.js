@@ -398,7 +398,7 @@ $(document).ready(async function () {
             <div class="order-item-detail ${orderItem.takerName ? 'item-picked ' : ''}m-2 p-2">
                 <div class="row">
                     <div class="col-4 order-img-container">
-                        <img src="../img/products/${ orderItem.product.picture}" alt="">
+                        <img src="${ orderItem.product.picture}" alt="">
                     </div>
                     <div class="col-6">
                         <h5>${orderItem.product.name}</h5>

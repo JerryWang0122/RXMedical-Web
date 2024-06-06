@@ -32,7 +32,7 @@ $(document).ready(function () {
 				data: 'productImg',
 				title: "圖片",
 				render: function (data, type, row) {
-					return `<img src="../img/products/${data}" class="cart-product-img m-auto" alt="">`;
+					return `<img src="${data}" class="cart-product-img m-auto" alt="">`;
 				},
 				className: "min-tablet-l text-center align-middle fs-5"
 			},
