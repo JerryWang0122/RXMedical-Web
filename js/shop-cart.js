@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(async function () {
 
 	// 當沒有使用者資料時，強行導入回登入頁
 	if (!localStorage.getItem('currUser')) {
@@ -6,9 +6,22 @@ $(document).ready(function () {
 		return;
 	}
 	const currUser = JSON.parse(localStorage.getItem('currUser'));
-
-	// 從localStorage取得購物車內容
-	let data = JSON.parse(localStorage.getItem('shopCartList')) || [];
+	let shopCartList = JSON.parse(localStorage.getItem('shopCartList')) || [];
+	let data = await Promise.all(shopCartList.map(async item => {
+		console.log(item);
+		const res = await fetch('http://localhost:8080/api/products/product/item', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken, "materialId": item.productId })
+		});
+		const json = await res.json();
+		console.log(json);
+		item.productName = json.data.name;
+		item.productImg = json.data.picture;
+		return item;
+	}));
 
 	// DataTables
 	let table = $('#cartItemsTable').DataTable({
@@ -82,6 +95,10 @@ $(document).ready(function () {
 			localStorage.setItem('shopCartList', JSON.stringify(data));
 			// 更新購物車顯示
 			$('#cartCount').text(data.length);
+			if (data.length === 0) {
+				// 移除去申請按鈕
+				$('#applyMaterialsBtn').remove();
+			}
 
 			Swal.fire({
 				title: "刪除成功!",

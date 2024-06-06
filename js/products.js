@@ -257,7 +257,6 @@ $(document).ready(async function () {
 			$('#itemStock').text(itemJson.data.stock);
 			$('#jAddToCartBtn').attr('data-product-id', itemJson.data.id);
 			$('#jAddToCartBtn').attr('data-product-name', itemJson.data.name);
-			$('#jAddToCartBtn').attr('data-product-img', itemJson.data.picture);
 		} else {
 			Swal.fire({
 				position: "top",

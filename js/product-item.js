@@ -50,8 +50,6 @@ $(document).ready(function () {
 
 		const itemData = {
 			'productId': $(this).data('product-id'),
-			'productName': $(this).data('product-name'),
-			'productImg': $(this).data('product-img'),
 			'applyQty': Number(jAmountInput.val())
 		}
 
