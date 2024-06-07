@@ -3,7 +3,7 @@ $(document).ready(async function () {
     // 進入時，資料初始化
     let currUser = JSON.parse(localStorage.getItem('currUser'));
 
-    const response = await fetch('http://localhost:8080/api/users/user/profile', {
+    const response = await fetch(`http://${IPAddress}:8080/api/users/user/profile`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -27,10 +27,10 @@ $(document).ready(async function () {
             $('#jTitle').prop('readonly', true);
             $('#jEmail').prop('readonly', true);
         };
-    } 
+    }
 
     // 修改資料表單送出
-    $('#userInfoForm').on('submit', async(event) => {
+    $('#userInfoForm').on('submit', async (event) => {
         event.preventDefault();
 
         // 資料不可為空
@@ -43,7 +43,7 @@ $(document).ready(async function () {
             })
             return;
         }
-        
+
         const formData = {
             userId: currUser.id,
             name: $('#jName').val(),
@@ -53,7 +53,7 @@ $(document).ready(async function () {
             verifyToken: currUser.verifyToken
         };
 
-        const editResponse = await fetch('http://localhost:8080/api/users/user/profile', {
+        const editResponse = await fetch(`http://${IPAddress}:8080/api/users/user/profile`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -89,6 +89,6 @@ $(document).ready(async function () {
             $('#jTitle').val(data.title);
             $('#jEmail').val(data.email);
         }
-        
+
     })
 });

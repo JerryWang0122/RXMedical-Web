@@ -1,5 +1,5 @@
 $(document).ready(async function () {
-    
+
     // 當沒有使用者資料時，強行導入回登入頁
     if (!localStorage.getItem('currUser')) {
         location.href = './index.html';
@@ -20,7 +20,7 @@ $(document).ready(async function () {
 
     let table = null;
     let data = null;
-    
+
 
     // 清空過去 DataTables 設定
     const cleanTable = () => {
@@ -54,7 +54,7 @@ $(document).ready(async function () {
     // 填充admin人員選項到選單中
     const loadAdminListToOption = async function () {
         // 發API 到後台拉admin人員的資料
-        const response = await fetch('http://localhost:8080/api/users/admin/transporter', {
+        const response = await fetch(`http://${IPAddress}:8080/api/users/admin/transporter`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -110,7 +110,7 @@ $(document).ready(async function () {
         cleanTable();
 
         // 發 API 到後台拉"待確認"訂單資料
-        const uncheckedRes = await fetch("http://localhost:8080/api/sales/admin/order_list/unchecked", {
+        const uncheckedRes = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/unchecked`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -136,15 +136,15 @@ $(document).ready(async function () {
                 bottomStart: null
             },
             columns: [ // responsivePriority
-                { 
+                {
                     data: 'code', title: "編號", responsivePriority: 4,
-                    className: "min-tablet-l text-start text-md-center fs-5" 
+                    className: "min-tablet-l text-start text-md-center fs-5"
                 },
-                { 
+                {
                     data: 'demander.dept', title: "處室", responsivePriority: 2,
-                    className: "text-center fs-5" 
+                    className: "text-center fs-5"
                 },
-                { 
+                {
                     data: 'demander.title', title: "職稱", responsivePriority: 6,
                     className: "min-tablet-l text-start text-md-center fs-5"
                 },
@@ -209,7 +209,7 @@ $(document).ready(async function () {
         $('#detailListArea').empty();
 
         //用id到後台拿資料
-        const detailListRes = await fetch("http://localhost:8080/api/sales/admin/order_list/detail", {
+        const detailListRes = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/detail`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -234,7 +234,7 @@ $(document).ready(async function () {
 
         // 發API到後台將訂單往待撿貨狀態推
         // 利用 id 把訂單推到待撿貨
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/unchecked', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/unchecked`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -288,7 +288,7 @@ $(document).ready(async function () {
 
         // 發API到後台將訂單往取消狀態推
         // 利用 id 把訂單推到取消
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/unchecked', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/unchecked`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -327,7 +327,7 @@ $(document).ready(async function () {
         cleanTable();
 
         // TODO: 發 API 到後台拉"待確認"訂單資料
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/picking`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -398,7 +398,7 @@ $(document).ready(async function () {
             <div class="order-item-detail ${orderItem.takerName ? 'item-picked ' : ''}m-2 p-2">
                 <div class="row">
                     <div class="col-4 order-img-container">
-                        <img src="${ orderItem.product.picture}" alt="">
+                        <img src="${orderItem.product.picture}" alt="">
                     </div>
                     <div class="col-6">
                         <h5>${orderItem.product.name}</h5>
@@ -406,7 +406,7 @@ $(document).ready(async function () {
                         <span>${orderItem.product.storage}</span>
                     </div>
                     <div class="col-2 col-sm-12 col-md-2 text-end align-content-center">
-                        x${orderItem.quantity }
+                        x${orderItem.quantity}
                     </div>
                 </div>
 
@@ -433,7 +433,7 @@ $(document).ready(async function () {
     const loadOrderItemToPickingList = async (id) => {
         $('#showRecordItemArea').empty();    // Reset
         // 發 API 到後台拉"待撿貨"訂單資料(History Table)
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking/detail', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/picking/detail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -452,7 +452,7 @@ $(document).ready(async function () {
                 timer: 1000
             });
         };
-        
+
     };
 
     // 開始撿貨時，刷新訂單撿貨資料
@@ -478,7 +478,7 @@ $(document).ready(async function () {
         const historyId = $(this).data('history-id');
         const userId = currUser.id;
         const userName = currUser.name;
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/picking`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -528,7 +528,7 @@ $(document).ready(async function () {
 
         if (result.isConfirmed) {
             // 發API到後台確認撿貨完成
-            const response = await fetch('http://localhost:8080/api/sales/admin/order_list/picking', {
+            const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/picking`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -569,7 +569,7 @@ $(document).ready(async function () {
         cleanTable();
 
         // 發 API 到後台拉"待確認"訂單資料 
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/waiting', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/waiting`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -646,15 +646,15 @@ $(document).ready(async function () {
     // 指派人員運送，並將訂單推到"運送中"狀態
     $('#assignTransporterBtn').on('click', async function (event) {
         event.preventDefault();
-        
-        
+
+
         // 取得配送訂單和配送人員編號
         const waitingId = $('#jWaitingId').val();
         const transporterId = $('#jAdminList').val();
-        
+
         // 利用waitingId找到欄位
         const waiting = $('#orderListTable tbody tr [data-id="' + waitingId + '"]')[1];
-        
+
         if (!transporterId) {
             Swal.fire({
                 title: "請指定配送人員",
@@ -665,7 +665,7 @@ $(document).ready(async function () {
         }
 
         // 發API到後台確認配送訂單
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/waiting', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/waiting`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -688,7 +688,7 @@ $(document).ready(async function () {
                 timer: 1000
             });
 
-            
+
             // 關閉 modal 視窗
             setTimeout(() => {
                 $('#orderWaitingModal').modal('hide');
@@ -720,7 +720,7 @@ $(document).ready(async function () {
         $('#orderWaitingDept').text(applyDept);
         $('#orderWaitingMemberName').text(applyUserName);
         $('#jWaitingId').val(id);
-        
+
     });
 
 
@@ -729,14 +729,14 @@ $(document).ready(async function () {
     const loadOrderTransportingTable = async () => {
         cleanTable();
         // TODO: 發 API 到後台拉"運送中"訂單資料(感覺這一個 Table 需要定期自動刷新？)
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/transporting', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/transporting`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
         })
-        data = (await response.json()).data; 
+        data = (await response.json()).data;
 
         table = $('#orderListTable').DataTable({
             language: {
@@ -766,8 +766,8 @@ $(document).ready(async function () {
                 },
                 {
                     data: 'demander.name', title: "申請人", responsivePriority: 5,
-                    className: "min-tablet-l fs-5 text-start text-md-center" 
-                    
+                    className: "min-tablet-l fs-5 text-start text-md-center"
+
                 },
                 {
                     data: 'transporterName', title: "配送人", responsivePriority: 3,
@@ -789,8 +789,8 @@ $(document).ready(async function () {
                     data: 'updateDate', title: "開始配送", responsivePriority: 1,
                     render: function (data, type, row) {
                         return `
-                        <p class="fs-6 mb-1">${ data.split(' ')[0] }</p>
-                        <p class="fs-6 mb-1">${ data.split(' ')[1] }</p>
+                        <p class="fs-6 mb-1">${data.split(' ')[0]}</p>
+                        <p class="fs-6 mb-1">${data.split(' ')[1]}</p>
                         `;
                     },
                     className: 'text-center fs-5'
@@ -810,7 +810,7 @@ $(document).ready(async function () {
     const loadOrderFinishTable = async () => {
         cleanTable();
         // TODO: 發 API 到後台拉"已完成"訂單資料(感覺這一個 Table 需要定期自動刷新？)
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/finish', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/finish`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -905,14 +905,14 @@ $(document).ready(async function () {
         $('#finishListArea').empty();
 
         // // TODO: 用id到後台拿資料
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/detail', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/detail`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
         })
-        const detailLists = (await response.json()).data; ;
+        const detailLists = (await response.json()).data;;
 
         // 顯示資料
         $('#finishListArea').html(detailLists.map(renderFinishListArea).join(''));
@@ -925,7 +925,7 @@ $(document).ready(async function () {
         cleanTable();
 
         // 發 API 到後台拉"取消"訂單資料
-        const response = await fetch('http://localhost:8080/api/sales/admin/order_list/rejected', {
+        const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/rejected`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

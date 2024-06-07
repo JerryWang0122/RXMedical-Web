@@ -1,4 +1,4 @@
-$(document).ready(async function() {
+$(document).ready(async function () {
 
     // 當沒有使用者資料時，強行導入回登入頁
     if (!localStorage.getItem('currUser')) {
@@ -8,7 +8,7 @@ $(document).ready(async function() {
     const currUser = JSON.parse(localStorage.getItem('currUser'));
 
     // 發API 到後台拉產品資料
-    const matRes = await fetch('http://localhost:8080/api/products/admin/material',{
+    const matRes = await fetch(`http://${IPAddress}:8080/api/products/admin/material`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -61,7 +61,8 @@ $(document).ready(async function() {
             },
             {
                 data: 'storage', title: "儲存位置",
-                className: "min-tablet-l fs-5 text-start text-md-center" },
+                className: "min-tablet-l fs-5 text-start text-md-center"
+            },
             {
                 data: 'category', title: "種類", responsivePriority: 6,
                 className: "min-tablet-l fs-5 text-start text-md-center"
@@ -100,7 +101,7 @@ $(document).ready(async function() {
 
         const id = $(this).data('material-id');
 
-        const infoRes = await fetch('http://localhost:8080/api/products/admin/material/edit', {
+        const infoRes = await fetch(`http://${IPAddress}:8080/api/products/admin/material/edit`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -127,6 +128,6 @@ $(document).ready(async function() {
                 showConfirmButton: true
             });
         }
-        
+
     });
 })

@@ -8,8 +8,7 @@ $(document).ready(async function () {
 	const currUser = JSON.parse(localStorage.getItem('currUser'));
 	let shopCartList = JSON.parse(localStorage.getItem('shopCartList')) || [];
 	let data = await Promise.all(shopCartList.map(async item => {
-		console.log(item);
-		const res = await fetch('http://localhost:8080/api/products/product/item', {
+		const res = await fetch(`http://${IPAddress}:8080/api/products/product/item`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -17,7 +16,6 @@ $(document).ready(async function () {
 			body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken, "materialId": item.productId })
 		});
 		const json = await res.json();
-		console.log(json);
 		item.productName = json.data.name;
 		item.productImg = json.data.picture;
 		return item;
@@ -134,14 +132,14 @@ $(document).ready(async function () {
 				applyQty: item.applyQty
 			};
 		});
-		
+
 		const formData = {
 			'userId': currUser.id,
 			'applyItems': processedData,
 			'verifyToken': currUser.verifyToken
 		};
 
-		const checkRes = await fetch('http://localhost:8080/api/sales/order_generate', {
+		const checkRes = await fetch(`http://${IPAddress}:8080/api/sales/order_generate`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -177,7 +175,7 @@ $(document).ready(async function () {
 			});
 		}
 
-		
+
 	});
 
 });

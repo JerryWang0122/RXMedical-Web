@@ -1,4 +1,4 @@
-$(document).ready(async function() {
+$(document).ready(async function () {
 
     // 當沒有使用者資料時，強行導入回登入頁
     if (!localStorage.getItem('currUser')) {
@@ -13,7 +13,7 @@ $(document).ready(async function() {
     const imgPrevArea = $('#imgPrevArea');
 
     // ---------------- 使用者上傳相片時 ------------------------
-    $('#aProductUpdateImage').on('change', function(event){
+    $('#aProductUpdateImage').on('change', function (event) {
         // Reset
         picValid = false;
         updatePicture = null;
@@ -34,7 +34,7 @@ $(document).ready(async function() {
         let fileReader = new FileReader();
         fileReader.onload = function (e) {
             let data = e.target.result;
-            
+
 
             let imgReader = new Image();
             imgReader.onload = function () {
@@ -67,7 +67,7 @@ $(document).ready(async function() {
     });
 
     // -------------- 使用者確定更新產品資料 ---------------
-    $('#updateMaterialInfoBtn').on('click', async(event) => {
+    $('#updateMaterialInfoBtn').on('click', async (event) => {
         event.preventDefault();
         const materialId = $('#updateMaterialInfoBtn').data('id');
         // 檢查圖片
@@ -111,7 +111,7 @@ $(document).ready(async function() {
         // formData.append('picture', updatePic || null);
 
         // 發API到後台更新商品資料
-        const response = await fetch('http://localhost:8080/api/products/admin/material/edit', {
+        const response = await fetch(`http://${IPAddress}:8080/api/products/admin/material/edit`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -168,7 +168,7 @@ $(document).ready(async function() {
     });
 
     // ------------- 送出進銷表單 -------------------
-    $('#addSalesRecordBtn').on('click', async function(event) {
+    $('#addSalesRecordBtn').on('click', async function (event) {
         event.preventDefault();
         // 获取表单数据
         const jFlow = $('#jFlow').val();
@@ -197,7 +197,7 @@ $(document).ready(async function() {
             return;
         }
 
-        const apiURL = jFlow === '進' ? "http://localhost:8080/api/sales/admin/call" : "http://localhost:8080/api/sales/admin/destroy";
+        const apiURL = jFlow === '進' ? `http://${IPAddress}:8080/api/sales/admin/call` : `http://${IPAddress}:8080/api/sales/admin/destroy`;
 
         const saleRes = await fetch(apiURL, {
             method: "POST",
@@ -238,5 +238,5 @@ $(document).ready(async function() {
 
     })
 
-    
+
 })

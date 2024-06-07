@@ -1,8 +1,11 @@
-$(document).ready(function () {
+var IPAddress = location.hostname;
+
+$(document).ready(async function () {
 	// 設定標題
 	$('.hospital-title').text('榮心醫院');
 	$('.medical-product').text('榮心衛材');
-	$('.platform-backend').text('榮心衛材後台系統')
+	$('.platform-backend').text('榮心衛材後台系統');
+
 
 	// 設定User
 	let currUser = JSON.parse(localStorage.getItem('currUser'));

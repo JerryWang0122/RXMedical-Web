@@ -13,7 +13,7 @@ $(document).ready(function (event) {
     const imgPrevArea = $('#imgPrevArea');
 
     // ---------------- 使用者上傳相片時 ------------------------
-    $('#jProductImage').on('change', function(event) {
+    $('#jProductImage').on('change', function (event) {
         // Reset
         picValid = false;
         picture = null;
@@ -34,7 +34,7 @@ $(document).ready(function (event) {
         let fileReader = new FileReader();
         fileReader.onload = function (e) {
             let data = e.target.result;
-            
+
 
             let imgReader = new Image();
             imgReader.onload = function () {
@@ -113,20 +113,8 @@ $(document).ready(function (event) {
             return;
         }
 
-        // const formData = new FormData();
-
-        // formData.append('code', code);
-        // formData.append('name', name);
-        // formData.append('category', category);
-        // formData.append('storage', storage);
-        // formData.append('description', description);
-        // formData.append('quantity', quantity);
-        // formData.append('price', price);
-        // formData.append('userId', currUser.id);
-        // formData.append('picture', $('#jProductImage')[0].files[0]);
-
         // 發API到後台新增商品
-        const response = await fetch('http://localhost:8080/api/products/admin/material/create', {
+        const response = await fetch(`http://${IPAddress}:8080/api/products/admin/material/create`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

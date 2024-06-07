@@ -21,7 +21,7 @@ $(document).ready(async function () {
 	}
 
 	// 發 API 到後台拉歷史紀錄
-	const purchaseHistoryRes = await fetch('http://localhost:8080/api/users/user/purchase', {
+	const purchaseHistoryRes = await fetch(`http://${IPAddress}:8080/api/users/user/purchase`, {
 		method: 'POST',
 		headers: {  // 一定要加
 			'Content-Type': 'application/json'
@@ -74,7 +74,7 @@ $(document).ready(async function () {
 				data: 'orderQty', title: "品項數量", responsivePriority: 5,
 				className: "min-tablet-l text-start text-md-center fs-5"
 			},
-			{ 
+			{
 				data: 'status', title: "訂單狀態", responsivePriority: 4,
 				className: "min-tablet-p text-start text-md-center align-middle fs-5"
 			},
@@ -117,7 +117,7 @@ $(document).ready(async function () {
 		$('#orderDetailsArea').empty();
 
 		// 用id到後台拿資料
-		const response = await fetch('http://localhost:8080/api/users/user/purchase/detail', {
+		const response = await fetch(`http://${IPAddress}:8080/api/users/user/purchase/detail`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ $(document).ready(async function () {
 
 			const id = $(this).data('id');
 			// 發api到後台完成訂單
-			const finishRes = await fetch('http://localhost:8080/api/users/user/purchase/finish', {
+			const finishRes = await fetch(`http://${IPAddress}:8080/api/users/user/purchase/finish`, {
 				method: 'POST',
 				headers: {  // 一定要加
 					'Content-Type': 'application/json'
@@ -163,7 +163,7 @@ $(document).ready(async function () {
 				td.text('無');
 				// 狀態顯示調整
 				td.prev().text('已完成');
-	
+
 				Swal.fire({
 					position: "top",
 					icon: "success",
@@ -181,7 +181,7 @@ $(document).ready(async function () {
 				})
 			}
 		};
-		
+
 	});
 
 });

@@ -19,7 +19,7 @@ $(document).ready(async function () {
     let currUser = JSON.parse(localStorage.getItem('currUser'));
 
     // 發 API 到後台拉人員權限資料
-    const memberRes = await fetch('http://localhost:8080/api/users/admin/member', {
+    const memberRes = await fetch(`http://${IPAddress}:8080/api/users/admin/member`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -59,20 +59,20 @@ $(document).ready(async function () {
             bottomEnd: null,
         },
         columns: [ // responsivePriority
-            { 
+            {
                 data: 'empCode', title: "ID", responsivePriority: 1,
                 className: "min-tablet-l fs-5 text-start text-md-center"
             },
-            { 
-                data: 'dept', title: "處室", responsivePriority: 4, 
-                className: " min-tablet-p fs-5 text-start text-sm-center" 
+            {
+                data: 'dept', title: "處室", responsivePriority: 4,
+                className: " min-tablet-p fs-5 text-start text-sm-center"
             },
-            { 
+            {
                 data: 'title', title: "職稱", responsivePriority: 5,
                 className: "min-tablet-p fs-5 text-start text-sm-center"
             },
             { data: 'name', title: "姓名", responsivePriority: 2, className: "text-center fs-5" },
-            { 
+            {
                 data: 'createDate', title: "註冊日", responsivePriority: 6,
                 className: "min-tablet-l text-start text-md-center fs-5"
             },
@@ -108,7 +108,7 @@ $(document).ready(async function () {
     // 編輯權限按鈕點擊事件
     $('#memberAuthLevelTable').on('click', '.btn-change-auth', async function () {
         // 權限按鈕刷新
-        $('input[type="radio"]').each(function() {
+        $('input[type="radio"]').each(function () {
             $(this).prop('checked', false);
         });
 
@@ -129,9 +129,9 @@ $(document).ready(async function () {
 
         const authLevel = $('input[type="radio"]:checked').val();
         const memberId = $('#jMemberId').val();
-        
+
         // 發API到後台改人員權限
-        const response = await fetch('http://localhost:8080/api/users/root/member', {
+        const response = await fetch(`http://${IPAddress}:8080/api/users/root/member`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -156,7 +156,7 @@ $(document).ready(async function () {
             });
             // 利用data-member-id找到table欄位對應的button，並更新span -> 修正更動人員的權限顯示狀態
             $('[data-member-id=' + memberId + ']').data('auth-level', authLevel);
-            $('[data-member-id=' + memberId +']').prev().text(options.find(opt => opt.value === authLevel).text);
+            $('[data-member-id=' + memberId + ']').prev().text(options.find(opt => opt.value === authLevel).text);
 
             // 關閉 modal 視窗
             setTimeout(() => {
@@ -171,8 +171,8 @@ $(document).ready(async function () {
             })
         }
 
-        
+
     });
 
-    
+
 });

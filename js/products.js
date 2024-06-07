@@ -18,8 +18,8 @@ $(document).ready(async function () {
 	const renderCategoriesArea = (c, index) => {
 		return `
 		<label class="cate-item">
-			<input type="checkbox" id="cate-${ index + 1 }" class="form-check-input me-2" name="cate-${ index + 1 }" 
-			value="${ c }">${ c }
+			<input type="checkbox" id="cate-${index + 1}" class="form-check-input me-2" name="cate-${index + 1}" 
+			value="${c}">${c}
 		</label>
 		`
 	};
@@ -62,7 +62,7 @@ $(document).ready(async function () {
 			}
 
 			paginatorHTML += `
-			<li class="page-item${ maxPage === 1 ? ' disabled' : ''}"><a class="page-link" data-page="next" id="nextPagination" href="javascript:;" aria-label="Next"><i class="bi bi-caret-right"></i></a></li>
+			<li class="page-item${maxPage === 1 ? ' disabled' : ''}"><a class="page-link" data-page="next" id="nextPagination" href="javascript:;" aria-label="Next"><i class="bi bi-caret-right"></i></a></li>
 			`;
 			$('#paginatorArea').html(paginatorHTML);
 
@@ -99,7 +99,7 @@ $(document).ready(async function () {
 
 	// ------------------------------- 頁面初始化 ------------------------------
 	// 發api到後台拿商品資料
-	const response = await fetch('http://localhost:8080/api/products/product', {
+	const response = await fetch(`http://${IPAddress}:8080/api/products/product`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ $(document).ready(async function () {
 		// 找到目前的page
 		const currentPage = $('#paginatorArea .page-item.active a').data('page');
 		// 依照目前的page來決定要做什麼事
-		switch(gotoPage) {
+		switch (gotoPage) {
 			case 'prev':
 				if (currentPage > 1) {
 					// 讓"往下一頁"取消disabled class
@@ -176,7 +176,7 @@ $(document).ready(async function () {
 					$('#previousPagination').parent().removeClass('disabled');
 					// 讓"往下一頁"增加disabled class
 					$('#nextPagination').parent().addClass('disabled');
-				} 
+				}
 				// 讓其他頁的active消失，被按的打開
 				$('#paginatorArea .page-item.active').removeClass('active');
 				$(this).parent().addClass('active');
@@ -237,15 +237,17 @@ $(document).ready(async function () {
 	// 個別商品被按下時
 	$('#productArea').on('click', '.product-item', async function () {
 		const productId = $(this).data('product-id');
-		
-		const itemRes = await fetch("http://localhost:8080/api/products/product/item", {
+
+		const itemRes = await fetch(`http://${IPAddress}:8080/api/products/product/item`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
-			
-			body: JSON.stringify({ 'userId': currUser.id, 'materialId': productId,
-						'verifyToken': currUser.verifyToken }),
+
+			body: JSON.stringify({
+				'userId': currUser.id, 'materialId': productId,
+				'verifyToken': currUser.verifyToken
+			}),
 		});
 		const itemJson = await itemRes.json();
 		if (itemJson.state) {
