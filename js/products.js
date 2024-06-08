@@ -15,26 +15,26 @@ $(document).ready(async function () {
 
 	//------------------------------ 功能方法 ------------------------------
 	// 渲染商品種類區域的方法
-	const renderCategoriesArea = (c, index) => {
+	const renderCategoriesArea = (category, index) => {
 		return `
 		<label class="cate-item">
 			<input type="checkbox" id="cate-${index + 1}" class="form-check-input me-2" name="cate-${index + 1}" 
-			value="${c}">${c}
+			value="${category}">${category}
 		</label>
 		`
 	};
 	// 渲染商品的方式
-	const renderProduct = (p) => {
+	const renderProduct = (product) => {
 		return `
 		<div class="col-6 col-md-4 col-lg-3 mb-3">
-			<div class="card text-center product-item px-4" data-product-id="${p.id}">
+			<div class="card text-center product-item px-4" data-product-id="${product.id}">
 				<a href="javascript:;">
 					<div class="product-img position-relative">
-						<img src="${p.picture}" class="card-img-top" alt="">
-						<div class="product-quantity noto-sans">存貨量 ${p.stock}</div>
+						<img src="${product.picture}" class="card-img-top" alt="">
+						<div class="product-quantity noto-sans">存貨量 ${product.stock}</div>
 					</div>
 					<div class="card-body px-0">
-						<h5 class="card-text" style="white-space: nowrap">${p.name}</h5>
+						<h5 class="card-text" style="white-space: nowrap">${product.name}</h5>
 					</div>
 				</a>
 			</div>
@@ -43,10 +43,10 @@ $(document).ready(async function () {
 	}
 
 	// 在一開始初始化，或做了搜索動作時，初始化分頁器和商品區域
-	const initPaginatorAndProductsArea = (mp) => {
+	const initPaginatorAndProductsArea = (matchedProduct) => {
 
 		// 計算頁數
-		maxPage = Math.ceil(mp.length / productPerPage);
+		maxPage = Math.ceil(matchedProduct.length / productPerPage);
 
 		if (maxPage === 0) {
 			$('#productArea').html('<div class="fs-4 text-center">沒有符合商品</div>');
@@ -67,7 +67,7 @@ $(document).ready(async function () {
 			$('#paginatorArea').html(paginatorHTML);
 
 			// 填入商品，一頁最多productPerPage個
-			$('#productArea').html(mp.slice(0, productPerPage).map(renderProduct).join(''));
+			$('#productArea').html(matchedProduct.slice(0, productPerPage).map(renderProduct).join(''));
 		}
 	};
 
