@@ -822,15 +822,22 @@ $(document).ready(async function () {
             language: {
                 url: "../js/zh-Hant.json"  // 引用自定義漢化方式
             },
-            paging: false,
+            paging: true,
             data: data,
             autoWidth: false,
             responsive: true,
             layout: {
-                topStart: 'search',
-                topEnd: 'info',
-                bottomStart: null
+                top3Start: 'search',
+                top2Start: 'info',
+                top2End: 'pageLength',
+                topStart: null,
+                topEnd: null,
+                top: 'paging',
+                bottom: 'paging',
+                bottomStart: null,
+                bottomEnd: null,
             },
+            lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]],
             columns: [ // responsivePriority
                 {
                     data: 'code', title: "編號", responsivePriority: 1,
@@ -938,15 +945,22 @@ $(document).ready(async function () {
             language: {
                 url: "../js/zh-Hant.json"  // 引用自定義漢化方式
             },
-            paging: false,
+            paging: true,
             data: data,
             autoWidth: false,
             responsive: true,
             layout: {
-                topStart: 'search',
-                topEnd: 'info',
-                bottomStart: null
+                top3Start: 'search',
+                top2Start: 'info',
+                top2End: 'pageLength',
+                topStart: null,
+                topEnd: null,
+                top: 'paging',
+                bottom: 'paging',
+                bottomStart: null,
+                bottomEnd: null,
             },
+            lengthMenu: [[10, 20, 50, -1], [10, 20, 50, "All"]],
             columns: [ // responsivePriority
                 {
                     data: 'code', title: "編號", responsivePriority: 4,
