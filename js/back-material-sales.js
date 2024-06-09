@@ -7,15 +7,97 @@ $(document).ready(async function () {
     }
     const currUser = JSON.parse(localStorage.getItem('currUser'));
 
-    // 發API 到後台拉產品資料
-    const matRes = await fetch(`http://${IPAddress}:8080/api/products/admin/material`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
+    // 發API 到後台拉資料
+    const [matRes, safetyRes] = await Promise.all([
+        fetch(`http://${IPAddress}:8080/api/products/admin/material`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
+        }),
+        fetch(`http://${IPAddress}:8080/api/analyze/materialSafetyRatio`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
+        })
+    ]);
+
+    const [matJson, safetyRatioData] = await Promise.all([
+        matRes.json(),
+        safetyRes.json().then(data => data.data)
+    ]);
+
+
+    // ----------------- 畫arc between------------------------------
+    // 选择包含SVG的容器
+    const container = d3.select("#arc-container");
+
+    // 设置SVG画布的尺寸
+    const width = 230;
+    const height = 230;
+    const radius = Math.min(width, height) / 2 - 10;
+
+    // 定义弧生成器
+    const arcBackground = d3.arc()
+        .innerRadius(radius - 20)
+        .outerRadius(radius)
+        .startAngle(0)
+        .endAngle(2 * Math.PI); // Full circle for background
+
+    const arcForeground = d3.arc()
+        .innerRadius(radius - 20)
+        .outerRadius(radius)
+        .startAngle(0); // End angle will be set based on ratio
+
+    // 创建SVG元素并为每个产品绘制一个弧
+    safetyRatioData.forEach((d, i) => {
+        const svg = container.append("svg")
+            .attr("width", width)
+            .attr("height", height)
+            .append("g")
+            .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+        // 添加背景弧形路径（100%）
+        svg.append("path")
+            .attr("d", arcBackground)
+            .attr("fill", "#e6e6e6"); // Light grey background
+
+        // 添加前景弧形路径（实际库存比例），并添加转场效果
+        svg.append("path")
+            .datum({ endAngle: 0 }) // Start the transition from 0 angle
+            .attr("d", arcForeground)
+            .attr("fill", d3.schemeCategory10[i])
+            .transition() // Apply transition
+            .duration(1000) // Duration of the transition in milliseconds
+            .attrTween("d", function (datum) {
+                const interpolate = d3.interpolate(datum.endAngle, d.ratio * 2 * Math.PI);
+                return function (t) {
+                    datum.endAngle = interpolate(t);
+                    return arcForeground(datum);
+                };
+            });
+
+        // 添加产品名称
+        svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("dy", `-${height / 7}px`)
+            .text(d.name);
+
+        // 添加产品编号
+        svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("dy", `7px`)
+            .text(d.code);
+
+        // 添加库存比例
+        svg.append("text")
+            .attr("text-anchor", "middle")
+            .attr("dy", `${height / 5}px`)
+            .text((d.ratio * 100).toFixed(1) + "%");
     });
-    const matJson = await matRes.json();
 
 
     // DataTables
