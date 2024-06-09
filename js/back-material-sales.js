@@ -115,6 +115,7 @@ $(document).ready(async function () {
             $('#aProductID').val(infoJson.data.code);
             $('#aProductName').val(infoJson.data.name);
             $('#aProductCategory').val(infoJson.data.category);
+            $('#aProductSafetyThreshold').val(infoJson.data.safetyThreshold);
             $('#aProductStorage').val(infoJson.data.storage);
             $('#aProductDescription').val(infoJson.data.description);
             $('#aProductImage').attr('src', infoJson.data.picture);

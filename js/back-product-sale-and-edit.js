@@ -86,6 +86,7 @@ $(document).ready(async function () {
         // 取得資料
         const name = $('#aProductName').val();
         const category = $('#aProductCategory').val();
+        const safetyThreshold = $('#aProductSafetyThreshold').val();
         const storage = $('#aProductStorage').val();
         const description = $('#aProductDescription').val();
 
@@ -120,6 +121,7 @@ $(document).ready(async function () {
                 'productId': materialId,
                 'name': name,
                 'category': category,
+                'safetyThreshold': safetyThreshold,
                 'storage': storage,
                 'description': description,
                 'updatePicture': updatePicture || null,

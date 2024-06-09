@@ -14,7 +14,7 @@
             <!-- 商品編號 -->
             <div class="row">
                 <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
-                    <label class="d-block" for="jProductID">商品編號</label>
+                    <label class="d-block fs-5" for="jProductID" style="white-space: nowrap;">商品編號</label>
                 </div>
                 <div class="col-12 col-md-8 mt-2 mt-md-0">
                     <input type="text" name="jProductID" id="jProductID" class="form-control" placeholder="請輸入商品編號"
@@ -25,7 +25,7 @@
             <!-- 商品名稱 -->
             <div class="row mt-3">
                 <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
-                    <label class="d-block" for="jProductName">商品名稱</label>
+                    <label class="d-block fs-5" for="jProductName" style="white-space: nowrap;">商品名稱</label>
                 </div>
                 <div class="col-12 col-md-8 mt-2 mt-md-0">
                     <input type="text" name="jProductName" id="jProductName" class="form-control" placeholder="請輸入商品名稱"
@@ -36,7 +36,7 @@
             <!-- 商品種類 -->
             <div class="row mt-3">
                 <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
-                    <label class="d-block" for="jProductCategory">商品種類</label>
+                    <label class="d-block fs-5" for="jProductCategory" style="white-space: nowrap;">商品種類</label>
                 </div>
                 <div class="col-12 col-md-8 mt-2 mt-md-0">
                     <input type="text" name="jProductCategory" id="jProductCategory" class="form-control"
@@ -44,10 +44,21 @@
                 </div>
             </div>
 
+            <!-- 安全庫存 -->
+            <div class="row mt-3">
+                <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
+                    <label class="d-block fs-5" for="jProductSafetyThreshold" style="white-space: nowrap;">安全庫存</label>
+                </div>
+                <div class="col-12 col-md-8 mt-2 mt-md-0">
+                    <input type="number" name="jProductSafetyThreshold" id="jProductSafetyThreshold" class="form-control" placeholder="請輸入(一週)安全庫存量"
+                        required>
+                </div>
+            </div>
+
             <!-- 儲存位置 -->
             <div class="row mt-3">
                 <div class="offset-lg-1 col-12 col-md-3 col-lg-2 align-content-center">
-                    <label class="d-block" for="jProductStorage">儲存位置</label>
+                    <label class="d-block fs-5" for="jProductStorage" style="white-space: nowrap;">儲存位置</label>
                 </div>
                 <div class="col-12 col-md-8 mt-2 mt-md-0">
                     <input type="text" name="jProductStorage" id="jProductStorage" class="form-control"
@@ -58,7 +69,7 @@
             <!-- 商品描述 -->
             <div class="row mt-3">
                 <div class="offset-lg-1 col-12 col-md-3 col-lg-2">
-                    <label class="d-block" for="jProductDescription">商品描述</label>
+                    <label class="d-block fs-5" for="jProductDescription" style="white-space: nowrap;">商品描述</label>
                 </div>
                 <div class="col-12 col-md-8 mt-1">
                     <textarea name="jProductDescription" rows="5" id="jProductDescription"
@@ -95,15 +106,14 @@
 
             <label class="row">
 
-                <span class="offset-sm-1 offset-md-0 offset-lg-1 col-4 align-content-center">首次進貨<span
-                        class="d-none d-sm-inline">量</span>：</span>
+                <span class="offset-sm-1 offset-md-0 offset-lg-1 col-4 align-content-center fs-5" style="white-space: nowrap;">首次進貨：</span>
                 <input type="number" name="jFirstPurchaseQuantity" id="jFirstPurchaseQuantity"
                     class="form-control col-7 w-50" placeholder="請輸入首次進貨量" required>
             </label>
         </div>
         <div class="col-12 col-md-6 mt-2 mt-md-0">
             <label class="row">
-                <span class="offset-sm-1 offset-lg-1 col-4 col-md-5 col-lg-4 align-content-center ps-md-4">批貨費用：</span>
+                <span class="offset-sm-1 offset-lg-1 col-4 col-md-5 col-lg-4 align-content-center ps-md-4 fs-5" style="white-space: nowrap;">批貨費用：</span>
                 <input type="number" name="jFirstPurchaseCost" id="jFirstPurchaseCost" class="form-control col-7 w-50"
                     placeholder="請輸入費用" required>
             </label>

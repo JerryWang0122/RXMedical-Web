@@ -86,6 +86,7 @@ $(document).ready(function (event) {
         const code = $('#jProductID').val();
         const name = $('#jProductName').val();
         const category = $('#jProductCategory').val();
+        const safetyThreshold = $('#jProductSafetyThreshold').val();
         const storage = $('#jProductStorage').val();
         const description = $('#jProductDescription').val();
 
@@ -93,7 +94,7 @@ $(document).ready(function (event) {
         const price = $('#jFirstPurchaseCost').val();
 
         // 所有資料不可為空
-        if (!code || !name || !category || !storage || !description || !quantity || !price) {
+        if (!code || !name || !category || !safetyThreshold || !storage || !description || !quantity || !price) {
             Swal.fire({
                 position: "top",
                 icon: "error",
@@ -102,6 +103,18 @@ $(document).ready(function (event) {
             })
             return;
         }
+
+        // quantity 和 price 需為數字，且為正數
+        if (isNaN(safetyThreshold) || safetyThreshold < 0) {
+            Swal.fire({
+                position: "top",
+                icon: "error",
+                title: "無效安全庫存",
+                showConfirmButton: true
+            })
+            return;
+        }
+
         // quantity 和 price 需為數字，且為正數
         if (isNaN(quantity) || quantity < 0 || isNaN(price) || price < 0) {
             Swal.fire({
@@ -124,6 +137,7 @@ $(document).ready(function (event) {
                 'name': name,
                 'category': category,
                 'storage': storage,
+                'safetyThreshold': safetyThreshold,
                 'description': description,
                 'quantity': quantity,
                 'price': price,
