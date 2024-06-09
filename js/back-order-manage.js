@@ -1014,4 +1014,37 @@ $(document).ready(async function () {
     // 載入admin人員選項到指派人員的modal
     await loadAdminListToOption();
 
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    async function drawChart () {
+        let scoreRes = await fetch(`http://${IPAddress}:8080/api/analyze/laborScore`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+        })
+        let scoreData = (await scoreRes.json()).data;
+        let sortableArray = Object.entries(scoreData);
+
+        // 按照值进行排序
+        sortableArray.sort((a, b) => b[1] - a[1]);
+        // 往前面塞資料
+        sortableArray.unshift(['人員', '分數']);
+
+
+        let data = google.visualization.arrayToDataTable(sortableArray);
+
+        let options = {
+            backgroundColor: 'transparent',
+            legend: { position: 'bottom' },
+            pieHole: 0.4
+        };
+
+        let chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+    }
+
 });
