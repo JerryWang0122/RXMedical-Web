@@ -1,4 +1,5 @@
 var IPAddress = location.hostname;
+// var IPAddress = '192.168.153.167';
 
 $(document).ready(async function () {
 	// 設定標題

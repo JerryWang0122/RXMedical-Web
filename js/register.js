@@ -1,12 +1,11 @@
 $(document).ready(async function () {
 
 	const tokenRes = await fetch(`http://${IPAddress}:8080/api/users/user/CSRFToken`, {
-		method: 'POST',
-		credentials: 'include'
+		method: 'POST'
 	});
 	const tokenJson = await tokenRes.json();
 	if (tokenJson.state) {
-		$('#jToken').val(tokenJson.data);
+		$('#jToken').val(tokenJson.data[0]);
 	} else {
 		Swal.fire({
 			position: "top",
@@ -112,8 +111,8 @@ $(document).ready(async function () {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${tokenJson.data[1]}`
 				},
-				credentials: 'include',
 				body: JSON.stringify(formData),  // 資料轉 json 字串
 			});
 			const { state, message, data } = await response.json();
