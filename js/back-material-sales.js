@@ -178,6 +178,41 @@ $(document).ready(async function () {
         await loadHTML('./b-add_product.html', '#contentArea');
     });
 
+    // 載入個別商品的進貨建議圖表
+    async function drawStuff(id) {
+        const suggestRes = await fetch(`http://${IPAddress}:8080/api/analyze/callMaterialDiagram`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                "userId": currUser.id,
+                "materialId": id,
+                "verifyToken": currUser.verifyToken
+            })
+        });
+        let suggestData = (await suggestRes.json()).data;
+        suggestData = suggestData.map(d => {
+            return [d.startOfWeek, d.suggestQuantity];
+        })
+        suggestData.unshift(["時間", "建議購入量"]);
+
+        const data = new google.visualization.arrayToDataTable(suggestData);
+
+        const options = {
+            backgroundColor: 'transparent',
+            legend: { position: 'none' },
+            chart: {
+                title: '每週建議購入量',
+            },
+            bar: { groupWidth: "90%" }
+        };
+
+        const chart = new google.charts.Bar(document.getElementById('callSuggestDiagram'));
+        // Convert the Classic options to Material options.
+        chart.draw(data, google.charts.Bar.convertOptions(options));
+    };
+
     // ------------- 編輯/進銷按鈕被按下時 ---------------
     $('#productInfoTable').on('click', '.btn-edit-material', async function () {
 
@@ -203,6 +238,10 @@ $(document).ready(async function () {
             $('#aProductImage').attr('src', infoJson.data.picture);
             $('#addSalesRecordBtn').attr('data-id', id);
             $('#updateMaterialInfoBtn').attr('data-id', id)
+
+            // 繪製圖表
+            google.charts.load('current', { 'packages': ['bar'] });
+            google.charts.setOnLoadCallback(() => drawStuff(id));
         } else {
             Swal.fire({
                 position: "top",
