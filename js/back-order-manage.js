@@ -60,8 +60,7 @@ $(document).ready(async function () {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${jwt}`
-            },
-            body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
+            }
         })
         const adminList = (await response.json()).data;
 
@@ -116,11 +115,8 @@ $(document).ready(async function () {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                "userId": currUser.id,
-                "verifyToken": currUser.verifyToken
-            }),
+                "Authorization": `Bearer ${jwt}`
+            }
         });
         data = (await uncheckedRes.json()).data;
 
@@ -215,11 +211,11 @@ $(document).ready(async function () {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
-                "userId": currUser.id,
+                "userId": null,
                 "recordId": id,
-                "verifyToken": currUser.verifyToken
             }),
         });
         const detailList = (await detailListRes.json()).data;
@@ -240,8 +236,9 @@ $(document).ready(async function () {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
-            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
+            body: JSON.stringify({ 'userId': null, 'recordId': id })
         });
 
         const { state, message } = await response.json();
@@ -294,8 +291,9 @@ $(document).ready(async function () {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
-            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
+            body: JSON.stringify({ 'userId': null, 'recordId': id })
         });
 
         const { state, message } = await response.json();
@@ -328,13 +326,13 @@ $(document).ready(async function () {
     const loadPickingTable = async () => {
         cleanTable();
 
-        // TODO: 發 API 到後台拉"待確認"訂單資料
+        // 發 API 到後台拉"待撿貨"訂單資料
         const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/picking`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+                'Authorization': `Bearer ${jwt}`
+            }
         })
         data = (await response.json()).data;
 
@@ -439,8 +437,9 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
-            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
+            body: JSON.stringify({ 'userId': null, 'recordId': id })
         });
         const { state, message, data } = await response.json();
         if (state) {
@@ -476,16 +475,16 @@ $(document).ready(async function () {
         // 按下時，先將按鈕漸變消失
         pickUpBtn.addClass('fade-transition hidden');
 
-        // TODO:利用historyId和jwt內部的使用者id，紀錄history的user
+        // 利用historyId和jwt內部的使用者id，紀錄history Table的user
         const historyId = $(this).data('history-id');
-        const userId = currUser.id;
         const userName = currUser.name;
         const response = await fetch(`http://${IPAddress}:8080/api/sales/admin/order_list/picking`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
-            body: JSON.stringify({ historyId, userId, 'verifyToken': currUser.verifyToken })
+            body: JSON.stringify({ historyId, 'userId': null })
         });
         const { state, message } = await response.json();
 
@@ -534,8 +533,9 @@ $(document).ready(async function () {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${jwt}`
                 },
-                body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
+                body: JSON.stringify({ 'userId': null, 'recordId': id })
             });
             const { state, message } = await response.json();
 
@@ -575,8 +575,8 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+                'Authorization': `Bearer ${jwt}`
+            }
         })
         data = (await response.json()).data;
 
@@ -671,12 +671,12 @@ $(document).ready(async function () {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
-                'userId': currUser.id,
+                'userId': null,
                 'recordId': waitingId,
-                transporterId,
-                'verifyToken': currUser.verifyToken
+                transporterId
             })
         });
 
@@ -735,8 +735,8 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+                'Authorization': `Bearer ${jwt}`
+            }
         })
         data = (await response.json()).data;
 
@@ -816,8 +816,8 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+                'Authorization': `Bearer ${jwt}`
+            }
         })
         data = (await response.json()).data;
         table = $('#orderListTable').DataTable({
@@ -918,8 +918,9 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
-            body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
+            body: JSON.stringify({ 'userId': null, 'recordId': id })
         })
         const detailLists = (await response.json()).data;;
 
@@ -938,8 +939,8 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+                'Authorization': `Bearer ${jwt}`
+            }
         })
         data = (await response.json()).data;
 
@@ -1024,9 +1025,10 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
-        })
+                'Authorization': `Bearer ${jwt}`
+            }
+        });
+
         let scoreData = (await scoreRes.json()).data;
         let sortableArray = Object.entries(scoreData);
 

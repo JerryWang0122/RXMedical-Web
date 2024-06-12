@@ -1,11 +1,13 @@
 $(document).ready(function (event) {
 
+    // 進入時，當沒有使用者資料時，強行導入回登入頁
     // 當沒有使用者資料時，強行導入回登入頁
-    if (!localStorage.getItem('currUser')) {
+    if (!localStorage.getItem('currUser') || !localStorage.getItem('jwt')) {
         location.href = './index.html';
         return;
     }
     const currUser = JSON.parse(localStorage.getItem('currUser'));
+    const jwt = localStorage.getItem('jwt');
 
     // 相片是否符合規格
     let picValid = false;
@@ -131,6 +133,7 @@ $(document).ready(function (event) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify({
                 'code': code,
@@ -141,9 +144,8 @@ $(document).ready(function (event) {
                 'description': description,
                 'quantity': quantity,
                 'price': price,
-                'userId': currUser.id,
+                'userId': null,
                 'picture': picture,
-                'verifyToken': currUser.verifyToken
             })
         });
 

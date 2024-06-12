@@ -1,11 +1,13 @@
 $(document).ready(async function () {
 
+    // 進入時，當沒有使用者資料時，強行導入回登入頁
     // 當沒有使用者資料時，強行導入回登入頁
-    if (!localStorage.getItem('currUser')) {
+    if (!localStorage.getItem('currUser') || !localStorage.getItem('jwt')) {
         location.href = './index.html';
         return;
     }
     const currUser = JSON.parse(localStorage.getItem('currUser'));
+    const jwt = localStorage.getItem('jwt');
 
     // 發API 到後台拉資料
     const [matRes, safetyRes] = await Promise.all([
@@ -13,15 +15,15 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
+                'Authorization': `Bearer ${jwt}`
+            }
         }),
         fetch(`http://${IPAddress}:8080/api/analyze/materialSafetyRatio`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken })
+                'Authorization': `Bearer ${jwt}`
+            }
         })
     ]);
 
@@ -184,11 +186,11 @@ $(document).ready(async function () {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${jwt}`
             },
             body: JSON.stringify({
-                "userId": currUser.id,
-                "materialId": id,
-                "verifyToken": currUser.verifyToken
+                "userId": null,
+                "materialId": id
             })
         });
         let suggestData = (await suggestRes.json()).data;
@@ -222,8 +224,9 @@ $(document).ready(async function () {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
-            body: JSON.stringify({ "userId": currUser.id, "materialId": id, 'verifyToken': currUser.verifyToken })
+            body: JSON.stringify({ "userId": null, "materialId": id })
         })
 
         const infoJson = await infoRes.json();
