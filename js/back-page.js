@@ -6,10 +6,12 @@
 $(document).ready(async () => {
 
 	// 當沒有使用者資料時，強行導入回登入頁
-	if (!localStorage.getItem('currUser')) {
+	if (!localStorage.getItem('currUser') || !localStorage.getItem('jwt')) {
 		location.href = './index.html';
 		return;
 	}
+	const currUser = JSON.parse(localStorage.getItem('currUser'));
+	const jwt = localStorage.getItem('jwt');
 
 	await loadHTML('/b-order_manage.html', '#contentArea');
 

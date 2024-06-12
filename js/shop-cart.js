@@ -1,19 +1,22 @@
 $(document).ready(async function () {
 
 	// 當沒有使用者資料時，強行導入回登入頁
-	if (!localStorage.getItem('currUser')) {
+	if (!localStorage.getItem('currUser') || !localStorage.getItem('jwt')) {
 		location.href = './index.html';
 		return;
 	}
 	const currUser = JSON.parse(localStorage.getItem('currUser'));
+	const jwt = localStorage.getItem('jwt');
+
 	let shopCartList = JSON.parse(localStorage.getItem('shopCartList')) || [];
 	let data = await Promise.all(shopCartList.map(async item => {
 		const res = await fetch(`http://${IPAddress}:8080/api/products/product/item`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${jwt}`
 			},
-			body: JSON.stringify({ "userId": currUser.id, "verifyToken": currUser.verifyToken, "materialId": item.productId })
+			body: JSON.stringify({ "userId": null, "materialId": item.productId })
 		});
 		const json = await res.json();
 		item.productName = json.data.name;
@@ -134,15 +137,15 @@ $(document).ready(async function () {
 		});
 
 		const formData = {
-			'userId': currUser.id,
+			'userId': null,
 			'applyItems': processedData,
-			'verifyToken': currUser.verifyToken
 		};
 
 		const checkRes = await fetch(`http://${IPAddress}:8080/api/sales/order_generate`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${jwt}`
 			},
 			body: JSON.stringify(formData)
 		});

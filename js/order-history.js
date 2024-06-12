@@ -1,11 +1,12 @@
 $(document).ready(async function () {
 
 	// 當沒有使用者資料時，強行導入回登入頁
-	if (!localStorage.getItem('currUser')) {
+	if (!localStorage.getItem('currUser') || !localStorage.getItem('jwt')) {
 		location.href = './index.html';
 		return;
 	}
 	const currUser = JSON.parse(localStorage.getItem('currUser'));
+	const jwt = localStorage.getItem('jwt');
 
 	// 設定User
 	$('.user-name').text(currUser.name);
@@ -24,9 +25,9 @@ $(document).ready(async function () {
 	const purchaseHistoryRes = await fetch(`http://${IPAddress}:8080/api/users/user/purchase`, {
 		method: 'POST',
 		headers: {  // 一定要加
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })  // 資料轉 json 字串
+			'Content-Type': 'application/json',
+			'Authorization': `Bearer ${jwt}`
+		}
 	})
 	let data = (await purchaseHistoryRes.json()).data;
 
@@ -121,8 +122,9 @@ $(document).ready(async function () {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${jwt}`
 			},
-			body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })
+			body: JSON.stringify({ 'userId': null, 'recordId': id })
 		})
 		const orderDetails = (await response.json()).data;
 
@@ -151,9 +153,10 @@ $(document).ready(async function () {
 			const finishRes = await fetch(`http://${IPAddress}:8080/api/users/user/purchase/finish`, {
 				method: 'POST',
 				headers: {  // 一定要加
-					'Content-Type': 'application/json'
+					'Content-Type': 'application/json',
+					'Authorization': `Bearer ${jwt}`
 				},
-				body: JSON.stringify({ 'userId': currUser.id, 'recordId': id, 'verifyToken': currUser.verifyToken })  // 資料轉 json 字串
+				body: JSON.stringify({ 'userId': null, 'recordId': id })  // 資料轉 json 字串
 			});
 			const finishJson = await finishRes.json();
 

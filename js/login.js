@@ -33,6 +33,7 @@ $(document).ready(async function () {
             body: JSON.stringify({ email, password, token }),   // 資料轉 json 字串
         });
         const { state, message, data } = await response.json();
+        const { dept, name, authLevel, jwt } = data;
 
         if (state) { // log success
             switch (data.authLevel) {
@@ -46,7 +47,8 @@ $(document).ready(async function () {
                         showConfirmButton: false,
                         timer: 1000
                     });
-                    localStorage.setItem('currUser', JSON.stringify(data));
+                    localStorage.setItem('currUser', JSON.stringify({ dept, name, authLevel}));
+                    localStorage.setItem('jwt', jwt);
                     setTimeout(() => {
                         location.href = './front_page_frame.html';
                     }, 1000);

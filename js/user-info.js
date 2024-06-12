@@ -1,14 +1,19 @@
 $(document).ready(async function () {
 
     // 進入時，資料初始化
-    let currUser = JSON.parse(localStorage.getItem('currUser'));
+    if (!localStorage.getItem('currUser') || !localStorage.getItem('jwt')) {
+        location.href = './index.html';
+        return;
+    }
+    const currUser = JSON.parse(localStorage.getItem('currUser'));
+    const jwt = localStorage.getItem('jwt');
 
     const response = await fetch(`http://${IPAddress}:8080/api/users/user/profile`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+            'Authorization': `Bearer ${jwt}`
+        }
     });
     const { state, message, data } = await response.json();
 
@@ -45,18 +50,18 @@ $(document).ready(async function () {
         }
 
         const formData = {
-            userId: currUser.id,
+            userId: null,
             name: $('#jName').val(),
             dept: $('#jDept').val(),
             title: $('#jTitle').val(),
-            email: $('#jEmail').val(),
-            verifyToken: currUser.verifyToken
+            email: $('#jEmail').val()
         };
 
         const editResponse = await fetch(`http://${IPAddress}:8080/api/users/user/profile`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${jwt}`
             },
             body: JSON.stringify(formData)  // 資料轉 json 字串
         });
@@ -71,7 +76,8 @@ $(document).ready(async function () {
                 timer: 1000
             })
             // 刷新已存在的資料
-            currUser = resJson.data;
+            currUser.dept = formData.dept;
+            currUser.name = formData.name;
             localStorage.setItem('currUser', JSON.stringify(currUser));
             $('.user-name').text(currUser.name);
         } else {

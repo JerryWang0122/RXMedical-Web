@@ -7,11 +7,12 @@ $(document).ready(async function () {
 
 	// ----------------------------------------------------
 	// 當沒有使用者資料時，強行導入回登入頁
-	if (!localStorage.getItem('currUser')) {
+	if (!localStorage.getItem('currUser') || !localStorage.getItem('jwt')) {
 		location.href = './index.html';
 		return;
 	}
 	const currUser = JSON.parse(localStorage.getItem('currUser'));
+	const jwt = localStorage.getItem('jwt');
 
 	//------------------------------ 功能方法 ------------------------------
 	// 渲染商品種類區域的方法
@@ -103,11 +104,10 @@ $(document).ready(async function () {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify({ 'userId': currUser.id, 'verifyToken': currUser.verifyToken })
+			'Authorization': `Bearer ${jwt}`
+		}
 	});
 	const { state, message, data } = await response.json();
-
 	if (!state) {	// 權限不足，不應該進來網頁
 		location.href = './index.html';
 		return;
@@ -242,11 +242,10 @@ $(document).ready(async function () {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
+				'Authorization': `Bearer ${jwt}`
 			},
-
 			body: JSON.stringify({
-				'userId': currUser.id, 'materialId': productId,
-				'verifyToken': currUser.verifyToken
+				'userId': null, 'materialId': productId,
 			}),
 		});
 		const itemJson = await itemRes.json();
