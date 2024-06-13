@@ -16,7 +16,7 @@
                 <label for="jEmpId"><i class="bi bi-person-vcard"></i>員工編號</label>
             </div>
             <div class="col-12 col-md-7">
-                <input type="text" id="jEmpId" name="jEmpId" class="form-control" pattern=".{5}" readonly required>
+                <input type="text" id="jEmpId" name="jEmpId" class="form-control" pattern=".{5}" onkeydown="if(event.keyCode === 13){return false;}" readonly required>
             </div>
         </div>
         <!-- 第 2 列   姓名-->
@@ -25,7 +25,7 @@
                 <label for="jName"><i class="bi bi-person"></i>姓名</label>
             </div>
             <div class="col-12 col-md-7">
-                <input type="text" id="jName" name="jName" class="form-control" placeholder="請輸入姓名" required>
+                <input type="text" id="jName" name="jName" class="form-control" placeholder="請輸入姓名" onkeydown="if(event.keyCode === 13){return false;}" required>
             </div>
         </div>
         <!-- 第 3 列   處室-->
@@ -34,7 +34,7 @@
                 <label for="jDept"><i class="bi bi-house-gear"></i>處室</label>
             </div>
             <div class="col-12 col-md-7">
-                <input type="text" id="jDept" name="jDept" class="form-control" placeholder="請輸入單位處室" required>
+                <input type="text" id="jDept" name="jDept" class="form-control" placeholder="請輸入單位處室" onkeydown="if(event.keyCode === 13){return false;}" required>
             </div>
         </div>
         <!-- 第 4 列   職稱-->
@@ -43,7 +43,7 @@
                 <label for="jTitle"><i class="bi bi-tag"></i>職稱</label>
             </div>
             <div class="col-12 col-md-7">
-                <input type="text" id="jTitle" name="jTitle" class="form-control" placeholder="請輸入工作職稱" required>
+                <input type="text" id="jTitle" name="jTitle" class="form-control" placeholder="請輸入工作職稱" onkeydown="if(event.keyCode === 13){return false;}" required>
             </div>
         </div>
         <!-- 第 5 列   信箱-->
@@ -52,7 +52,7 @@
                 <label for="jEmail"><i class="bi bi-envelope-at"></i>信箱</label>
             </div>
             <div class="col-12 col-md-7">
-                <input type="email" id="jEmail" name="jEmail" class="form-control" placeholder="請輸入信箱" required>
+                <input type="email" id="jEmail" name="jEmail" class="form-control" placeholder="請輸入信箱" onkeydown="if(event.keyCode === 13){return false;}" required>
             </div>
         </div>
         <div class="row">

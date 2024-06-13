@@ -188,9 +188,9 @@ $(document).ready(async function () {
 
 	// ----------- 關鍵字搜索 --------------
 	// #keyword 按下enter時執行
-	$('#keyword').on('keyup', function (event) {
-		event.preventDefault();
+	$('#keyword').on('keydown', function (event) {
 		if (event.keyCode === 13) {
+			event.preventDefault();
 			searchMatchProducts();
 		}
 	});
